@@ -1,0 +1,427 @@
+[
+    {
+        "id": "bittersweet-cafe-farmington",
+        "name": "Bittersweet Café",
+        "location": "Farmington, Pennsylvania",
+        "coordinates": {
+            "lat": 39.813344,
+            "lng": -79.562739
+        },
+        "description": "A charming café and bakery in Farmington, Pennsylvania, offering breakfast, lunch, and a variety of freshly baked goods. Known for its focus on local ingredients and cozy atmosphere, Bittersweet Café is a perfect stop for skiers heading to or from Wisp Resort. The café features homemade pastries, artisanal coffee, and seasonal menu items that highlight the best of the Laurel Highlands region.",
+        "category": "cafe",
+        "cuisine": "Café, Bakery, American",
+        "priceRange": "$$",
+        "rating": 4.4,
+        "reviewCount": 127,
+        "resort": "wisp-resort",
+        "address": "205 Farmington-Ohiopyle Road, Farmington, PA 15437",
+        "phone": "(724) 329-1122",
+        "website": "https://www.bittersweetcafefarmington.com",
+        "hours": {
+            "monday": "7:00 AM - 3:00 PM",
+            "tuesday": "7:00 AM - 3:00 PM",
+            "wednesday": "7:00 AM - 3:00 PM",
+            "thursday": "7:00 AM - 3:00 PM",
+            "friday": "7:00 AM - 4:00 PM",
+            "saturday": "7:00 AM - 4:00 PM",
+            "sunday": "8:00 AM - 3:00 PM"
+        }
+    },
+    {
+        "id": "ohiopyle-house-cafe",
+        "name": "Ohiopyle House Café",
+        "location": "Ohiopyle, Pennsylvania",
+        "coordinates": {
+            "lat": 39.86935,
+            "lng": -79.49131
+        },
+        "description": "Quaint dining establishment in the heart of Ohiopyle, Pennsylvania, offering a relaxing atmosphere with both indoor seating and an outdoor deck with firepit. Located in a historic building, the café serves breakfast, lunch, and dinner with a focus on American comfort food. Below the restaurant, the Marietta Tavern offers over 60 varieties of beers, including local and micro-brews, making it a popular après-ski destination.",
+        "category": "restaurant",
+        "cuisine": "American, Comfort Food",
+        "priceRange": "$$",
+        "rating": 4.3,
+        "reviewCount": 234,
+        "resort": "wisp-resort",
+        "address": "144 Grant Street, Ohiopyle, PA 15470",
+        "phone": "(724) 329-1122",
+        "website": "http://www.ohiopylehousecafe.com",
+        "hours": {
+            "monday": "11:00 AM - 9:00 PM",
+            "tuesday": "11:00 AM - 9:00 PM",
+            "wednesday": "11:00 AM - 9:00 PM",
+            "thursday": "11:00 AM - 9:00 PM",
+            "friday": "11:00 AM - 10:00 PM",
+            "saturday": "11:00 AM - 10:00 PM",
+            "sunday": "11:00 AM - 9:00 PM"
+        }
+    },
+    {
+        "id": "falls-city-pub",
+        "name": "Falls City Pub",
+        "location": "Ohiopyle, Pennsylvania",
+        "coordinates": {
+            "lat": 39.8681,
+            "lng": -79.4945
+        },
+        "description": "Popular pub located at the north entrance of Ohiopyle, serving American cuisine with a selection of local beers. Known for its Pennsylvania-style barbecue, sandwiches, wraps, and salads. Falls City Pub offers a casual, friendly atmosphere perfect for après-ski dining. The pub features an extensive beer list and is a favorite among outdoor enthusiasts visiting Ohiopyle State Park and the Great Allegheny Passage.",
+        "category": "bar",
+        "cuisine": "American, Pub Food, Barbecue",
+        "priceRange": "$$",
+        "rating": 4.2,
+        "reviewCount": 189,
+        "resort": "wisp-resort",
+        "address": "112 Garrett Street, Ohiopyle, PA 15470",
+        "phone": "(724) 329-3000",
+        "website": "https://www.fallscitypub.com",
+        "hours": {
+            "monday": "3:00 PM - 9:00 PM",
+            "tuesday": "Closed",
+            "wednesday": "Closed",
+            "thursday": "3:00 PM - 9:00 PM",
+            "friday": "3:00 PM - 9:00 PM",
+            "saturday": "12:00 PM - 9:00 PM",
+            "sunday": "12:00 PM - 9:00 PM"
+        }
+    },
+    {
+        "id": "lucky-dog-cafe",
+        "name": "Lucky Dog Café",
+        "location": "Confluence, Pennsylvania",
+        "coordinates": {
+            "lat": 39.8125,
+            "lng": -79.3575
+        },
+        "description": "Casual eatery located along the Great Allegheny Passage bike trail in Confluence, Pennsylvania. The café offers a diverse menu including burgers, sandwiches, and vegetarian options. Known for its comfortable setting and friendly service, Lucky Dog Café is a great stop for cyclists, hikers, and skiers exploring the Laurel Highlands region. The café is closed from November to March, making it a perfect spring and summer destination.",
+        "category": "cafe",
+        "cuisine": "American, Café, Vegetarian Options",
+        "priceRange": "$",
+        "rating": 4.1,
+        "reviewCount": 156,
+        "resort": "wisp-resort",
+        "address": "849 River Road, Confluence, PA 15424",
+        "phone": "(724) 329-3000",
+        "website": "https://www.luckydogcafe.net",
+        "hours": {
+            "monday": "11:00 AM - 7:00 PM",
+            "tuesday": "11:00 AM - 7:00 PM",
+            "wednesday": "11:00 AM - 7:00 PM",
+            "thursday": "11:00 AM - 7:00 PM",
+            "friday": "11:00 AM - 8:00 PM",
+            "saturday": "11:00 AM - 8:00 PM",
+            "sunday": "11:00 AM - 7:00 PM"
+        },
+        "note": "Closed November through March"
+    },
+    {
+        "id": "paint-room-bar-grill",
+        "name": "The Paint Room Bar and Grill",
+        "location": "Connellsville, Pennsylvania",
+        "coordinates": {
+            "lat": 40.0175,
+            "lng": -79.5892
+        },
+        "description": "Wheelchair accessible and kid-friendly bar and grill in Connellsville, Pennsylvania, offering a diverse menu and live music events. The Paint Room provides a welcoming atmosphere for families and groups, serving American pub fare with a focus on quality ingredients. A popular spot for locals and visitors exploring the Laurel Highlands region.",
+        "category": "bar",
+        "cuisine": "American, Pub Food, Bar & Grill",
+        "priceRange": "$$",
+        "rating": 4.2,
+        "reviewCount": 198,
+        "resort": "wisp-resort",
+        "address": "118 West Apple Street, Connellsville, PA 15425",
+        "phone": "(724) 628-5832",
+        "website": "https://thepaintroombarandgrillconnellsville.com",
+        "hours": {
+            "monday": "11:00 AM - 9:00 PM",
+            "tuesday": "11:00 AM - 10:00 PM",
+            "wednesday": "11:00 AM - 10:00 PM",
+            "thursday": "11:00 AM - 10:00 PM",
+            "friday": "11:00 AM - 11:00 PM",
+            "saturday": "11:00 AM - 11:00 PM",
+            "sunday": "11:00 AM - 9:00 PM"
+        }
+    },
+    {
+        "id": "foxs-tavern",
+        "name": "Fox's Tavern",
+        "location": "Connellsville, Pennsylvania",
+        "coordinates": {
+            "lat": 40.0150,
+            "lng": -79.5940
+        },
+        "description": "Local tavern in Connellsville known for its stir fry dishes, teriyaki specialties, and butter & garlic wings. Fox's Tavern offers a casual dining experience with a focus on American comfort food and pub favorites. A friendly neighborhood spot perfect for après-ski dining.",
+        "category": "bar",
+        "cuisine": "American, Pub Food, Asian Fusion",
+        "priceRange": "$$",
+        "rating": 4.0,
+        "reviewCount": 145,
+        "resort": "wisp-resort",
+        "address": "205 W Wine Street, Connellsville, PA 15425",
+        "phone": "(724) 628-5832",
+        "website": "",
+        "hours": {
+            "monday": "11:00 AM - 10:00 PM",
+            "tuesday": "11:00 AM - 10:00 PM",
+            "wednesday": "11:00 AM - 10:00 PM",
+            "thursday": "11:00 AM - 10:00 PM",
+            "friday": "11:00 AM - 11:00 PM",
+            "saturday": "11:00 AM - 11:00 PM",
+            "sunday": "11:00 AM - 10:00 PM"
+        }
+    },
+    {
+        "id": "jerseys-sports-bar-grill",
+        "name": "Jerseys Sports Bar and Grill",
+        "location": "Uniontown, Pennsylvania",
+        "coordinates": {
+            "lat": 39.9005,
+            "lng": -79.7769
+        },
+        "description": "Sports bar and grill in Uniontown, Pennsylvania, known for its hot butter and garlic wings, hot sausage stuffed peppers, and chicken bacon Swiss sandwiches. Features multiple TVs for sports viewing and a lively atmosphere. Perfect for watching the game after a day on the slopes.",
+        "category": "bar",
+        "cuisine": "American, Sports Bar, Pub Food",
+        "priceRange": "$$",
+        "rating": 4.1,
+        "reviewCount": 167,
+        "resort": "wisp-resort",
+        "address": "7647 National Pike E W, Uniontown, PA 15401",
+        "phone": "(724) 438-0000",
+        "website": "",
+        "hours": {
+            "monday": "11:00 AM - 11:00 PM",
+            "tuesday": "11:00 AM - 11:00 PM",
+            "wednesday": "11:00 AM - 11:00 PM",
+            "thursday": "11:00 AM - 11:00 PM",
+            "friday": "11:00 AM - 12:00 AM",
+            "saturday": "11:00 AM - 12:00 AM",
+            "sunday": "11:00 AM - 10:00 PM"
+        }
+    },
+    {
+        "id": "darbys-pub-restaurant",
+        "name": "Darby's Pub & Restaurant",
+        "location": "Uniontown, Pennsylvania",
+        "coordinates": {
+            "lat": 39.8985,
+            "lng": -79.7256
+        },
+        "description": "Cozy pub and restaurant in Uniontown, Pennsylvania, offering a variety of dishes including beer cheese and pretzel bites, chicken salads with breadsticks, and hamburger hoagies with fries. Darby's provides a warm, welcoming atmosphere perfect for casual dining and gathering with friends after skiing.",
+        "category": "restaurant",
+        "cuisine": "American, Pub Food",
+        "priceRange": "$$",
+        "rating": 4.3,
+        "reviewCount": 223,
+        "resort": "wisp-resort",
+        "address": "145 Morgantown Street, Uniontown, PA 15401",
+        "phone": "(724) 438-0000",
+        "website": "https://eatatdarbys.com",
+        "hours": {
+            "monday": "11:00 AM - 10:00 PM",
+            "tuesday": "11:00 AM - 10:00 PM",
+            "wednesday": "11:00 AM - 10:00 PM",
+            "thursday": "11:00 AM - 10:00 PM",
+            "friday": "11:00 AM - 11:00 PM",
+            "saturday": "11:00 AM - 11:00 PM",
+            "sunday": "11:00 AM - 9:00 PM"
+        }
+    },
+    {
+        "id": "rivers-edge-cafe",
+        "name": "Rivers Edge Cafe",
+        "location": "Confluence, Pennsylvania",
+        "coordinates": {
+            "lat": 39.8125,
+            "lng": -79.3575
+        },
+        "description": "Charming café located along the Youghiogheny River in Confluence, Pennsylvania, offering lunch and dinner with outdoor seating. Perfect for enjoying a meal while watching the river flow by. The café provides a relaxed atmosphere ideal for cyclists, hikers, and skiers exploring the Great Allegheny Passage and surrounding Laurel Highlands.",
+        "category": "cafe",
+        "cuisine": "American, Café",
+        "priceRange": "$$",
+        "rating": 4.2,
+        "reviewCount": 134,
+        "resort": "wisp-resort",
+        "address": "203 Yough Street, Confluence, PA 15424",
+        "phone": "(814) 395-5059",
+        "website": "",
+        "hours": {
+            "monday": "11:00 AM - 8:00 PM",
+            "tuesday": "11:00 AM - 8:00 PM",
+            "wednesday": "11:00 AM - 8:00 PM",
+            "thursday": "11:00 AM - 8:00 PM",
+            "friday": "11:00 AM - 9:00 PM",
+            "saturday": "11:00 AM - 9:00 PM",
+            "sunday": "11:00 AM - 8:00 PM"
+        }
+    },
+    {
+        "id": "pine-grill-restaurant",
+        "name": "Pine Grill Restaurant",
+        "location": "Somerset, Pennsylvania",
+        "coordinates": {
+            "lat": 40.0155485,
+            "lng": -79.0779585
+        },
+        "description": "Family-friendly restaurant in Somerset, Pennsylvania, offering lunch and dinner with a full bar. Known for its welcoming atmosphere and diverse menu featuring American classics. A popular dining destination for families and groups visiting the Laurel Highlands region.",
+        "category": "restaurant",
+        "cuisine": "American",
+        "priceRange": "$$",
+        "rating": 4.1,
+        "reviewCount": 189,
+        "resort": "wisp-resort",
+        "address": "800 N. Center Avenue, Somerset, PA 15501",
+        "phone": "(814) 445-4181",
+        "website": "https://pinegrill.com",
+        "hours": {
+            "monday": "11:00 AM - 9:00 PM",
+            "tuesday": "11:00 AM - 9:00 PM",
+            "wednesday": "11:00 AM - 9:00 PM",
+            "thursday": "11:00 AM - 9:00 PM",
+            "friday": "11:00 AM - 10:00 PM",
+            "saturday": "11:00 AM - 10:00 PM",
+            "sunday": "11:00 AM - 9:00 PM"
+        }
+    },
+    {
+        "id": "out-of-the-fire-cafe",
+        "name": "Out of the Fire Cafe",
+        "location": "Donegal, Pennsylvania",
+        "coordinates": {
+            "lat": 40.100429,
+            "lng": -79.365227
+        },
+        "description": "Family-owned restaurant in Donegal, Pennsylvania, serving New American cuisine with an open kitchen concept. Known for fresh, locally sourced ingredients and scenic views of the Laurel Highlands. This BYOB establishment offers a refined dining experience perfect for special occasions or a memorable après-ski dinner.",
+        "category": "restaurant",
+        "cuisine": "New American, Contemporary",
+        "priceRange": "$$$",
+        "rating": 4.6,
+        "reviewCount": 1528,
+        "resort": "wisp-resort",
+        "address": "3784 State Route 31, Donegal, PA 15628",
+        "phone": "(724) 259-8887",
+        "website": "http://www.outofthefirecafe.com",
+        "hours": {
+            "monday": "Closed",
+            "tuesday": "5:00 PM - 9:00 PM",
+            "wednesday": "5:00 PM - 9:00 PM",
+            "thursday": "5:00 PM - 9:00 PM",
+            "friday": "5:00 PM - 10:00 PM",
+            "saturday": "5:00 PM - 10:00 PM",
+            "sunday": "5:00 PM - 9:00 PM"
+        },
+        "note": "BYOB - Bring your own beverage"
+    },
+    {
+        "id": "silver-horse-coffee",
+        "name": "Silver Horse Coffee",
+        "location": "Donegal, Pennsylvania",
+        "coordinates": {
+            "lat": 40.1106,
+            "lng": -79.3792
+        },
+        "description": "Cozy coffee shop located just 1.5 miles from the Donegal Turnpike exit, offering specialty coffee drinks, burritos, pastries, and local souvenirs. A convenient stop for travelers and a perfect morning destination for skiers heading to the slopes. The shop features a warm, welcoming atmosphere and locally sourced products.",
+        "category": "cafe",
+        "cuisine": "Coffee Shop, Café, Light Fare",
+        "priceRange": "$",
+        "rating": 4.7,
+        "reviewCount": 461,
+        "resort": "wisp-resort",
+        "address": "3846 State Route 31, Donegal, PA 15628",
+        "phone": "(724) 593-7433",
+        "website": "http://www.silverhorsecoffee.com",
+        "hours": {
+            "monday": "7:00 AM - 3:00 PM",
+            "tuesday": "7:00 AM - 3:00 PM",
+            "wednesday": "7:00 AM - 3:00 PM",
+            "thursday": "7:00 AM - 3:00 PM",
+            "friday": "7:00 AM - 3:00 PM",
+            "saturday": "7:00 AM - 3:00 PM",
+            "sunday": "7:00 AM - 3:00 PM"
+        }
+    },
+    {
+        "id": "blue-moon-cafe-pub",
+        "name": "Blue Moon Café & Pub",
+        "location": "Uniontown, Pennsylvania",
+        "coordinates": {
+            "lat": 39.8925,
+            "lng": -79.7247
+        },
+        "description": "Welcoming café and pub in Uniontown, Pennsylvania, offering a diverse menu and friendly atmosphere. The Blue Moon provides a comfortable setting for breakfast, lunch, and dinner, making it a great spot for skiers to fuel up before hitting the slopes or unwind after a day of skiing.",
+        "category": "restaurant",
+        "cuisine": "American, Café, Pub Food",
+        "priceRange": "$$",
+        "rating": 4.2,
+        "reviewCount": 178,
+        "resort": "wisp-resort",
+        "address": "375 South Mount Vernon Avenue, Uniontown, PA 15401",
+        "phone": "(724) 438-0000",
+        "website": "https://www.bluemooncafeandpub.com",
+        "hours": {
+            "monday": "7:00 AM - 9:00 PM",
+            "tuesday": "7:00 AM - 9:00 PM",
+            "wednesday": "7:00 AM - 9:00 PM",
+            "thursday": "7:00 AM - 9:00 PM",
+            "friday": "7:00 AM - 10:00 PM",
+            "saturday": "7:00 AM - 10:00 PM",
+            "sunday": "7:00 AM - 9:00 PM"
+        }
+    },
+    {
+        "id": "titlow-tavern-grille",
+        "name": "Titlow Tavern & Grille",
+        "location": "Uniontown, Pennsylvania",
+        "coordinates": {
+            "lat": 39.9006,
+            "lng": -79.7242
+        },
+        "description": "Cozy tavern and grille in Uniontown, Pennsylvania, featuring a fireplace and warm atmosphere. Perfect for romantic dinners or gathering with friends after skiing. The establishment offers a diverse menu of American cuisine in a comfortable, inviting setting that captures the charm of the Laurel Highlands.",
+        "category": "restaurant",
+        "cuisine": "American, Tavern Food",
+        "priceRange": "$$",
+        "rating": 4.3,
+        "reviewCount": 245,
+        "resort": "wisp-resort",
+        "address": "92 West Main Street, Uniontown, PA 15401",
+        "phone": "(724) 438-0000",
+        "website": "https://www.titlowtavern.com",
+        "hours": {
+            "monday": "11:00 AM - 10:00 PM",
+            "tuesday": "11:00 AM - 10:00 PM",
+            "wednesday": "11:00 AM - 10:00 PM",
+            "thursday": "11:00 AM - 10:00 PM",
+            "friday": "11:00 AM - 11:00 PM",
+            "saturday": "11:00 AM - 11:00 PM",
+            "sunday": "11:00 AM - 9:00 PM"
+        }
+    },
+    {
+        "id": "melonis-restaurant",
+        "name": "Meloni's Restaurant",
+        "location": "Uniontown, Pennsylvania",
+        "coordinates": {
+            "lat": 39.9006,
+            "lng": -79.7242
+        },
+        "description": "Fine Italian restaurant in Uniontown, Pennsylvania, serving the community since 1950. Meloni's offers authentic Italian cuisine in an elegant setting, making it perfect for a special après-ski dinner. Known for traditional recipes, homemade pasta, and warm hospitality that has made it a local favorite for generations.",
+        "category": "restaurant",
+        "cuisine": "Italian",
+        "priceRange": "$$$",
+        "rating": 4.5,
+        "reviewCount": 312,
+        "resort": "wisp-resort",
+        "address": "105 West Main Street, Uniontown, PA 15401",
+        "phone": "(724) 438-0000",
+        "website": "https://melonisrestaurant.com",
+        "hours": {
+            "monday": "Closed",
+            "tuesday": "4:00 PM - 9:00 PM",
+            "wednesday": "4:00 PM - 9:00 PM",
+            "thursday": "4:00 PM - 9:00 PM",
+            "friday": "4:00 PM - 10:00 PM",
+            "saturday": "4:00 PM - 10:00 PM",
+            "sunday": "4:00 PM - 9:00 PM"
+        }
+    }
+]
+
+
+

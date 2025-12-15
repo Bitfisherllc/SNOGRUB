@@ -1,0 +1,83 @@
+{
+    "id": "restaurant-id-here",
+    "name": "Restaurant Name",
+    "location": "City, State",
+    "coordinates": {
+        "lat": 0.0,
+        "lng": 0.0
+    },
+    "description": "Restaurant description here. This should be a detailed description of the restaurant, its atmosphere, cuisine, and what makes it special.",
+    "category": "restaurant",
+    "cuisine": "Cuisine Type",
+    "priceRange": "$$",
+    "rating": 0,
+    "reviewCount": 0,
+    "resort": "resort-id-here",
+    "address": "Full Address, City, State ZIP",
+    "phone": "(XXX) XXX-XXXX",
+    "website": "https://example.com",
+    "logo": "https://example.com/logo.png",
+    "backgroundPhoto": "https://example.com/background.jpg",
+    "image": "/images/restaurants/restaurant-name.jpg",
+    "hours": {
+        "monday": "11:00 AM - 10:00 PM",
+        "tuesday": "11:00 AM - 10:00 PM",
+        "wednesday": "11:00 AM - 10:00 PM",
+        "thursday": "11:00 AM - 10:00 PM",
+        "friday": "11:00 AM - 11:00 PM",
+        "saturday": "11:00 AM - 11:00 PM",
+        "sunday": "11:00 AM - 9:00 PM"
+    },
+    "menu": {
+        "bestItemsDescription": "Description of the restaurant's best and most popular menu items.",
+        "highlights": [
+            {
+                "name": "Signature Dish",
+                "price": "$18",
+                "description": "Description of the signature dish"
+            }
+        ],
+        "fullMenu": {
+            "starters": [
+                {
+                    "name": "Appetizer Name",
+                    "price": "$12",
+                    "description": "Appetizer description"
+                }
+            ],
+            "entrees": [
+                {
+                    "name": "Entree Name",
+                    "price": "$24",
+                    "description": "Entree description"
+                }
+            ],
+            "sides": [
+                {
+                    "name": "Side Dish",
+                    "price": "$6",
+                    "description": "Side dish description"
+                }
+            ]
+        }
+    },
+    "platformReviews": {
+        "Google Business Profile": {
+            "rating": 4.4,
+            "reviewCount": 312,
+            "url": "https://www.google.com/maps",
+            "positive": "Positive feedback from Google reviews...",
+            "negative": "Negative feedback from Google reviews..."
+        },
+        "Yelp": {
+            "rating": 4.2,
+            "reviewCount": 189,
+            "url": "https://www.yelp.com",
+            "positive": "Positive feedback from Yelp reviews...",
+            "negative": "Negative feedback from Yelp reviews..."
+        }
+    }
+}
+
+
+

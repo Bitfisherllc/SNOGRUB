@@ -1,0 +1,61 @@
+[
+    {
+        "id": "sweet-basil",
+        "name": "Sweet Basil",
+        "location": "Vail, Colorado",
+        "coordinates": {
+            "lat": 39.6403,
+            "lng": -106.3742
+        },
+        "description": "Award-winning contemporary American restaurant in the heart of Vail Village. Known for its creative cuisine, extensive wine list, and vibrant atmosphere. A favorite among locals and visitors for both lunch and dinner.",
+        "category": "restaurant",
+        "cuisine": "Contemporary American",
+        "priceRange": "$$$",
+        "rating": 4.4,
+        "reviewCount": 567,
+        "resort": "vail",
+        "address": "193 E Gore Creek Dr, Vail, CO 81657",
+        "phone": "(970) 476-0125",
+        "website": "https://www.sweetbasil-vail.com",
+        "hours": {
+            "monday": "11:30 AM - 2:30 PM, 5:00 PM - 10:00 PM",
+            "tuesday": "11:30 AM - 2:30 PM, 5:00 PM - 10:00 PM",
+            "wednesday": "11:30 AM - 2:30 PM, 5:00 PM - 10:00 PM",
+            "thursday": "11:30 AM - 2:30 PM, 5:00 PM - 10:00 PM",
+            "friday": "11:30 AM - 2:30 PM, 5:00 PM - 11:00 PM",
+            "saturday": "11:30 AM - 2:30 PM, 5:00 PM - 11:00 PM",
+            "sunday": "11:30 AM - 2:30 PM, 5:00 PM - 10:00 PM"
+        }
+    },
+    {
+        "id": "larkspur",
+        "name": "Larkspur Restaurant",
+        "location": "Vail, Colorado",
+        "coordinates": {
+            "lat": 39.6411,
+            "lng": -106.3735
+        },
+        "description": "Upscale American restaurant at the base of Vail Mountain offering mountain views and innovative cuisine. Features a seasonally-inspired menu with locally sourced ingredients. Perfect for après-ski or a special dinner.",
+        "category": "restaurant",
+        "cuisine": "American, Mountain Cuisine",
+        "priceRange": "$$$",
+        "rating": 4.3,
+        "reviewCount": 423,
+        "resort": "vail",
+        "address": "458 Vail Valley Dr, Vail, CO 81657",
+        "phone": "(970) 479-8050",
+        "website": "https://www.larkspurvail.com",
+        "hours": {
+            "monday": "5:00 PM - 10:00 PM",
+            "tuesday": "5:00 PM - 10:00 PM",
+            "wednesday": "5:00 PM - 10:00 PM",
+            "thursday": "5:00 PM - 10:00 PM",
+            "friday": "5:00 PM - 11:00 PM",
+            "saturday": "5:00 PM - 11:00 PM",
+            "sunday": "5:00 PM - 10:00 PM"
+        }
+    }
+]
+
+
+

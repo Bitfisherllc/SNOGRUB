@@ -1,0 +1,2295 @@
+<!-- Apple-Style Ski Dining UI - Resorts Browse Page -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <title>Browse Ski Resorts - SNOGRUB</title>
+    
+    <!-- SEO Meta Tags -->
+    <meta name="description" content="Browse ski resorts across North America. Discover the best dining options at top ski destinations from Whistler to Vail, Park City to Aspen.">
+    <meta name="keywords" content="ski resorts, North America ski resorts, ski resort directory, mountain resorts, ski destinations">
+    
+    <!-- Structured Data (JSON-LD) for SEO -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "CollectionPage",
+        "name": "Ski Resorts Directory - SNOGRUB",
+        "description": "Browse and discover ski resorts across North America with dining information",
+        "url": "https://snogrub.com/resorts.html"
+    }
+    </script>
+    
+    <!-- TailwindCSS via CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Inter font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --accent-blue: #0071e3;
+            --accent-light: #5ac8fa;
+            --text-primary: #1d1d1f;
+            --text-secondary: #86868b;
+        }
+        
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+        
+        .frosted-glass {
+            background: rgba(251, 251, 253, 0.8);
+            backdrop-filter: saturate(180%) blur(20px);
+            -webkit-backdrop-filter: saturate(180%) blur(20px);
+        }
+        
+        * {
+            transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .resort-card {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .resort-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.12);
+        }
+        
+        /* Enhanced card animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .resort-card {
+            animation: fadeInUp 0.5s ease-out forwards;
+        }
+        
+        .resort-card:nth-child(1) { animation-delay: 0.05s; }
+        .resort-card:nth-child(2) { animation-delay: 0.1s; }
+        .resort-card:nth-child(3) { animation-delay: 0.15s; }
+        .resort-card:nth-child(4) { animation-delay: 0.2s; }
+        .resort-card:nth-child(5) { animation-delay: 0.25s; }
+        .resort-card:nth-child(6) { animation-delay: 0.3s; }
+        
+        .winter-gradient {
+            background: linear-gradient(to bottom, #f0f8ff 0%, #ffffff 100%);
+        }
+        
+        .stat-card {
+            transform: translateY(0);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .stat-card:hover {
+            transform: translateY(-4px);
+        }
+        
+        /* Price Rating Widget */
+        .price-rating-widget {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 10px;
+            background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+            border: 1px solid #bae6fd;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 600;
+            color: #0369a1;
+            transition: all 0.2s ease;
+            position: relative;
+        }
+        .price-rating-widget:hover {
+            background: linear-gradient(135deg, #e0f2fe 0%, #bae6fd 100%);
+            transform: translateY(-1px);
+            box-shadow: 0 2px 8px rgba(3, 105, 161, 0.15);
+        }
+        .price-rating-widget.loading {
+            opacity: 0.6;
+            pointer-events: none;
+        }
+        .price-rating-icon {
+            width: 16px;
+            height: 16px;
+            flex-shrink: 0;
+        }
+        .price-rating-value {
+            font-weight: 700;
+            letter-spacing: 0.3px;
+        }
+        .price-rating-label {
+            font-size: 11px;
+            opacity: 0.8;
+        }
+        .price-rating-tooltip {
+            position: absolute;
+            bottom: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            margin-bottom: 8px;
+            padding: 8px 12px;
+            background: #1e293b;
+            color: white;
+            border-radius: 8px;
+            font-size: 11px;
+            white-space: nowrap;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.2s;
+            z-index: 50;
+        }
+        .price-rating-widget:hover .price-rating-tooltip {
+            opacity: 1;
+        }
+        .price-rating-widget::before {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0;
+            height: 0;
+            border-left: 4px solid transparent;
+            border-right: 4px solid transparent;
+            border-top: 4px solid #1e293b;
+            opacity: 0;
+            transition: opacity 0.2s;
+        }
+        .price-rating-widget:hover::before {
+            opacity: 1;
+        }
+        
+        /* Price Rating Categories */
+        .price-rating-budget { 
+            background: linear-gradient(135deg, #dcfce7 0%, #bbf7d0 100%);
+            border-color: #86efac;
+            color: #166534;
+        }
+        .price-rating-moderate { 
+            background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+            border-color: #fcd34d;
+            color: #92400e;
+        }
+        .price-rating-premium { 
+            background: linear-gradient(135deg, #fed7aa 0%, #fdba74 100%);
+            border-color: #fb923c;
+            color: #9a3412;
+        }
+        .price-rating-luxury { 
+            background: linear-gradient(135deg, #fce7f3 0%, #fbcfe8 100%);
+            border-color: #f9a8d4;
+            color: #9f1239;
+        }
+        .price-rating-ultra { 
+            background: linear-gradient(135deg, #e9d5ff 0%, #ddd6fe 100%);
+            border-color: #c4b5fd;
+            color: #6b21a8;
+        }
+        
+        /* Animation for stat numbers */
+        @keyframes countUp {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        #totalResortsValue,
+        #totalRestaurantsValue,
+        #totalAcresValue,
+        #totalLiftsValue {
+            animation: countUp 0.6s ease-out;
+        }
+        
+        /* Ensure SVG animations are smooth */
+        svg {
+            shape-rendering: geometricPrecision;
+        }
+        
+        .skeleton {
+            background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+            background-size: 200% 100%;
+            animation: loading 1.5s ease-in-out infinite;
+            border-radius: 8px;
+        }
+        
+        @keyframes loading {
+            0% { background-position: 200% 0; }
+            100% { background-position: -200% 0; }
+        }
+        
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: #f5f5f7;
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: #d2d2d7;
+            border-radius: 4px;
+        }
+        
+        ::-webkit-scrollbar-thumb:hover {
+            background: #a1a1a6;
+        }
+        
+        /* Star Rating Styles */
+        .star-rating {
+            display: inline-flex;
+            align-items: center;
+            gap: 2px;
+        }
+        .star-rating .star {
+            color: #d1d5db;
+            font-size: 16px;
+            line-height: 1;
+        }
+        .star-rating .star.filled {
+            color: #fbbf24;
+        }
+        .star-rating-value {
+            font-size: 14px;
+            font-weight: 600;
+            color: #1f2937;
+            margin-left: 6px;
+        }
+        .star-rating-count {
+            font-size: 12px;
+            color: #6b7280;
+            margin-left: 4px;
+        }
+        
+        /* Enhanced card stats hover effects */
+        .resort-card .grid > div {
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+        
+        .resort-card:hover .grid > div {
+            transform: translateY(-2px);
+        }
+        
+        /* Smooth image zoom */
+        .resort-card img[alt*="Trail map"] {
+            will-change: transform;
+        }
+        
+        /* Enhanced logo container */
+        .logo-container,
+        .logo-container-inline {
+            transition: transform 0.3s ease;
+        }
+        
+        .resort-card:hover .logo-container {
+            transform: scale(1.05);
+        }
+        
+        /* Trail difficulty bar animation */
+        .resort-card .bg-gray-200 > div {
+            transition: width 0.6s ease-out;
+        }
+        
+        /* Price rating container styling */
+        .price-rating-container {
+            min-height: 32px;
+            display: flex;
+            align-items: center;
+        }
+        
+        /* Favorites button styling */
+        .favorite-button {
+            transition: all 0.2s ease;
+        }
+        
+        .favorite-button:hover svg {
+            transform: scale(1.1);
+        }
+        
+        .favorite-button.favorited svg {
+            animation: favoritePulse 0.3s ease;
+        }
+        
+        @keyframes favoritePulse {
+            0%, 100% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.2);
+            }
+        }
+        
+        /* Logo overlay container - hidden by default */
+        .resort-logo-overlay-container {
+            display: none !important;
+        }
+        
+        .resort-logo-overlay-container[style*="flex"] {
+            display: flex !important;
+        }
+        
+        /* Home base button styling */
+        .homebase-button {
+            transition: all 0.2s ease;
+        }
+        
+        .homebase-button:hover svg {
+            transform: scale(1.1);
+        }
+        
+        .homebase-button.homebase-active {
+            background: rgba(0, 113, 227, 0.1) !important;
+        }
+        
+        .homebase-button.homebase-active svg {
+            animation: homebasePulse 0.3s ease;
+        }
+        
+        @keyframes homebasePulse {
+            0%, 100% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.2);
+            }
+        }
+    </style>
+</head>
+<body class="bg-white text-gray-900 antialiased">
+    
+    <!-- Navigation Bar -->
+    <nav class="fixed top-0 left-0 right-0 z-50 frosted-glass border-b border-gray-200/50">
+        <div class="max-w-7xl mx-auto px-6 sm:px-8">
+            <div class="flex items-center justify-between h-14">
+                <div class="flex-shrink-0">
+                    <a href="index.html" class="text-2xl font-semibold hover:opacity-80 transition-opacity duration-300">
+                        <span class="bg-[var(--accent-blue)] text-white px-1">SNO</span><span class="text-[var(--accent-blue)]">GRUB</span>
+                    </a>
+                </div>
+                
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="resorts.html" class="text-sm font-medium text-[var(--accent-blue)] transition-colors duration-200">
+                        Resorts
+                    </a>
+                    <a href="restaurants.html" class="text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors duration-200">
+                        Restaurants
+                    </a>
+                    <a href="map.html" class="text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors duration-200">
+                        Map
+                    </a>
+                    <a href="blog.html" class="text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors duration-200">
+                        Blog
+                    </a>
+                    <a href="favorites.html" class="text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors duration-200">
+                        Favorites
+                    </a>
+                    <a href="trips.html" class="text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors duration-200">
+                        Trips
+                    </a>
+                </div>
+                
+                <!-- Mobile Menu Button -->
+                <button id="mobileMenuButton" class="md:hidden text-gray-600 hover:text-gray-900 transition-colors" aria-label="Menu">
+                    <svg id="menuIcon" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                    </svg>
+                    <svg id="closeIcon" class="w-6 h-6 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                    </svg>
+                </button>
+            </div>
+            
+            <!-- Mobile Menu Dropdown -->
+            <div id="mobileMenu" class="hidden md:hidden border-t border-gray-200/50 bg-white/95 backdrop-blur-lg">
+                <div class="px-6 py-4 space-y-4">
+                    <a href="resorts.html" class="block text-sm font-medium text-[var(--accent-blue)] transition-colors duration-200">Resorts</a>
+                    <a href="restaurants.html" class="block text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors duration-200">Restaurants</a>
+                    <a href="map.html" class="block text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors duration-200">Map</a>
+                    <a href="blog.html" class="block text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors duration-200">Blog</a>
+                    <a href="favorites.html" class="block text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors duration-200">Favorites</a>
+                    <a href="trips.html" class="block text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors duration-200">Trips</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+    
+    <!-- Breadcrumb -->
+    <div class="pt-20 pb-4 px-6 sm:px-8 bg-gray-50">
+        <div class="max-w-7xl mx-auto">
+            <nav class="flex items-center space-x-2 text-sm text-gray-600">
+                <a href="index.html" class="hover:text-gray-900 transition-colors">Home</a>
+                <span>/</span>
+                <span class="text-gray-900">Resorts</span>
+            </nav>
+        </div>
+    </div>
+    
+    <!-- Filters and Search -->
+    <section class="px-6 sm:px-8 py-8 bg-white border-b border-gray-200 sticky top-14 z-40">
+        <div class="max-w-7xl mx-auto">
+            <div class="flex flex-col md:flex-row gap-4 items-center">
+                <!-- Search Bar -->
+                <div class="flex-1 w-full md:w-auto">
+                    <div class="relative">
+                        <svg class="absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                        </svg>
+                        <input 
+                            type="text" 
+                            id="resorts-searchbar"
+                            placeholder="Search resorts by name..." 
+                            class="w-full pl-12 pr-12 py-3 border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-[var(--accent-blue)] focus:border-transparent"
+                        >
+                        <!-- Clear Search Button -->
+                        <button 
+                            id="clearSearchBtn" 
+                            type="button"
+                            class="absolute right-3 top-1/2 transform -translate-y-1/2 w-6 h-6 flex items-center justify-center text-gray-400 hover:text-gray-600 transition-colors duration-200 hidden"
+                            aria-label="Clear search"
+                        >
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Country Filter -->
+                <div class="w-full md:w-64">
+                    <select 
+                        id="countryFilter" 
+                        class="w-full px-4 py-3 border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-[var(--accent-blue)] focus:border-transparent appearance-none bg-white cursor-pointer"
+                    >
+                        <option value="">All Locations</option>
+                        <option value="USA">USA</option>
+                        <option value="Canada">Canada</option>
+                        <option value="closest">Closest to me</option>
+                    </select>
+                </div>
+                
+                <!-- State/Province Filter (hidden by default) -->
+                <div id="stateProvinceContainer" class="w-full md:w-64 hidden">
+                    <select 
+                        id="stateProvinceFilter" 
+                        class="w-full px-4 py-3 border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-[var(--accent-blue)] focus:border-transparent appearance-none bg-white cursor-pointer"
+                    >
+                        <option value="">All States/Provinces</option>
+                    </select>
+                </div>
+                
+                <!-- Sort Options -->
+                <div class="w-full md:w-64">
+                    <select 
+                        id="sortSelect" 
+                        class="w-full px-4 py-3 border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-[var(--accent-blue)] focus:border-transparent appearance-none bg-white cursor-pointer"
+                    >
+                        <option value="name" selected>Sort by Name</option>
+                        <option value="restaurants">Most Restaurants</option>
+                        <option value="acres">Largest Terrain</option>
+                        <option value="vertical">Highest Vertical</option>
+                    </select>
+                </div>
+            </div>
+            
+            <!-- Active Filters Display -->
+            <div id="activeFilters" class="mt-4 flex flex-wrap gap-2 hidden">
+                <span class="text-sm text-gray-600">Active filters:</span>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Resorts Grid -->
+    <section class="px-6 sm:px-8 py-12">
+        <div class="max-w-7xl mx-auto">
+            <!-- Results Count -->
+            <div class="mb-6 flex items-center justify-between">
+                <p id="resultsCount" class="text-gray-600">
+                    Loading resorts...
+                </p>
+            </div>
+            
+            <!-- Loading State -->
+            <div id="loadingState" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Skeleton loaders -->
+                <div class="resort-card bg-white border border-gray-200 rounded-lg overflow-hidden">
+                    <div class="skeleton h-48 w-full"></div>
+                    <div class="p-6">
+                        <div class="skeleton h-6 w-3/4 mb-2"></div>
+                        <div class="skeleton h-4 w-1/2 mb-4"></div>
+                        <div class="skeleton h-4 w-full mb-2"></div>
+                        <div class="skeleton h-4 w-2/3"></div>
+                    </div>
+                </div>
+                <div class="resort-card bg-white border border-gray-200 rounded-lg overflow-hidden">
+                    <div class="skeleton h-48 w-full"></div>
+                    <div class="p-6">
+                        <div class="skeleton h-6 w-3/4 mb-2"></div>
+                        <div class="skeleton h-4 w-1/2 mb-4"></div>
+                        <div class="skeleton h-4 w-full mb-2"></div>
+                        <div class="skeleton h-4 w-2/3"></div>
+                    </div>
+                </div>
+                <div class="resort-card bg-white border border-gray-200 rounded-lg overflow-hidden">
+                    <div class="skeleton h-48 w-full"></div>
+                    <div class="p-6">
+                        <div class="skeleton h-6 w-3/4 mb-2"></div>
+                        <div class="skeleton h-4 w-1/2 mb-4"></div>
+                        <div class="skeleton h-4 w-full mb-2"></div>
+                        <div class="skeleton h-4 w-2/3"></div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Resorts Grid -->
+            <div id="resortsGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 hidden">
+                <!-- Resort cards will be loaded here -->
+            </div>
+            
+            <!-- Empty State -->
+            <div id="emptyState" class="text-center py-16 hidden">
+                <svg class="w-24 h-24 text-gray-300 mx-auto mb-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path>
+                </svg>
+                <h3 class="text-xl font-semibold text-gray-900 mb-2">No resorts found</h3>
+                <p class="text-gray-600 mb-6">Try adjusting your search or filters</p>
+                <button id="clearFiltersBtn" class="px-6 py-3 bg-[var(--accent-blue)] text-white rounded-full font-medium hover:opacity-90 transition-opacity">
+                    Clear All Filters
+                </button>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Footer -->
+    <footer class="py-12 px-6 sm:px-8 border-t border-gray-200 bg-white">
+        <div class="max-w-7xl mx-auto">
+            <div class="flex flex-col md:flex-row justify-between items-center">
+                <p class="text-sm text-gray-600 mb-4 md:mb-0">
+                    © 2025 <span class="bg-[var(--accent-blue)] text-white px-1">SNO</span><span class="text-[var(--accent-blue)]">GRUB</span>. All rights reserved.
+                </p>
+                <div class="flex space-x-6">
+                    <a href="#" class="text-sm text-gray-600 hover:text-gray-900 transition-colors duration-200">About</a>
+                    <a href="#" class="text-sm text-gray-600 hover:text-gray-900 transition-colors duration-200">Contact</a>
+                    <a href="#" class="text-sm text-gray-600 hover:text-gray-900 transition-colors duration-200">Privacy</a>
+                    <a href="#" class="text-sm text-gray-600 hover:text-gray-900 transition-colors duration-200">Terms</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+    
+    <!-- Load data.js -->
+    <script src="data.js"></script>
+    <!-- Home Base Functionality -->
+    <script src="js/homebase.js"></script>
+    <script src="js/homebase-bar.js"></script>
+    
+    <!-- Toggle Home Base Function -->
+    <script>
+        // Global function to toggle home base for a resort
+        window.toggleResortHomeBase = window.toggleResortHomeBase || function(resortId, resortName, event) {
+            if (event) {
+                event.stopPropagation();
+                event.preventDefault();
+            }
+            
+            // Navigate to resort detail page
+            window.location.href = `resort-detail.html?id=${resortId}`;
+        };
+    </script>
+    
+    <!-- Load Universal Resort Card Component -->
+    <script src="js/resort-card-universal.js"></script>
+    
+    <script>
+        let allResorts = [];
+        let originalResorts = []; // Store original data to restore when switching filters
+        let filteredResorts = [];
+        
+        /**
+         * PRICE RATING SYSTEM
+         * 
+         * This system displays lift ticket price ratings for ski resorts based on data from OnTheSnow.com.
+         * 
+         * HOW TO ADD PRICING DATA:
+         * 
+         * Option 1: Add pricing data directly to data.js in the resort object:
+         * 
+         *   {
+         *     id: 'vail',
+         *     name: 'Vail',
+         *     // ... other resort properties ...
+         *     pricing: {
+         *       weekdayAdult: 307,        // Weekday adult lift ticket price (primary for rating)
+         *       weekdayChild: 212,        // Weekday child lift ticket price (optional)
+         *       seasonPass: 1097,         // Season pass price (optional)
+         *       purchaseUrl: 'https://...' // Link to purchase tickets (optional)
+         *     }
+         *   }
+         * 
+         * Option 2: Use a backend API endpoint to fetch pricing data:
+         *   - Set PRICE_RATING_ENDPOINT to your API endpoint
+         *   - API should return: { pricing: { weekdayAdult: 307, ... } }
+         * 
+         * Option 3: Scrape OnTheSnow.com (requires backend/CORS proxy):
+         *   - Implement scraping logic in your backend
+         *   - Return data in the same format as Option 1
+         * 
+         * PRICE RATING CATEGORIES:
+         * - Budget: $0-$60 (💰)
+         * - Moderate: $61-$100 (💵)
+         * - Premium: $101-$150 (💸)
+         * - Luxury: $151-$220 (💎)
+         * - Ultra: $221+ (👑)
+         */
+        const priceDataCache = new Map();
+        const PRICE_RATING_ENDPOINT = '/api/resort-prices'; // Backend endpoint (can be modified)
+        
+        // Price rating categories based on weekday adult lift ticket prices
+        const PRICE_RATING_THRESHOLDS = {
+            budget: { max: 60, label: 'Budget', class: 'price-rating-budget', icon: '💰' },
+            moderate: { max: 100, label: 'Moderate', class: 'price-rating-moderate', icon: '💵' },
+            premium: { max: 150, label: 'Premium', class: 'price-rating-premium', icon: '💸' },
+            luxury: { max: 220, label: 'Luxury', class: 'price-rating-luxury', icon: '💎' },
+            ultra: { max: Infinity, label: 'Ultra', class: 'price-rating-ultra', icon: '👑' }
+        };
+        
+        /**
+         * Fetch price data for a resort from OnTheSnow or cache
+         * @param {string} resortName - Name of the resort
+         * @param {string} resortId - ID of the resort
+         * @returns {Promise<Object|null>} Price data object or null
+         */
+        async function fetchResortPriceData(resortName, resortId) {
+            // Check cache first
+            if (priceDataCache.has(resortId)) {
+                return priceDataCache.get(resortId);
+            }
+            
+            // Check if price data exists in resort data
+            if (typeof skiEatsData !== 'undefined' && skiEatsData.resorts) {
+                const resort = skiEatsData.resorts.find(r => r.id === resortId);
+                if (resort && resort.pricing) {
+                    priceDataCache.set(resortId, resort.pricing);
+                    return resort.pricing;
+                }
+            }
+            
+            // Try to fetch from backend API (if available)
+            try {
+                const response = await fetch(`${PRICE_RATING_ENDPOINT}?resort=${encodeURIComponent(resortName)}`);
+                if (response.ok) {
+                    const data = await response.json();
+                    if (data && data.pricing) {
+                        priceDataCache.set(resortId, data.pricing);
+                        return data.pricing;
+                    }
+                }
+            } catch (error) {
+                console.warn(`Could not fetch price data for ${resortName}:`, error);
+            }
+            
+            return null;
+        }
+        
+        /**
+         * Calculate price rating based on lift ticket prices
+         * @param {Object} pricing - Pricing data object
+         * @returns {Object} Rating object with category, label, class, and value
+         */
+        function calculatePriceRating(pricing) {
+            if (!pricing) {
+                return {
+                    category: 'unknown',
+                    label: 'N/A',
+                    class: '',
+                    value: null,
+                    weekdayAdult: null,
+                    seasonPass: null
+                };
+            }
+            
+            // Use weekday adult price as primary indicator
+            const weekdayAdult = pricing.weekdayAdult || pricing.adult || pricing.dayTicket || null;
+            
+            if (weekdayAdult === null || weekdayAdult === undefined) {
+                return {
+                    category: 'unknown',
+                    label: 'N/A',
+                    class: '',
+                    value: null,
+                    weekdayAdult: null,
+                    seasonPass: pricing.seasonPass || null
+                };
+            }
+            
+            // Determine category based on price thresholds
+            let category = 'ultra';
+            for (const [cat, threshold] of Object.entries(PRICE_RATING_THRESHOLDS)) {
+                if (weekdayAdult <= threshold.max) {
+                    category = cat;
+                    break;
+                }
+            }
+            
+            const ratingInfo = PRICE_RATING_THRESHOLDS[category];
+            
+            return {
+                category: category,
+                label: ratingInfo.label,
+                class: ratingInfo.class,
+                icon: ratingInfo.icon,
+                value: weekdayAdult,
+                weekdayAdult: weekdayAdult,
+                seasonPass: pricing.seasonPass || null,
+                weekdayChild: pricing.weekdayChild || null,
+                purchaseUrl: pricing.purchaseUrl || null
+            };
+        }
+        
+        /**
+         * Get price rating widget HTML for a resort
+         * @param {string} resortId - ID of the resort
+         * @param {string} resortName - Name of the resort
+         * @param {boolean} loading - Whether to show loading state
+         * @returns {string} HTML string for the price rating widget (empty string if no pricing data)
+         */
+        function getPriceRatingWidget(resortId, resortName, loading = false) {
+            // Don't show GET PRICE button - only show if pricing data exists
+            if (loading) {
+                return '';
+            }
+            
+            // Try to get cached rating
+            const pricing = priceDataCache.get(resortId);
+            const rating = calculatePriceRating(pricing);
+            
+            // Only return widget if we have actual pricing data
+            if (rating.category === 'unknown' || rating.value === null) {
+                return '';
+            }
+            
+            const priceDisplay = rating.value ? `$${rating.value}` : '';
+            const tooltipText = rating.weekdayAdult 
+                ? `Weekday: $${rating.weekdayAdult}${rating.seasonPass ? ` | Season: $${rating.seasonPass}` : ''}`
+                : 'Price information available';
+            
+            return `
+                <div class="price-rating-widget ${rating.class}" 
+                     data-resort-id="${resortId}"
+                     data-rating="${rating.category}"
+                     ${rating.purchaseUrl ? `onclick="event.stopPropagation(); window.open('${rating.purchaseUrl}', '_blank')"` : ''}
+                     title="${tooltipText}">
+                    <span class="price-rating-icon">${rating.icon}</span>
+                    <span class="price-rating-value">${priceDisplay}</span>
+                    <span class="price-rating-label">${rating.label}</span>
+                    <div class="price-rating-tooltip">${tooltipText}</div>
+                </div>
+            `;
+        }
+        
+        /**
+         * Load price rating for a resort (async)
+         * @param {string} resortId - ID of the resort
+         * @param {string} resortName - Name of the resort
+         */
+        async function loadPriceRating(resortId, resortName) {
+            // Update widget to show loading state
+            const widgets = document.querySelectorAll(`.price-rating-widget[data-resort-id="${resortId}"]`);
+            widgets.forEach(widget => {
+                widget.outerHTML = getPriceRatingWidget(resortId, resortName, true);
+            });
+            
+            // Fetch price data
+            const pricing = await fetchResortPriceData(resortName, resortId);
+            
+            // Update widget with rating
+            const updatedWidgets = document.querySelectorAll(`.price-rating-widget[data-resort-id="${resortId}"]`);
+            updatedWidgets.forEach(widget => {
+                widget.outerHTML = getPriceRatingWidget(resortId, resortName, false);
+            });
+        }
+        
+        /**
+         * Get price value for a resort (for sorting)
+         * @param {string} resortId - ID of the resort
+         * @returns {number|null} Price value or null if not available
+         */
+        function getResortPriceValue(resortId) {
+            if (!resortId) return null;
+            const pricing = priceDataCache.get(resortId);
+            if (!pricing) {
+                // Try to get from resort data
+                if (typeof skiEatsData !== 'undefined' && skiEatsData.resorts) {
+                    const resort = skiEatsData.resorts.find(r => r.id === resortId);
+                    if (resort && resort.pricing) {
+                        priceDataCache.set(resortId, resort.pricing);
+                        return resort.pricing.weekdayAdult || resort.pricing.adult || resort.pricing.dayTicket || null;
+                    }
+                }
+                return null;
+            }
+            return pricing.weekdayAdult || pricing.adult || pricing.dayTicket || null;
+        }
+        
+        /**
+         * Initialize price ratings for all visible resorts
+         */
+        async function initializePriceRatings() {
+            if (typeof skiEatsData === 'undefined' || !skiEatsData.resorts) {
+                return;
+            }
+            
+            // Load price ratings for all resorts in the current view
+            const visibleCards = document.querySelectorAll('.resort-card');
+            const loadedResorts = new Set();
+            
+            visibleCards.forEach(card => {
+                const resortId = card.getAttribute('data-resort-id') || 
+                                card.querySelector('[data-resort-id]')?.getAttribute('data-resort-id');
+                if (resortId && !loadedResorts.has(resortId)) {
+                    loadedResorts.add(resortId);
+                    const resort = skiEatsData.resorts.find(r => r.id === resortId);
+                    if (resort) {
+                        // Check if pricing data exists in resort object
+                        if (resort.pricing) {
+                            priceDataCache.set(resortId, resort.pricing);
+                        }
+                        
+                        // Update price rating widget in the card (only show if pricing exists)
+                        const priceContainer = card.querySelector(`.price-rating-container[data-resort-id="${resortId}"]`);
+                        if (priceContainer) {
+                            const pricing = priceDataCache.get(resortId) || resort.pricing;
+                            const widgetHTML = getPriceRatingWidget(resortId, resort.name, false);
+                            if (widgetHTML) {
+                                priceContainer.innerHTML = widgetHTML;
+                                priceContainer.style.display = 'block';
+                            } else {
+                                // If no pricing data, try to load it (but don't show GET PRICE button)
+                                if (!pricing) {
+                                    loadPriceRating(resortId, resort.name).then(() => {
+                                        const updatedWidget = getPriceRatingWidget(resortId, resort.name, false);
+                                        if (updatedWidget && priceContainer) {
+                                            priceContainer.innerHTML = updatedWidget;
+                                            priceContainer.style.display = 'block';
+                                        } else if (priceContainer) {
+                                            priceContainer.style.display = 'none';
+                                        }
+                                    }).catch(err => {
+                                        console.warn(`Failed to load price rating for ${resort.name}:`, err);
+                                        if (priceContainer) {
+                                            priceContainer.style.display = 'none';
+                                        }
+                                    });
+                                } else {
+                                    // Pricing exists but widget is empty, hide container
+                                    priceContainer.style.display = 'none';
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+        
+        /**
+         * Calculate aggregate average rating from all platform reviews
+         * @param {Object} resort - Resort object
+         * @returns {Object} Object with average rating and total review count
+         */
+        function calculateAggregateRating(resort) {
+            if (!resort.platformReviews || Object.keys(resort.platformReviews).length === 0) {
+                return { average: null, totalReviews: 0, sourceCount: 0 };
+            }
+            
+            let totalRating = 0;
+            let totalReviews = 0;
+            let sourceCount = 0;
+            
+            // Calculate weighted average (weighted by review count)
+            Object.values(resort.platformReviews).forEach(platform => {
+                if (platform.rating && platform.reviewCount) {
+                    totalRating += platform.rating * platform.reviewCount;
+                    totalReviews += platform.reviewCount;
+                    sourceCount++;
+                }
+            });
+            
+            if (totalReviews === 0) {
+                return { average: null, totalReviews: 0, sourceCount: 0 };
+            }
+            
+            const average = totalRating / totalReviews;
+            
+            return {
+                average: Math.round(average * 10) / 10, // Round to 1 decimal place
+                totalReviews: totalReviews,
+                sourceCount: sourceCount
+            };
+        }
+        
+        /**
+         * Generate star rating HTML
+         * @param {number} rating - Rating value (0-5)
+         * @param {number} totalReviews - Total number of reviews
+         * @returns {string} HTML string for star rating
+         */
+        function getStarRatingHTML(rating, totalReviews) {
+            if (rating === null || rating === undefined) {
+                return '<div class="star-rating"><span class="text-xs text-gray-400">No ratings</span></div>';
+            }
+            
+            // Round to nearest 0.5 for display
+            const roundedRating = Math.round(rating * 2) / 2;
+            const fullStars = Math.floor(roundedRating);
+            const hasHalfStar = (roundedRating % 1) === 0.5;
+            const emptyStars = 5 - fullStars - (hasHalfStar ? 1 : 0);
+            
+            let starsHTML = '<div class="star-rating">';
+            
+            // Full stars
+            for (let i = 0; i < fullStars; i++) {
+                starsHTML += '<span class="star filled">★</span>';
+            }
+            
+            // Half star using SVG for better visual
+            if (hasHalfStar) {
+                starsHTML += '<span class="star" style="position: relative; display: inline-block; width: 16px; height: 16px;"><span style="position: absolute; left: 0; width: 50%; overflow: hidden; color: #fbbf24;">★</span><span style="position: absolute; right: 0; width: 50%; color: #d1d5db; text-align: right;">★</span></span>';
+            }
+            
+            // Empty stars
+            for (let i = 0; i < emptyStars; i++) {
+                starsHTML += '<span class="star">★</span>';
+            }
+            
+            // Rating value and review count
+            starsHTML += `<span class="star-rating-value">${rating.toFixed(1)}</span>`;
+            if (totalReviews > 0) {
+                const reviewText = totalReviews >= 1000 
+                    ? `${(totalReviews / 1000).toFixed(1)}k reviews`
+                    : `${totalReviews} review${totalReviews !== 1 ? 's' : ''}`;
+                starsHTML += `<span class="star-rating-count">(${reviewText})</span>`;
+            }
+            
+            starsHTML += '</div>';
+            
+            return starsHTML;
+        }
+        
+        // Load resorts from data
+        function loadResorts() {
+            if (typeof skiEatsData !== 'undefined' && skiEatsData.resorts) {
+                originalResorts = skiEatsData.resorts;
+                allResorts = [...originalResorts]; // Create a copy
+                filteredResorts = [...allResorts];
+                
+                // Set default sort to "name" (A-Z) on initial load
+                const sortSelect = document.getElementById('sortSelect');
+                if (sortSelect) {
+                    sortSelect.value = 'name';
+                }
+                
+                // Render resorts (will sort A-Z by default)
+                renderResorts();
+                
+                // Hide loading state
+                document.getElementById('loadingState').classList.add('hidden');
+                document.getElementById('resortsGrid').classList.remove('hidden');
+            } else {
+                console.error('Resort data not found');
+                document.getElementById('loadingState').classList.add('hidden');
+                document.getElementById('emptyState').classList.remove('hidden');
+            }
+        }
+        
+        // Update hero stats with aggregated data
+        function updateHeroStats(resorts) {
+            const totalResorts = resorts.length;
+            const totalRestaurants = resorts.reduce((sum, r) => sum + (r.restaurantCount || 0), 0);
+            const totalAcres = resorts.reduce((sum, r) => sum + (r.terrain?.skiableAcres || 0), 0);
+            const totalLifts = resorts.reduce((sum, r) => sum + (r.terrain?.lifts || 0), 0);
+            
+            // Animate counting up
+            animateValue('totalResortsValue', 0, totalResorts, 800);
+            animateValue('totalRestaurantsValue', 0, totalRestaurants, 1000);
+            animateValue('totalAcresValue', 0, totalAcres, 1500);
+            animateValue('totalLiftsValue', 0, totalLifts, 1000);
+        }
+        
+        // Animate number counting up
+        function animateValue(elementId, start, end, duration) {
+            const element = document.getElementById(elementId);
+            if (!element) return;
+            
+            const range = end - start;
+            const increment = end > start ? 1 : -1;
+            const stepTime = Math.abs(Math.floor(duration / range));
+            let current = start;
+            
+            const timer = setInterval(() => {
+                current += increment;
+                if ((increment > 0 && current >= end) || (increment < 0 && current <= end)) {
+                    element.textContent = formatNumber(end);
+                    clearInterval(timer);
+                } else {
+                    element.textContent = formatNumber(current);
+                }
+            }, stepTime);
+        }
+        
+        // Format number with commas
+        function formatNumber(num) {
+            return num.toLocaleString();
+        }
+        
+        // Reset resorts to original order (when switching away from "Closest to me")
+        function resetResortsOrder() {
+            allResorts = originalResorts.map(resort => {
+                // Remove distance property if it exists
+                const { distance, ...resortWithoutDistance } = resort;
+                return resortWithoutDistance;
+            });
+        }
+        
+        // All US States list
+        const US_STATES = [
+            'Alabama', 'Alaska', 'Arizona', 'Arkansas', 'California', 'Colorado', 'Connecticut', 'Delaware',
+            'Florida', 'Georgia', 'Hawaii', 'Idaho', 'Illinois', 'Indiana', 'Iowa', 'Kansas', 'Kentucky',
+            'Louisiana', 'Maine', 'Maryland', 'Massachusetts', 'Michigan', 'Minnesota', 'Mississippi',
+            'Missouri', 'Montana', 'Nebraska', 'Nevada', 'New Hampshire', 'New Jersey', 'New Mexico',
+            'New York', 'North Carolina', 'North Dakota', 'Ohio', 'Oklahoma', 'Oregon', 'Pennsylvania',
+            'Rhode Island', 'South Carolina', 'South Dakota', 'Tennessee', 'Texas', 'Utah', 'Vermont',
+            'Virginia', 'Washington', 'West Virginia', 'Wisconsin', 'Wyoming'
+        ];
+        
+        // Canadian Provinces and Territories
+        const CANADIAN_PROVINCES = [
+            'Alberta', 'British Columbia', 'Manitoba', 'New Brunswick', 'Newfoundland and Labrador',
+            'Northwest Territories', 'Nova Scotia', 'Nunavut', 'Ontario', 'Prince Edward Island',
+            'Quebec', 'Saskatchewan', 'Yukon'
+        ];
+        
+        // Populate state/province filter dropdown based on country
+        function populateStateProvinceFilter(country) {
+            const stateProvinceFilter = document.getElementById('stateProvinceFilter');
+            const stateProvinceContainer = document.getElementById('stateProvinceContainer');
+            
+            // Set the label based on country
+            const defaultLabel = country === 'USA' ? 'All States' : country === 'Canada' ? 'All Provinces' : 'All States/Provinces';
+            
+            // Clear existing options with appropriate label
+            stateProvinceFilter.innerHTML = `<option value="">${defaultLabel}</option>`;
+            
+            if (!country || country === 'closest') {
+                stateProvinceContainer.classList.add('hidden');
+                return;
+            }
+            
+            // Show the dropdown
+            stateProvinceContainer.classList.remove('hidden');
+            
+            // Extract states/provinces from resort data - only include states that have resorts
+            const stateProvinceMap = new Map();
+            
+            allResorts.forEach(resort => {
+                const location = resort.location || '';
+                if (!location) return;
+                
+                // More precise country matching: check if location ends with country or contains ", Country"
+                const locationLower = location.toLowerCase();
+                const countryLower = country.toLowerCase();
+                
+                // Check if the location contains the country (at the end or after a comma)
+                const matchesCountry = 
+                    locationLower.endsWith(`, ${countryLower}`) ||
+                    locationLower.endsWith(countryLower) ||
+                    locationLower.includes(`, ${countryLower},`) ||
+                    locationLower === countryLower;
+                
+                if (matchesCountry) {
+                    // Extract state/province - handle formats like "City, State, Country" or "State, Country"
+                    const parts = location.split(',').map(p => p.trim());
+                    if (parts.length >= 2) {
+                        // If we have 3 parts, the middle one is likely the state
+                        // If we have 2 parts, the first one is the state
+                        let stateProvince = parts.length === 3 ? parts[1] : parts[0];
+                        
+                        // Validate it's actually a state (not a city)
+                        // Check if it matches a known state name
+                        const isState = US_STATES.some(state => 
+                            state.toLowerCase() === stateProvince.toLowerCase()
+                        ) || CANADIAN_PROVINCES.some(province => 
+                            province.toLowerCase() === stateProvince.toLowerCase()
+                        );
+                        
+                        if (stateProvince && isState) {
+                            // Normalize to proper case
+                            const normalizedState = US_STATES.find(s => 
+                                s.toLowerCase() === stateProvince.toLowerCase()
+                            ) || CANADIAN_PROVINCES.find(p => 
+                                p.toLowerCase() === stateProvince.toLowerCase()
+                            ) || stateProvince;
+                            
+                            if (!stateProvinceMap.has(normalizedState)) {
+                                stateProvinceMap.set(normalizedState, true);
+                            }
+                        }
+                    }
+                }
+            });
+            
+            // Only add states/provinces that have at least one resort
+            const statesToShow = Array.from(stateProvinceMap.keys()).sort();
+            
+            statesToShow.forEach(state => {
+                const option = document.createElement('option');
+                option.value = state;
+                option.textContent = state;
+                stateProvinceFilter.appendChild(option);
+            });
+        }
+        
+        // Calculate distance between two coordinates (Haversine formula)
+        function calculateDistance(lat1, lon1, lat2, lon2) {
+            const R = 3959; // Earth's radius in miles
+            const dLat = (lat2 - lat1) * Math.PI / 180;
+            const dLon = (lon2 - lon1) * Math.PI / 180;
+            const a = 
+                Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+                Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
+                Math.sin(dLon / 2) * Math.sin(dLon / 2);
+            const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+            return R * c;
+        }
+        
+        // Helper function to generate OpenStreetMap trail map image URL (100% FREE - No API key required)
+        // Uses OpenStreetMap tile service to show trails, paths, and terrain
+        function getOpenStreetMapTrailMapUrl(lat, lng, width = 640, height = 360, zoom = 13) {
+            // OpenStreetMap tile service - shows trails, paths, and terrain features
+            // Using zoom level 13 for good overview showing trails and surrounding area
+            // Lower zoom = wider area, higher zoom = more detail
+            const scale = Math.pow(2, zoom);
+            const worldCoordinateX = (lng + 180) / 360 * scale;
+            const worldCoordinateY = (1 - Math.log(Math.tan(lat * Math.PI / 180) + 1 / Math.cos(lat * Math.PI / 180)) / Math.PI) / 2 * scale;
+            const tileX = Math.floor(worldCoordinateX);
+            const tileY = Math.floor(worldCoordinateY);
+            
+            // Use OpenStreetMap standard tile layer (shows trails, paths, roads, and terrain features)
+            // This tile will show the area around the resort with trails and paths visible
+            return `https://tile.openstreetmap.org/${zoom}/${tileX}/${tileY}.png`;
+        }
+        
+        // Handle "Closest to me" option
+        function handleClosestToMe() {
+            if (!navigator.geolocation) {
+                alert('Geolocation is not supported by your browser. Please select a country instead.');
+                document.getElementById('countryFilter').value = '';
+                resetResortsOrder();
+                filterAndSortResorts();
+                return;
+            }
+            
+            navigator.geolocation.getCurrentPosition(
+                (position) => {
+                    const userLat = position.coords.latitude;
+                    const userLon = position.coords.longitude;
+                    
+                    // Calculate distances for all resorts (create a new array with distance property)
+                    allResorts = originalResorts.map(resort => {
+                        const resortCopy = { ...resort };
+                        if (resort.coordinates && resort.coordinates.lat && resort.coordinates.lng) {
+                            resortCopy.distance = calculateDistance(
+                                userLat,
+                                userLon,
+                                resort.coordinates.lat,
+                                resort.coordinates.lng
+                            );
+                        } else {
+                            resortCopy.distance = Infinity; // No coordinates available
+                        }
+                        return resortCopy;
+                    });
+                    
+                    // Sort by distance
+                    allResorts.sort((a, b) => (a.distance || Infinity) - (b.distance || Infinity));
+                    
+                    filterAndSortResorts();
+                },
+                (error) => {
+                    alert('Unable to retrieve your location. Please select a country instead.');
+                    document.getElementById('countryFilter').value = '';
+                    resetResortsOrder();
+                    filterAndSortResorts();
+                }
+            );
+        }
+        
+        // Logo API service with caching
+        const logoCache = new Map();
+        
+        // Resort domain mapping for logo fetching
+        const resortDomains = {
+            'whistler-blackcomb': 'whistlerblackcomb.com',
+            'vail': 'vail.com',
+            'park-city': 'parkcitymountain.com',
+            'mont-tremblant': 'tremblant.ca',
+            'aspen-snowmass': 'aspensnowmass.com',
+            'breckenridge': 'breckenridge.com',
+            'steamboat': 'steamboat.com',
+            'telluride': 'tellurideskiresort.com',
+            'beaver-creek': 'beavercreek.com',
+            'keystone': 'keystoneresort.com',
+            'copper-mountain': 'coppercolorado.com',
+            'winter-park': 'winterparkresort.com',
+            'arapahoe-basin': 'arapahoebasin.com',
+            'jackson-hole': 'jacksonhole.com',
+            'big-sky': 'bigskyresort.com',
+            'stowe': 'stowe.com',
+            'mammoth-mountain': 'mammothmountain.com',
+            'deer-valley': 'deervalley.com',
+            'alta': 'alta.com',
+            'snowbird': 'snowbird.com',
+            'solitude': 'solitudemountain.com',
+            'brighton': 'brightonresort.com',
+            'sundance': 'sundanceresort.com',
+            'palisades-tahoe': 'palisadestahoe.com',
+            'northstar': 'northstarcalifornia.com',
+            'kirkwood': 'kirkwood.com',
+            'killington': 'killington.com',
+            'sugarbush': 'sugarbush.com',
+            'mount-snow': 'mountsnow.com',
+            'sun-valley': 'sunvalley.com',
+            'crested-butte': 'skicb.com',
+            'jay-peak': 'jaypeakresort.com',
+            'snowshoe': 'snowshoemtn.com',
+            'taos': 'skitaos.com',
+            'smugglers-notch': 'smuggs.com',
+            'wisp-resort': 'wispresort.com'
+        };
+        
+        /**
+         * Fetch logo from multiple API services with fallback
+         * @param {string} resortId - The resort ID
+         * @param {string} resortName - The resort name
+         * @returns {Promise<string|null>} - Logo URL or null
+         */
+        async function fetchResortLogo(resortId, resortName) {
+            // Check cache first
+            if (logoCache.has(resortId)) {
+                return logoCache.get(resortId);
+            }
+            
+            const domain = resortDomains[resortId];
+            if (!domain) {
+                console.warn(`No domain mapping for resort: ${resortId}`);
+                logoCache.set(resortId, null);
+                return null;
+            }
+            
+            // Try multiple logo API services
+            const logoApis = [
+                // Google's favicon service (most reliable, no CORS issues)
+                {
+                    url: `https://www.google.com/s2/favicons?domain=${domain}&sz=128`,
+                    type: 'image'
+                },
+                // iFetchly Logo API (free tier: 5,000 requests/month)
+                {
+                    url: `https://logo.ifetchly.com/api/${domain}?size=256&format=png`,
+                    type: 'json'
+                },
+                // Direct favicon fetch (may have CORS issues, but try anyway)
+                {
+                    url: `https://${domain}/favicon.ico`,
+                    type: 'image'
+                }
+            ];
+            
+            // Try each API in sequence
+            for (const api of logoApis) {
+                try {
+                    // For direct image URLs, use img tag approach to avoid CORS
+                    if (api.type === 'image' && api.url.includes('google.com')) {
+                        // Google's service works well, just return the URL
+                        logoCache.set(resortId, api.url);
+                        return api.url;
+                    }
+                    
+                    // For other APIs, try fetch
+                    const response = await fetch(api.url, {
+                        method: 'GET',
+                        mode: 'cors',
+                        cache: 'default',
+                        headers: {
+                            'Accept': api.type === 'json' ? 'application/json' : 'image/*'
+                        }
+                    });
+                    
+                    if (response.ok) {
+                        if (api.type === 'json') {
+                            try {
+                                const data = await response.json();
+                                if (data.logo || data.url) {
+                                    const logoUrl = data.logo || data.url;
+                                    logoCache.set(resortId, logoUrl);
+                                    return logoUrl;
+                                }
+                            } catch (e) {
+                                // Not JSON, continue
+                            }
+                        } else {
+                            // For image responses, check content type
+                            const contentType = response.headers.get('content-type');
+                            if (contentType && contentType.startsWith('image/')) {
+                                logoCache.set(resortId, api.url);
+                                return api.url;
+                            }
+                        }
+                    }
+                } catch (error) {
+                    // Continue to next API
+                    console.debug(`Logo API failed for ${domain}:`, api.url);
+                }
+            }
+            
+            // All APIs failed, cache null
+            logoCache.set(resortId, null);
+            return null;
+        }
+        
+        /**
+         * Load logos for resorts and update the DOM
+         * @param {Array} resorts - Array of resort objects
+         */
+        async function loadResortLogos(resorts) {
+            const logoPromises = resorts.map(async (resort) => {
+                try {
+                    const logoUrl = await fetchResortLogo(resort.id, resort.name);
+                    
+                    // Update overlay logo container
+                    const overlayContainer = document.querySelector(`.resort-logo-overlay-container[data-resort-logo-overlay="${resort.id}"]`);
+                    if (overlayContainer) {
+                        if (logoUrl) {
+                            const img = overlayContainer.querySelector('.resort-logo-img');
+                            const loading = overlayContainer.querySelector('.resort-logo-loading');
+                            if (img && loading) {
+                                // Set up image loading
+                                img.onload = function() {
+                                    const container = this.closest('.resort-logo-overlay-container');
+                                    if (container) {
+                                        container.style.display = 'flex';
+                                        this.style.display = 'block';
+                                    }
+                                    if (loading) loading.style.display = 'none';
+                                };
+                                img.onerror = function() {
+                                    const container = this.closest('.resort-logo-overlay-container');
+                                    if (container) container.style.display = 'none';
+                                };
+                                img.src = logoUrl;
+                                // Show container with loading state
+                                overlayContainer.style.display = 'flex';
+                            }
+                        } else {
+                            // No logo found, hide the container completely
+                            overlayContainer.style.display = 'none';
+                        }
+                    }
+                    
+                    // Update inline logo (if it exists in the card)
+                    const inlineContainer = document.querySelector(`[data-resort-logo-inline="${resort.id}"]`);
+                    if (inlineContainer) {
+                        if (logoUrl) {
+                            const img = inlineContainer.querySelector('.resort-logo-img-inline');
+                            const loading = inlineContainer.querySelector('.resort-logo-loading-inline');
+                            if (img && loading) {
+                                img.src = logoUrl;
+                                img.style.display = 'block';
+                                loading.style.display = 'none';
+                                inlineContainer.style.display = 'flex';
+                            }
+                        } else {
+                            // No logo found, hide the container completely
+                            inlineContainer.style.display = 'none';
+                        }
+                    }
+                } catch (error) {
+                    console.warn(`Failed to load logo for ${resort.name}:`, error);
+                    // Hide containers on error
+                    const overlayContainer = document.querySelector(`.resort-logo-overlay-container[data-resort-logo-overlay="${resort.id}"]`);
+                    if (overlayContainer) {
+                        overlayContainer.style.display = 'none';
+                    }
+                    
+                    const inlineContainer = document.querySelector(`[data-resort-logo-inline="${resort.id}"]`);
+                    if (inlineContainer) {
+                        inlineContainer.style.display = 'none';
+                    }
+                }
+            });
+            
+            // Wait for all logos to load (or fail)
+            await Promise.allSettled(logoPromises);
+        }
+        
+        // Global function to toggle favorites (used by resort card component)
+        window.toggleResortFavorite = function(resortId, resortName, event) {
+            if (event) {
+                event.stopPropagation();
+                event.preventDefault();
+            }
+            
+            try {
+                const favorites = JSON.parse(localStorage.getItem('snogrub_favorites') || '[]');
+                const existingIndex = favorites.findIndex(fav => fav.id === resortId && fav.type === 'resort');
+                
+                let isFavorited = false;
+                if (existingIndex >= 0) {
+                    // Remove from favorites
+                    favorites.splice(existingIndex, 1);
+                    isFavorited = false;
+                } else {
+                    // Add to favorites
+                    favorites.push({
+                        id: resortId,
+                        type: 'resort',
+                        name: resortName,
+                        addedAt: new Date().toISOString()
+                    });
+                    isFavorited = true;
+                }
+                localStorage.setItem('snogrub_favorites', JSON.stringify(favorites));
+                
+                // Update button
+                const button = event?.target?.closest('.favorite-button');
+                if (button) {
+                    button.setAttribute('aria-checked', isFavorited ? 'true' : 'false');
+                    if (isFavorited) {
+                        button.classList.add('favorited');
+                    } else {
+                        button.classList.remove('favorited');
+                    }
+                    const icon = button.querySelector('svg');
+                    if (icon) {
+                        if (isFavorited) {
+                            icon.classList.add('fill-red-500', 'text-red-500');
+                            icon.classList.remove('fill-none', 'text-gray-400');
+                            icon.setAttribute('fill', 'currentColor');
+                        } else {
+                            icon.classList.remove('fill-red-500', 'text-red-500');
+                            icon.classList.add('fill-none', 'text-gray-400');
+                            icon.setAttribute('fill', 'none');
+                        }
+                    }
+                }
+                
+                // Dispatch custom event for other components to listen
+                window.dispatchEvent(new CustomEvent('favoritesChanged', {
+                    detail: { resortId, favorited: isFavorited }
+                }));
+            } catch (e) {
+                console.error('Error toggling favorite:', e);
+            }
+        };
+        
+        // Initialize Universal Resort Card component
+        const resortCard = new UniversalResortCard({
+            showLogo: true,
+            showTrailMap: true,
+            showStats: true,
+            showRating: true,
+            showPriceRating: true,
+            showFeaturedBadge: true,
+            showDistance: true,
+            showQuickView: false,
+            showHoverOverlay: true,
+            imageHeight: 'h-48',
+            cardVariant: 'default',
+            showInlineLogo: false, // Disable inline logo - we only show overlay logo when available
+            clickable: true,
+            hoverEffect: true,
+            animation: true
+        });
+        
+        // Render resort cards
+        /**
+         * Render home base summary section
+         */
+        function renderHomeBaseSummary(resort) {
+            if (!resort) return '';
+            
+            // Get aggregate rating
+            const aggregateRating = calculateAggregateRating(resort);
+            
+            // Get platform reviews
+            const platformReviews = resort.platformReviews || {};
+            
+            // Calculate SNOGRUB rating from platform reviews (same as resort detail page)
+            let snogrubRating = null;
+            if (resort.platformReviews && Object.keys(resort.platformReviews).length > 0) {
+                const ratings = Object.values(resort.platformReviews)
+                    .map(r => r.rating)
+                    .filter(r => r && !isNaN(r));
+                if (ratings.length > 0) {
+                    snogrubRating = ratings.reduce((sum, r) => sum + r, 0) / ratings.length;
+                }
+            }
+            
+            // Get SNOGRUB ranking (if available in resort data)
+            const snogrubRanking = resort.snogrubRanking || resort.ranking || null;
+            
+            // Get resort summary/description and truncate it
+            const fullSummary = resort.description || resort.summary || 'No description available.';
+            const maxLength = 150; // Truncate to ~150 characters
+            let summary = fullSummary;
+            let showLearnMore = false;
+            
+            if (fullSummary.length > maxLength) {
+                // Truncate at word boundary
+                summary = fullSummary.substring(0, maxLength);
+                const lastSpace = summary.lastIndexOf(' ');
+                if (lastSpace > 0) {
+                    summary = summary.substring(0, lastSpace);
+                }
+                summary += '...';
+                showLearnMore = true;
+            }
+            
+            // Get resort detail URL
+            const resortDetailUrl = `resort-detail.html?id=${resort.id}`;
+            
+            let platformReviewsHTML = '';
+            if (Object.keys(platformReviews).length > 0) {
+                platformReviewsHTML = Object.entries(platformReviews).map(([source, data]) => {
+                    if (!data || !data.rating) return '';
+                    const rating = data.rating;
+                    const reviewCount = data.reviewCount || 0;
+                    const sourceName = source.charAt(0).toUpperCase() + source.slice(1).replace(/_/g, ' ');
+                    
+                    // Generate simple star rating HTML for summary
+                    const roundedRating = Math.round(rating * 2) / 2;
+                    const fullStars = Math.floor(roundedRating);
+                    const hasHalfStar = (roundedRating % 1) === 0.5;
+                    const emptyStars = 5 - fullStars - (hasHalfStar ? 1 : 0);
+                    
+                    let starsHTML = '<div class="flex items-center gap-0.5">';
+                    for (let i = 0; i < fullStars; i++) {
+                        starsHTML += '<svg class="w-4 h-4 text-yellow-400 fill-current" viewBox="0 0 20 20"><path d="M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z"/></svg>';
+                    }
+                    if (hasHalfStar) {
+                        starsHTML += '<svg class="w-4 h-4 text-yellow-400 fill-current" viewBox="0 0 20 20"><path d="M10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545L10 15V0z"/></svg>';
+                    }
+                    for (let i = 0; i < emptyStars; i++) {
+                        starsHTML += '<svg class="w-4 h-4 text-gray-300 fill-current" viewBox="0 0 20 20"><path d="M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z"/></svg>';
+                    }
+                    starsHTML += `<span class="ml-1 text-sm font-medium text-gray-700">${rating.toFixed(1)}</span>`;
+                    starsHTML += '</div>';
+                    
+                    return `
+                        <div class="flex items-center justify-between py-2 border-b border-gray-100 last:border-b-0">
+                            <span class="text-sm font-medium text-gray-700">${sourceName}</span>
+                            <div class="flex items-center gap-2">
+                                ${starsHTML}
+                                ${reviewCount > 0 ? `<span class="text-xs text-gray-500">(${reviewCount})</span>` : ''}
+                            </div>
+                        </div>
+                    `;
+                }).join('');
+            } else {
+                platformReviewsHTML = '<p class="text-sm text-gray-500 py-2">No review data available</p>';
+            }
+            
+            return `
+                <div class="bg-white border border-gray-200 rounded-lg p-6 h-full flex flex-col">
+                    <h3 class="text-lg font-semibold text-gray-900 mb-3">Resort Summary</h3>
+                    <p class="text-sm text-gray-600 mb-2 leading-relaxed flex-grow">
+                        ${summary}
+                        ${showLearnMore ? ` <a href="${resortDetailUrl}" class="text-[var(--accent-blue)] hover:underline font-medium">Learn More</a>` : ''}
+                    </p>
+                    
+                    <div class="mb-4">
+                        <h4 class="text-sm font-semibold text-gray-900 mb-2">Review Summaries by Source</h4>
+                        <div class="space-y-1">
+                            ${platformReviewsHTML}
+                        </div>
+                    </div>
+                    
+                    <div class="pt-3 border-t border-gray-200 mt-auto">
+                        <h4 class="text-sm font-semibold text-gray-900 mb-2">Official <span class="bg-[var(--accent-blue)] text-white px-1">SNO</span><span class="text-[var(--accent-blue)]">GRUB</span> Rating</h4>
+                        ${snogrubRating !== null ? `
+                            <div class="flex items-center gap-3">
+                                <div class="flex items-center gap-1">
+                                    ${(() => {
+                                        const roundedRating = Math.round(snogrubRating * 2) / 2;
+                                        const fullStars = Math.floor(roundedRating);
+                                        const hasHalfStar = (roundedRating % 1) === 0.5;
+                                        const emptyStars = 5 - fullStars - (hasHalfStar ? 1 : 0);
+                                        let starsHTML = '';
+                                        for (let i = 0; i < fullStars; i++) {
+                                            starsHTML += '<svg class="w-5 h-5 text-yellow-400 fill-current" viewBox="0 0 20 20"><path d="M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z"/></svg>';
+                                        }
+                                        if (hasHalfStar) {
+                                            starsHTML += '<svg class="w-5 h-5 text-yellow-400 fill-current" viewBox="0 0 20 20"><path d="M10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545L10 15V0z"/></svg>';
+                                        }
+                                        for (let i = 0; i < emptyStars; i++) {
+                                            starsHTML += '<svg class="w-5 h-5 text-gray-300 fill-current" viewBox="0 0 20 20"><path d="M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z"/></svg>';
+                                        }
+                                        return starsHTML;
+                                    })()}
+                                    <span class="text-xl font-bold text-gray-900 ml-1">${snogrubRating.toFixed(1)}</span>
+                                </div>
+                                ${snogrubRanking ? `
+                                    <div class="flex items-center gap-2 text-sm text-gray-600">
+                                        <span>Rank #${snogrubRanking}</span>
+                                        <span>•</span>
+                                        <span>out of ${allResorts.length}</span>
+                                    </div>
+                                ` : ''}
+                            </div>
+                        ` : `
+                            <p class="text-sm text-gray-500">Rating not available</p>
+                        `}
+                    </div>
+                </div>
+            `;
+        }
+        
+        function renderResorts() {
+            const grid = document.getElementById('resortsGrid');
+            const emptyState = document.getElementById('emptyState');
+            const resultsCount = document.getElementById('resultsCount');
+            
+            if (filteredResorts.length === 0) {
+                grid.classList.add('hidden');
+                emptyState.classList.remove('hidden');
+                resultsCount.textContent = 'No resorts found';
+                return;
+            }
+            
+            grid.classList.remove('hidden');
+            emptyState.classList.add('hidden');
+            
+            const countryFilter = document.getElementById('countryFilter').value;
+            const showDistance = countryFilter === 'closest';
+            
+            // Update card config for distance display
+            resortCard.config.showDistance = showDistance;
+            
+            // Check if home base is enabled and get home base resort
+            let homeBaseResort = null;
+            let otherResorts = [...filteredResorts];
+            let remainingResorts = [];
+            const MAX_INITIAL_RESORTS = 6;
+            
+            if (typeof HomeBase !== 'undefined' && HomeBase.isActive()) {
+                const homeBaseId = HomeBase.getResortId();
+                const homeBaseIndex = filteredResorts.findIndex(r => r.id === homeBaseId);
+                
+                if (homeBaseIndex >= 0) {
+                    homeBaseResort = filteredResorts[homeBaseIndex];
+                    otherResorts = filteredResorts.filter((r, i) => i !== homeBaseIndex);
+                    
+                    // Limit to 6 resorts initially, store the rest
+                    if (otherResorts.length > MAX_INITIAL_RESORTS) {
+                        remainingResorts = otherResorts.slice(MAX_INITIAL_RESORTS);
+                        otherResorts = otherResorts.slice(0, MAX_INITIAL_RESORTS);
+                    }
+                }
+            }
+            
+            // Hide "Resorts Found" text when homebase is active
+            if (homeBaseResort) {
+                resultsCount.classList.add('hidden');
+            } else {
+                resultsCount.classList.remove('hidden');
+                resultsCount.textContent = `${filteredResorts.length} resort${filteredResorts.length !== 1 ? 's' : ''} found`;
+            }
+            
+            // Build HTML
+            let html = '';
+            
+            // Render home base resort with summary if available
+            if (homeBaseResort) {
+                const homeBaseName = homeBaseResort.name || 'Your Home Base';
+                html += `
+                    <div class="col-span-full mb-12">
+                        <!-- Home Base Section with Background -->
+                        <div class="bg-gradient-to-br from-blue-50 via-slate-50 to-blue-50 rounded-2xl p-6 sm:p-8">
+                            <div class="flex items-center gap-3 mb-6">
+                                <div class="flex items-center gap-2 px-3 py-1.5 bg-[var(--accent-blue)] text-white rounded-full">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path>
+                                    </svg>
+                                    <span class="text-sm font-semibold">Your Home Base</span>
+                                </div>
+                            </div>
+                            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                                <div>
+                                    ${resortCard.render(homeBaseResort, 0)}
+                                </div>
+                                <div>
+                                    ${renderHomeBaseSummary(homeBaseResort)}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }
+            
+            // Render other resorts with title if home base is active
+            if (otherResorts.length > 0) {
+                if (homeBaseResort) {
+                    const homeBaseName = homeBaseResort.name || 'Your Home Base';
+                    html += `
+                        <div class="col-span-full mb-4">
+                            <h2 class="text-2xl font-semibold text-gray-900">Closest resorts to ${homeBaseName}</h2>
+                        </div>
+                    `;
+                }
+                html += resortCard.renderMultiple(otherResorts);
+                
+                // Add "View More" button if there are remaining resorts
+                if (remainingResorts.length > 0) {
+                    html += `
+                        <div class="col-span-full mt-6 text-center">
+                            <button id="viewMoreResortsBtn" class="px-6 py-3 bg-white text-gray-700 border border-gray-300 rounded-full text-sm font-medium hover:bg-gray-50 transition-colors duration-200">
+                                View More (${remainingResorts.length} more)
+                            </button>
+                            <div id="remainingResortsContainer" class="hidden mt-6">
+                                ${resortCard.renderMultiple(remainingResorts)}
+                            </div>
+                        </div>
+                    `;
+                }
+            }
+            
+            grid.innerHTML = html;
+            
+            // Load logos for all rendered resorts
+            const allRenderedResorts = homeBaseResort ? [homeBaseResort, ...otherResorts, ...remainingResorts] : otherResorts;
+            loadResortLogos(allRenderedResorts);
+            
+            // Initialize price ratings for rendered cards
+            initializePriceRatings();
+            
+            // Handle "View More" button if it exists
+            const viewMoreBtn = document.getElementById('viewMoreResortsBtn');
+            const remainingContainer = document.getElementById('remainingResortsContainer');
+            if (viewMoreBtn && remainingContainer) {
+                const remainingCount = remainingResorts.length;
+                viewMoreBtn.addEventListener('click', () => {
+                    if (remainingContainer.classList.contains('hidden')) {
+                        remainingContainer.classList.remove('hidden');
+                        viewMoreBtn.textContent = 'Show Less';
+                        // Load logos for newly visible resorts
+                        loadResortLogos(remainingResorts);
+                        // Initialize price ratings for newly visible cards
+                        setTimeout(() => {
+                            initializePriceRatings();
+                        }, 100);
+                    } else {
+                        remainingContainer.classList.add('hidden');
+                        viewMoreBtn.textContent = `View More (${remainingCount} more)`;
+                    }
+                });
+            }
+        }
+        
+        // Filter and sort resorts
+        function filterAndSortResorts() {
+            const searchInput = document.getElementById('resorts-searchbar');
+            const searchTerm = searchInput ? searchInput.value.toLowerCase().trim() : '';
+            const countryFilter = document.getElementById('countryFilter').value;
+            const stateProvinceFilter = document.getElementById('stateProvinceFilter').value;
+            const sortOption = document.getElementById('sortSelect').value;
+            
+            filteredResorts = allResorts.filter(resort => {
+                // Search filter - improved logic
+                let matchesSearch = true;
+                if (searchTerm) {
+                    // Split search term into individual words for better matching
+                    const searchWords = searchTerm.split(/\s+/).filter(word => word.length > 0);
+                    
+                    // If no valid search words, match everything
+                    if (searchWords.length === 0) {
+                        matchesSearch = true;
+                    } else {
+                        // Check if all search words match somewhere in the resort data
+                        const resortName = (resort.name || '').toLowerCase();
+                        const resortLocation = (resort.location || '').toLowerCase();
+                        const resortDescription = (resort.description || '').toLowerCase();
+                        
+                        // Extract state/province from location (part before comma)
+                        const locationParts = resortLocation.split(',');
+                        const stateProvince = locationParts.length > 0 ? locationParts[0].trim().toLowerCase() : '';
+                        const country = locationParts.length > 1 ? locationParts[locationParts.length - 1].trim().toLowerCase() : '';
+                        
+                        // Check each search word
+                        const allWordsMatch = searchWords.every(word => {
+                            // Check name (highest priority)
+                            if (resortName.includes(word)) return true;
+                            
+                            // Check location parts
+                            if (stateProvince.includes(word)) return true;
+                            if (country.includes(word)) return true;
+                            if (resortLocation.includes(word)) return true;
+                            
+                            // Check description
+                            if (resortDescription.includes(word)) return true;
+                            
+                            // Check terrain stats (as strings for searching)
+                            const skiableAcres = (resort.terrain?.skiableAcres || 0).toString();
+                            const verticalDrop = (resort.terrain?.verticalDrop || 0).toString();
+                            if (skiableAcres.includes(word) || verticalDrop.includes(word)) return true;
+                            
+                            // Check restaurant count
+                            const restaurantCount = (resort.restaurantCount || 0).toString();
+                            if (restaurantCount.includes(word)) return true;
+                            
+                            return false;
+                        });
+                        
+                        matchesSearch = allWordsMatch;
+                    }
+                }
+                
+                // Country filter - more precise matching
+                let matchesCountry = true;
+                if (countryFilter && countryFilter !== 'closest') {
+                    const location = (resort.location || '').toLowerCase();
+                    const countryLower = countryFilter.toLowerCase();
+                    matchesCountry = location && (
+                        location.endsWith(`, ${countryLower}`) ||
+                        location.endsWith(countryLower) ||
+                        location.includes(`, ${countryLower},`) ||
+                        location === countryLower
+                    );
+                }
+                
+                // State/Province filter - properly extract state from location
+                let matchesStateProvince = true;
+                if (stateProvinceFilter) {
+                    const location = (resort.location || '').toLowerCase();
+                    const stateProvinceLower = stateProvinceFilter.toLowerCase();
+                    
+                    // Split location by commas and trim each part
+                    const parts = location.split(',').map(p => p.trim().toLowerCase());
+                    
+                    if (parts.length >= 2) {
+                        let stateProvincePart = null;
+                        
+                        // If we have 3 parts (City, State, Country), the middle one is the state
+                        // If we have 2 parts (State, Country), the first one is the state
+                        if (parts.length === 3) {
+                            stateProvincePart = parts[1]; // Middle part is state
+                        } else if (parts.length === 2) {
+                            stateProvincePart = parts[0]; // First part is state
+                        }
+                        
+                        // Check if the extracted part matches the selected state
+                        // Also check against known state lists to ensure we're matching a state, not a city
+                        if (stateProvincePart) {
+                            const isKnownState = US_STATES.some(state => 
+                                state.toLowerCase() === stateProvincePart
+                            ) || CANADIAN_PROVINCES.some(province => 
+                                province.toLowerCase() === stateProvincePart
+                            );
+                            
+                            if (isKnownState) {
+                                matchesStateProvince = stateProvincePart === stateProvinceLower;
+                            } else {
+                                // If it's not a known state name, fall back to simple matching
+                                matchesStateProvince = stateProvincePart === stateProvinceLower || 
+                                                     stateProvincePart.includes(stateProvinceLower);
+                            }
+                        } else {
+                            matchesStateProvince = false;
+                        }
+                    } else {
+                        // Fallback: just check if state name appears in location
+                        matchesStateProvince = location.includes(stateProvinceLower);
+                    }
+                }
+                
+                return matchesSearch && matchesCountry && matchesStateProvince;
+            });
+            
+            // Calculate relevance scores for search results (if searching)
+            if (searchTerm) {
+                const searchWords = searchTerm.split(/\s+/).filter(word => word.length > 0);
+                filteredResorts.forEach(resort => {
+                    let relevanceScore = 0;
+                    const resortName = (resort.name || '').toLowerCase();
+                    const resortLocation = (resort.location || '').toLowerCase();
+                    const resortDescription = (resort.description || '').toLowerCase();
+                    
+                    searchWords.forEach(word => {
+                        // Name matches get highest priority (100 points)
+                        if (resortName.includes(word)) {
+                            // Exact name match gets even more points
+                            if (resortName === word || resortName.startsWith(word)) {
+                                relevanceScore += 200;
+                            } else {
+                                relevanceScore += 100;
+                            }
+                        }
+                        
+                        // State/province matches (50 points)
+                        const locationParts = resortLocation.split(',');
+                        const stateProvince = locationParts.length > 0 ? locationParts[0].trim().toLowerCase() : '';
+                        if (stateProvince.includes(word)) {
+                            relevanceScore += 50;
+                        }
+                        
+                        // Location matches (30 points)
+                        if (resortLocation.includes(word)) {
+                            relevanceScore += 30;
+                        }
+                        
+                        // Description matches (10 points)
+                        if (resortDescription.includes(word)) {
+                            relevanceScore += 10;
+                        }
+                    });
+                    
+                    resort._relevanceScore = relevanceScore;
+                });
+            }
+            
+            // Apply home base sorting if enabled (home base first, then by distance)
+            if (typeof HomeBase !== 'undefined' && HomeBase.isActive()) {
+                filteredResorts = HomeBase.sortResortsByHomeBase(filteredResorts);
+            }
+            
+            // Sort resorts
+            filteredResorts.sort((a, b) => {
+                // Home base always comes first (if home base sorting was applied, this is already done)
+                if (typeof HomeBase !== 'undefined' && HomeBase.isActive()) {
+                    const homeBaseId = HomeBase.getResortId();
+                    if (a.id === homeBaseId && b.id !== homeBaseId) return -1;
+                    if (a.id !== homeBaseId && b.id === homeBaseId) return 1;
+                    
+                    // If both are not home base, maintain distance order if available
+                    if (a.distanceFromHomeBase !== undefined && b.distanceFromHomeBase !== undefined) {
+                        if (a.distanceFromHomeBase !== b.distanceFromHomeBase) {
+                            return a.distanceFromHomeBase - b.distanceFromHomeBase;
+                        }
+                    }
+                }
+                
+                // If searching, prioritize by relevance score first
+                // But only if there's actually a search term entered
+                if (searchTerm && searchTerm.trim().length > 0 && a._relevanceScore !== undefined && b._relevanceScore !== undefined) {
+                    if (b._relevanceScore !== a._relevanceScore) {
+                        return b._relevanceScore - a._relevanceScore;
+                    }
+                    // If relevance scores are equal, fall through to sort option
+                }
+                
+                // If "Closest to me" is selected, sort by distance first
+                if (countryFilter === 'closest' && a.distance !== undefined && b.distance !== undefined) {
+                    return a.distance - b.distance;
+                }
+                
+                // Default to name sort if no sort option specified
+                const effectiveSortOption = sortOption || 'name';
+                
+                switch(effectiveSortOption) {
+                    case 'name':
+                        return a.name.localeCompare(b.name);
+                    case 'restaurants':
+                        return (b.restaurantCount || 0) - (a.restaurantCount || 0);
+                    case 'acres':
+                        return (b.terrain?.skiableAcres || 0) - (a.terrain?.skiableAcres || 0);
+                    case 'vertical':
+                        return (b.terrain?.verticalDrop || 0) - (a.terrain?.verticalDrop || 0);
+                    case 'price-low':
+                        // Sort by lift ticket price (low to high)
+                        const priceA = getResortPriceValue(a.id);
+                        const priceB = getResortPriceValue(b.id);
+                        // Resorts without price data go to the end
+                        if (priceA === null && priceB === null) return 0;
+                        if (priceA === null) return 1;
+                        if (priceB === null) return -1;
+                        return priceA - priceB;
+                    case 'price-high':
+                        // Sort by lift ticket price (high to low)
+                        const priceAHigh = getResortPriceValue(a.id);
+                        const priceBHigh = getResortPriceValue(b.id);
+                        // Resorts without price data go to the end
+                        if (priceAHigh === null && priceBHigh === null) return 0;
+                        if (priceAHigh === null) return 1;
+                        if (priceBHigh === null) return -1;
+                        return priceBHigh - priceAHigh;
+                    default:
+                        return 0;
+                }
+            });
+            
+            renderResorts();
+        }
+        
+        // Toggle clear search button visibility
+        function toggleClearSearchButton() {
+            const searchInput = document.getElementById('resorts-searchbar');
+            const clearBtn = document.getElementById('clearSearchBtn');
+            if (searchInput && clearBtn) {
+                if (searchInput.value.trim().length > 0) {
+                    clearBtn.classList.remove('hidden');
+                } else {
+                    clearBtn.classList.add('hidden');
+                }
+            }
+        }
+        
+        // Clear search input
+        function clearSearch() {
+            const searchInput = document.getElementById('resorts-searchbar');
+            if (searchInput) {
+                searchInput.value = '';
+                toggleClearSearchButton();
+                filterAndSortResorts();
+                searchInput.focus();
+            }
+        }
+        
+        // Clear all filters
+        function clearFilters() {
+            document.getElementById('resorts-searchbar').value = '';
+            document.getElementById('countryFilter').value = '';
+            document.getElementById('stateProvinceFilter').value = '';
+            document.getElementById('stateProvinceContainer').classList.add('hidden');
+            document.getElementById('sortSelect').value = 'name';
+            toggleClearSearchButton();
+            filterAndSortResorts();
+        }
+        
+        // Event listeners
+        document.addEventListener('DOMContentLoaded', () => {
+            console.log('Resorts page loaded - search functionality initialized');
+            
+            loadResorts();
+            
+            // Check for search query parameter from other pages
+            const urlParams = new URLSearchParams(window.location.search);
+            const searchQuery = urlParams.get('q');
+            if (searchQuery) {
+                const searchbar = document.getElementById('resorts-searchbar');
+                if (searchbar) {
+                    searchbar.value = decodeURIComponent(searchQuery);
+                    toggleClearSearchButton();
+                    // Trigger search after a short delay to ensure resorts are loaded
+                    setTimeout(() => {
+                        filterAndSortResorts();
+                    }, 100);
+                }
+            }
+            
+            // Search input - resorts-searchbar
+            const searchInput = document.getElementById('resorts-searchbar');
+            if (searchInput) {
+                let searchTimeout;
+                
+                // Debounced search on input
+                searchInput.addEventListener('input', () => {
+                    toggleClearSearchButton();
+                    clearTimeout(searchTimeout);
+                    searchTimeout = setTimeout(filterAndSortResorts, 300);
+                });
+                
+                // Immediate search on Enter key
+                searchInput.addEventListener('keydown', (e) => {
+                    if (e.key === 'Enter') {
+                        e.preventDefault();
+                        clearTimeout(searchTimeout);
+                        filterAndSortResorts();
+                    }
+                });
+                
+                // Initial check for clear button visibility
+                toggleClearSearchButton();
+            }
+            
+            // Clear search button
+            const clearSearchBtn = document.getElementById('clearSearchBtn');
+            if (clearSearchBtn) {
+                clearSearchBtn.addEventListener('click', clearSearch);
+            }
+            
+            // Country filter
+            document.getElementById('countryFilter').addEventListener('change', (e) => {
+                const country = e.target.value;
+                
+                if (country === 'closest') {
+                    // Hide state/province dropdown
+                    document.getElementById('stateProvinceContainer').classList.add('hidden');
+                    document.getElementById('stateProvinceFilter').value = '';
+                    // Handle geolocation
+                    handleClosestToMe();
+                } else {
+                    // Reset resort order if switching away from "Closest to me"
+                    if (allResorts.length > 0 && allResorts[0].distance !== undefined) {
+                        resetResortsOrder();
+                    }
+                    // Populate state/province dropdown based on country
+                    populateStateProvinceFilter(country);
+                    // Reset state/province filter
+                    document.getElementById('stateProvinceFilter').value = '';
+                    filterAndSortResorts();
+                }
+            });
+            
+            // State/Province filter
+            document.getElementById('stateProvinceFilter').addEventListener('change', filterAndSortResorts);
+            
+            // Sort select
+            document.getElementById('sortSelect').addEventListener('change', filterAndSortResorts);
+            
+            // Clear filters button
+            document.getElementById('clearFiltersBtn').addEventListener('click', clearFilters);
+            
+            // Mobile menu toggle
+            const mobileMenuButton = document.getElementById('mobileMenuButton');
+            const mobileMenu = document.getElementById('mobileMenu');
+            const menuIcon = document.getElementById('menuIcon');
+            const closeIcon = document.getElementById('closeIcon');
+            
+            if (mobileMenuButton) {
+                mobileMenuButton.addEventListener('click', () => {
+                    mobileMenu.classList.toggle('hidden');
+                    menuIcon.classList.toggle('hidden');
+                    closeIcon.classList.toggle('hidden');
+                });
+            }
+            
+            // Close mobile menu when clicking a link
+            if (mobileMenu) {
+                mobileMenu.querySelectorAll('a').forEach(link => {
+                    link.addEventListener('click', () => {
+                        mobileMenu.classList.add('hidden');
+                        menuIcon.classList.remove('hidden');
+                        closeIcon.classList.add('hidden');
+                    });
+                });
+            }
+        });
+    </script>
+    
+    <!-- Reusable Resorts Searchbar Script - Include this on any page -->
+    <script>
+        // This script makes resorts-searchbar work on any page
+        // When used on other pages, it redirects to resorts.html with the search query
+        (function() {
+            function initResortsSearchbarGlobal() {
+                const searchbar = document.getElementById('resorts-searchbar');
+                if (!searchbar) return;
+                
+                // Check if we're on resorts.html
+                const isResortsPage = window.location.pathname.includes('resorts.html');
+                
+                // If not on resorts.html, handle search to redirect
+                if (!isResortsPage) {
+                    searchbar.addEventListener('keydown', (e) => {
+                        if (e.key === 'Enter') {
+                            e.preventDefault();
+                            const searchTerm = searchbar.value.trim();
+                            if (searchTerm) {
+                                // Redirect to resorts.html with search query
+                                window.location.href = `resorts.html?q=${encodeURIComponent(searchTerm)}`;
+                            } else {
+                                // If empty, just go to resorts.html
+                                window.location.href = 'resorts.html';
+                            }
+                        }
+                    });
+                    
+                    // Handle form submission if searchbar is in a form
+                    const form = searchbar.closest('form');
+                    if (form) {
+                        form.addEventListener('submit', (e) => {
+                            e.preventDefault();
+                            const searchTerm = searchbar.value.trim();
+                            if (searchTerm) {
+                                window.location.href = `resorts.html?q=${encodeURIComponent(searchTerm)}`;
+                            } else {
+                                window.location.href = 'resorts.html';
+                            }
+                        });
+                    }
+                }
+            }
+            
+            // Initialize when DOM is ready
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', initResortsSearchbarGlobal);
+            } else {
+                initResortsSearchbarGlobal();
+            }
+        })();
+        
+        // Adjust nav positioning for home base bar
+        function adjustNavForHomeBase() {
+            const homebaseBar = document.getElementById('homebase-bar');
+            const nav = document.querySelector('nav');
+            if (homebaseBar && nav) {
+                const barHeight = homebaseBar.offsetHeight;
+                nav.style.top = `${barHeight}px`;
+            }
+        }
+        
+        // Watch for home base bar visibility changes
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', () => {
+                setTimeout(() => {
+                    adjustNavForHomeBase();
+                    const observer = new MutationObserver(adjustNavForHomeBase);
+                    const homebaseBar = document.getElementById('homebase-bar');
+                    if (homebaseBar) {
+                        observer.observe(homebaseBar, { attributes: true, attributeFilter: ['style'] });
+                    }
+                }, 500);
+            });
+        } else {
+            setTimeout(() => {
+                adjustNavForHomeBase();
+                const observer = new MutationObserver(adjustNavForHomeBase);
+                const homebaseBar = document.getElementById('homebase-bar');
+                if (homebaseBar) {
+                    observer.observe(homebaseBar, { attributes: true, attributeFilter: ['style'] });
+                }
+            }, 500);
+        }
+        
+        // Listen for home base changes and refresh resorts
+        window.addEventListener('homebaseChanged', () => {
+            // Re-render resorts to update home base button states
+            if (typeof renderResorts === 'function') {
+                renderResorts();
+            }
+            if (typeof filterAndSortResorts === 'function') {
+                filterAndSortResorts();
+            }
+        });
+    </script>
+</body>
+</html>

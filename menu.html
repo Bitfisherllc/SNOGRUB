@@ -1,0 +1,416 @@
+<!-- Apple-Style Ski Dining UI - Full Menu Page -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title id="pageTitle">Menu - SNOGRUB</title>
+    <meta id="metaDescription" name="description" content="View the full menu at this restaurant.">
+    <meta id="metaKeywords" name="keywords" content="menu, restaurant, dining, ski resort">
+    
+    <!-- TailwindCSS via CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Inter font (San Francisco-like) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --accent-blue: #0071e3;
+            --accent-light: #5ac8fa;
+            --text-primary: #1d1d1f;
+            --text-secondary: #86868b;
+        }
+        
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+        
+        .frosted-glass {
+            background: rgba(251, 251, 253, 0.8);
+            backdrop-filter: saturate(180%) blur(20px);
+            -webkit-backdrop-filter: saturate(180%) blur(20px);
+        }
+        
+        * {
+            transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .menu-item {
+            border-bottom: 1px solid #f3f4f6;
+            padding: 1rem 0;
+        }
+        
+        .menu-item:last-child {
+            border-bottom: none;
+        }
+        
+        .menu-category {
+            margin-bottom: 3rem;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-900 antialiased">
+    
+    <!-- Navigation Bar -->
+    <nav class="fixed top-0 left-0 right-0 z-50 frosted-glass border-b border-gray-200/50">
+        <div class="max-w-7xl mx-auto px-6 sm:px-8">
+            <div class="flex items-center justify-between h-14">
+                <div class="flex-shrink-0">
+                    <a href="index.html" class="text-2xl font-semibold hover:opacity-80 transition-opacity duration-300">
+                        <span class="bg-[var(--accent-blue)] text-white px-1">SNO</span><span class="text-[var(--accent-blue)]">GRUB</span>
+                    </a>
+                </div>
+                
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="resorts.html" class="text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors duration-200">
+                        Resorts
+                    </a>
+                    <a href="restaurants.html" class="text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors duration-200">
+                        Restaurants
+                    </a>
+                    <a href="map.html" class="text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors duration-200">
+                        Map
+                    </a>
+                    <a href="blog.html" class="text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors duration-200">
+                        Blog
+                    </a>
+                    <a href="favorites.html" class="text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors duration-200">
+                        Favorites
+                    </a>
+                    <a href="trips.html" class="text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors duration-200">
+                        Trips
+                    </a>
+                </div>
+                
+                <!-- Mobile Menu Button -->
+                <button id="mobileMenuButton" class="md:hidden text-gray-600 hover:text-gray-900 transition-colors" aria-label="Menu">
+                    <svg id="menuIcon" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                    </svg>
+                    <svg id="closeIcon" class="w-6 h-6 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                    </svg>
+                </button>
+            </div>
+            
+            <!-- Mobile Menu Dropdown -->
+            <div id="mobileMenu" class="hidden md:hidden border-t border-gray-200/50 bg-white/95 backdrop-blur-lg">
+                <div class="px-6 py-4 space-y-4">
+                    <a href="resorts.html" class="block text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors duration-200">Resorts</a>
+                    <a href="restaurants.html" class="block text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors duration-200">Restaurants</a>
+                    <a href="map.html" class="block text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors duration-200">Map</a>
+                    <a href="blog.html" class="block text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors duration-200">Blog</a>
+                    <a href="favorites.html" class="block text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors duration-200">Favorites</a>
+                    <a href="trips.html" class="block text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors duration-200">Trips</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+    
+    <script>
+        // Mobile menu toggle
+        document.addEventListener('DOMContentLoaded', () => {
+            const mobileMenuButton = document.getElementById('mobileMenuButton');
+            const mobileMenu = document.getElementById('mobileMenu');
+            const menuIcon = document.getElementById('menuIcon');
+            const closeIcon = document.getElementById('closeIcon');
+            
+            if (mobileMenuButton) {
+                mobileMenuButton.addEventListener('click', () => {
+                    mobileMenu.classList.toggle('hidden');
+                    menuIcon.classList.toggle('hidden');
+                    closeIcon.classList.toggle('hidden');
+                });
+            }
+            
+            // Close mobile menu when clicking a link
+            if (mobileMenu) {
+                mobileMenu.querySelectorAll('a').forEach(link => {
+                    link.addEventListener('click', () => {
+                        mobileMenu.classList.add('hidden');
+                        menuIcon.classList.remove('hidden');
+                        closeIcon.classList.add('hidden');
+                    });
+                });
+            }
+        });
+    </script>
+    
+    <!-- Breadcrumb -->
+    <div class="pt-20 pb-4 px-6 sm:px-8 bg-white">
+        <div class="max-w-4xl mx-auto">
+            <nav class="flex items-center space-x-2 text-sm text-gray-600">
+                <a href="index.html" class="hover:text-gray-900 transition-colors">Home</a>
+                <span>/</span>
+                <a href="restaurants.html" class="hover:text-gray-900 transition-colors">Restaurants</a>
+                <span>/</span>
+                <a id="restaurantLink" href="#" class="hover:text-gray-900 transition-colors">Restaurant</a>
+                <span>/</span>
+                <span class="text-gray-900">Menu</span>
+            </nav>
+        </div>
+    </div>
+    
+    <!-- Menu Header -->
+    <div class="bg-white border-b border-gray-200">
+        <div class="max-w-4xl mx-auto px-6 sm:px-8 py-8">
+            <h1 id="restaurantName" class="text-3xl font-bold text-gray-900 mb-2">Restaurant Menu</h1>
+            <p id="restaurantLocation" class="text-gray-600">Location</p>
+        </div>
+    </div>
+    
+    <!-- Delivery Services & Website Section -->
+    <div class="max-w-4xl mx-auto px-6 sm:px-8 pt-12">
+        <div id="deliverySection" class="mb-8 p-6 bg-gradient-to-br from-green-50 to-emerald-50 rounded-lg border border-green-200">
+            <h2 class="text-2xl font-semibold text-gray-900 mb-4">Order for Delivery</h2>
+            <p class="text-gray-600 mb-4 text-sm">Order from this restaurant through these delivery services:</p>
+            <div id="deliveryLinks" class="flex flex-wrap gap-3 mb-4">
+                <!-- Delivery service links will be populated dynamically -->
+            </div>
+            <div id="websiteLink" class="mt-4 pt-4 border-t border-green-200">
+                <!-- Restaurant website link will be populated dynamically -->
+            </div>
+        </div>
+    </div>
+    
+    <!-- Full Menu Content -->
+    <div class="max-w-4xl mx-auto px-6 sm:px-8 pb-12">
+        <div id="fullMenuContent" class="bg-white rounded-lg shadow-sm p-8">
+            <!-- Menu will be populated dynamically -->
+            <p class="text-gray-500 text-center">Loading menu...</p>
+        </div>
+        
+        <!-- Back to Restaurant Button -->
+        <div class="mt-8 flex justify-center">
+            <a id="backToRestaurantBtn" href="#" class="px-6 py-3 bg-gray-900 text-white rounded-full text-base font-medium hover:bg-gray-800 transition-colors flex items-center gap-2">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+                </svg>
+                Back to Restaurant
+            </a>
+        </div>
+        
+        <!-- Menu Accuracy Notice -->
+        <div id="menuNotice" class="mt-8 p-4 bg-amber-50 border border-amber-200 rounded-lg">
+            <div class="flex items-start gap-3">
+                <svg class="w-5 h-5 text-amber-600 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path>
+                </svg>
+                <div class="flex-1">
+                    <div class="flex items-center gap-2 mb-1">
+                        <p class="text-sm font-medium text-amber-900">
+                            <span id="menuNoticeText">Menu items and prices may not be up to date.</span>
+                        </p>
+                        <span id="verifiedBadge" class="hidden inline-flex items-center gap-1 px-2 py-0.5 bg-green-100 text-green-700 rounded-full text-xs font-medium">
+                            <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M6.267 3.455a3.066 3.066 0 001.745-.723 3.066 3.066 0 013.976 0 3.066 3.066 0 001.745.723 3.066 3.066 0 012.812 2.812c.051.643.304 1.254.723 1.745a3.066 3.066 0 010 3.976 3.066 3.066 0 00-.723 1.745 3.066 3.066 0 01-2.812 2.812 3.066 3.066 0 00-1.745.723 3.066 3.066 0 01-3.976 0 3.066 3.066 0 00-1.745-.723 3.066 3.066 0 01-2.812-2.812 3.066 3.066 0 00-.723-1.745 3.066 3.066 0 010-3.976 3.066 3.066 0 00.723-1.745 3.066 3.066 0 012.812-2.812zm7.44 5.252a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+                            </svg>
+                            Verified
+                        </span>
+                    </div>
+                    <p class="text-xs text-amber-700">
+                        <span id="menuNoticeDetail">For the most current menu and pricing, please contact the restaurant directly.</span>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Load Restaurant Data -->
+    <script src="data.js"></script>
+    
+    <script>
+        // Get restaurant ID from URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const restaurantId = urlParams.get('id');
+        
+        // Find restaurant in data
+        let restaurant = null;
+        if (typeof skiEatsData !== 'undefined' && skiEatsData.restaurants && restaurantId) {
+            restaurant = skiEatsData.restaurants.find(r => r.id === restaurantId);
+        }
+        
+        // Update page title and meta
+        if (restaurant) {
+            document.getElementById('pageTitle').textContent = `${restaurant.name} - Full Menu | SNOGRUB`;
+            document.getElementById('metaDescription').content = `View the full menu at ${restaurant.name} in ${restaurant.location}.`;
+            
+            // Update restaurant name and location
+            document.getElementById('restaurantName').textContent = `${restaurant.name} - Full Menu`;
+            document.getElementById('restaurantLocation').textContent = restaurant.location;
+            
+            // Update breadcrumb
+            const restaurantLink = document.getElementById('restaurantLink');
+            restaurantLink.href = `restaurant-detail.html?id=${restaurant.id}`;
+            restaurantLink.textContent = restaurant.name;
+            
+            // Update back button
+            document.getElementById('backToRestaurantBtn').href = `restaurant-detail.html?id=${restaurant.id}`;
+            
+            // Load delivery services and website links
+            const deliverySection = document.getElementById('deliverySection');
+            const deliveryLinks = document.getElementById('deliveryLinks');
+            const websiteLink = document.getElementById('websiteLink');
+            
+            if (deliverySection && restaurant) {
+                const deliveryServices = {
+                    'Uber Eats': {
+                        url: `https://www.ubereats.com/search?q=${encodeURIComponent(restaurant.name)}&location=${encodeURIComponent(restaurant.address || restaurant.location)}`,
+                        icon: '🚗'
+                    },
+                    'DoorDash': {
+                        url: `https://www.doordash.com/search?query=${encodeURIComponent(restaurant.name)}&location=${encodeURIComponent(restaurant.address || restaurant.location)}`,
+                        icon: '📦'
+                    },
+                    'Grubhub': {
+                        url: `https://www.grubhub.com/search?query=${encodeURIComponent(restaurant.name)}&location=${encodeURIComponent(restaurant.address || restaurant.location)}`,
+                        icon: '🍔'
+                    },
+                    'ChowNow': {
+                        url: `https://www.chownow.com/search?query=${encodeURIComponent(restaurant.name)}&location=${encodeURIComponent(restaurant.address || restaurant.location)}`,
+                        icon: '📱'
+                    }
+                };
+                
+                // Check which delivery services have reviews (indicating they serve this restaurant)
+                const availableServices = [];
+                if (restaurant.platformReviews) {
+                    Object.keys(deliveryServices).forEach(serviceName => {
+                        if (restaurant.platformReviews[serviceName]) {
+                            availableServices.push({
+                                name: serviceName,
+                                ...deliveryServices[serviceName]
+                            });
+                        }
+                    });
+                }
+                
+                // Display delivery service links
+                if (deliveryLinks) {
+                    if (availableServices.length > 0) {
+                        deliveryLinks.innerHTML = availableServices.map(service => `
+                            <a href="${service.url}" target="_blank" rel="noopener noreferrer" 
+                               class="px-4 py-2 bg-white text-gray-700 border border-gray-300 rounded-full text-sm font-medium hover:bg-gray-50 hover:border-gray-400 transition-colors flex items-center gap-2 shadow-sm">
+                                <span>${service.icon}</span>
+                                <span>${service.name}</span>
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path>
+                                </svg>
+                            </a>
+                        `).join('');
+                    } else {
+                        // If no delivery services found, hide the section
+                        deliverySection.style.display = 'none';
+                    }
+                }
+                
+                // Display restaurant website link
+                if (websiteLink && restaurant.website) {
+                    websiteLink.innerHTML = `
+                        <div class="flex items-center gap-3">
+                            <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9"></path>
+                            </svg>
+                            <a href="${restaurant.website}" target="_blank" rel="noopener noreferrer" 
+                               class="text-[var(--accent-blue)] hover:underline font-medium flex items-center gap-2">
+                                Visit Restaurant Website
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path>
+                                </svg>
+                            </a>
+                        </div>
+                    `;
+                } else if (websiteLink) {
+                    websiteLink.style.display = 'none';
+                }
+            } else if (deliverySection) {
+                // No restaurant data, hide the section
+                deliverySection.style.display = 'none';
+            }
+            
+            // Load full menu
+            const fullMenuContent = document.getElementById('fullMenuContent');
+            if (restaurant.menu && restaurant.menu.fullMenu) {
+                const fullMenu = restaurant.menu.fullMenu;
+                let menuHTML = '';
+                
+                // Iterate through menu categories
+                Object.keys(fullMenu).forEach(categoryKey => {
+                    const categoryItems = fullMenu[categoryKey];
+                    if (categoryItems && categoryItems.length > 0) {
+                        // Capitalize category name
+                        const categoryName = categoryKey.charAt(0).toUpperCase() + categoryKey.slice(1).replace(/([A-Z])/g, ' $1');
+                        
+                        menuHTML += `
+                            <div class="menu-category">
+                                <h2 class="text-2xl font-semibold text-gray-900 mb-6 pb-2 border-b border-gray-200">${categoryName}</h2>
+                                <div class="space-y-4">
+                                    ${categoryItems.map(item => `
+                                        <div class="menu-item">
+                                            <div class="flex justify-between items-start mb-2">
+                                                <h3 class="font-semibold text-gray-900 text-lg">${item.name}</h3>
+                                                <span class="text-gray-600 font-medium ml-4 whitespace-nowrap">${item.price || ''}</span>
+                                            </div>
+                                            ${item.description ? `<p class="text-gray-600 text-sm mt-1">${item.description}</p>` : ''}
+                                        </div>
+                                    `).join('')}
+                                </div>
+                            </div>
+                        `;
+                    }
+                });
+                
+                if (menuHTML) {
+                    fullMenuContent.innerHTML = menuHTML;
+                } else {
+                    fullMenuContent.innerHTML = '<p class="text-gray-500 text-center">Full menu coming soon.</p>';
+                }
+            } else {
+                fullMenuContent.innerHTML = '<p class="text-gray-500 text-center">Full menu not available. Please contact the restaurant for menu information.</p>';
+            }
+            
+            // Update menu notice based on verification status
+            const menuNotice = document.getElementById('menuNotice');
+            const menuNoticeText = document.getElementById('menuNoticeText');
+            const menuNoticeDetail = document.getElementById('menuNoticeDetail');
+            const verifiedBadge = document.getElementById('verifiedBadge');
+            
+            if (menuNotice && restaurant) {
+                const isVerified = restaurant.verified || false;
+                
+                if (isVerified) {
+                    if (menuNoticeText) {
+                        menuNoticeText.textContent = 'This restaurant is verified. Menu items and prices are up to date.';
+                    }
+                    if (menuNoticeDetail) {
+                        menuNoticeDetail.textContent = 'This menu has been verified by the restaurant and is current.';
+                    }
+                    if (verifiedBadge) {
+                        verifiedBadge.classList.remove('hidden');
+                    }
+                    menuNotice.className = 'mt-8 p-4 bg-green-50 border border-green-200 rounded-lg';
+                    if (menuNoticeText) {
+                        menuNoticeText.className = 'text-sm font-medium text-green-900';
+                    }
+                    if (menuNoticeDetail) {
+                        menuNoticeDetail.className = 'text-xs text-green-700';
+                    }
+                    const icon = menuNotice.querySelector('svg');
+                    if (icon) {
+                        icon.className = 'w-5 h-5 text-green-600 flex-shrink-0 mt-0.5';
+                    }
+                }
+            }
+        } else {
+            // Restaurant not found
+            document.getElementById('restaurantName').textContent = 'Restaurant Not Found';
+            document.getElementById('fullMenuContent').innerHTML = '<p class="text-gray-500 text-center">The requested restaurant could not be found.</p>';
+        }
+    </script>
+</body>
+</html>

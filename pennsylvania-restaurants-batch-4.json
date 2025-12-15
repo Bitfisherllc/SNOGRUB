@@ -1,0 +1,229 @@
+[
+    {
+        "id": "rivers-edge-restaurant",
+        "name": "The River's Edge",
+        "location": "Connellsville, Pennsylvania",
+        "coordinates": {
+            "lat": 40.0195,
+            "lng": -79.5892
+        },
+        "description": "Rustic industrial charm meets modern dining along the scenic Youghiogheny Riverfront in Connellsville, Pennsylvania. The River's Edge features locally-sourced, farm-to-table dishes in a unique setting. Perfect for a special dining experience while exploring the Great Allegheny Passage and Laurel Highlands region.",
+        "category": "restaurant",
+        "cuisine": "American, Farm-to-Table",
+        "priceRange": "$$$",
+        "rating": 4.0,
+        "reviewCount": 109,
+        "resort": "wisp-resort",
+        "address": "235 N First Street, Connellsville, PA 15425",
+        "phone": "(724) 628-2200",
+        "website": "https://theriversedgerestaurant.com",
+        "hours": {
+            "monday": "5:00 PM - 9:00 PM",
+            "tuesday": "5:00 PM - 9:00 PM",
+            "wednesday": "5:00 PM - 9:00 PM",
+            "thursday": "5:00 PM - 9:00 PM",
+            "friday": "5:00 PM - 10:00 PM",
+            "saturday": "5:00 PM - 10:00 PM",
+            "sunday": "5:00 PM - 9:00 PM"
+        }
+    },
+    {
+        "id": "kickstand-kitchen",
+        "name": "Kickstand Kitchen",
+        "location": "Connellsville, Pennsylvania",
+        "coordinates": {
+            "lat": 40.0165,
+            "lng": -79.6003
+        },
+        "description": "Welcoming café in Connellsville, Pennsylvania, known for its diverse menu and friendly atmosphere. Kickstand Kitchen offers a comfortable setting perfect for breakfast, lunch, and casual dining. A popular spot for cyclists on the Great Allegheny Passage and visitors exploring the Laurel Highlands.",
+        "category": "cafe",
+        "cuisine": "American, Café",
+        "priceRange": "$$",
+        "rating": 4.8,
+        "reviewCount": 318,
+        "resort": "wisp-resort",
+        "address": "507 W Crawford Avenue, Connellsville, PA 15425",
+        "phone": "(724) 628-2200",
+        "website": "http://www.kickstandkitchen.com",
+        "hours": {
+            "monday": "7:00 AM - 3:00 PM",
+            "tuesday": "7:00 AM - 3:00 PM",
+            "wednesday": "7:00 AM - 3:00 PM",
+            "thursday": "7:00 AM - 3:00 PM",
+            "friday": "7:00 AM - 4:00 PM",
+            "saturday": "7:00 AM - 4:00 PM",
+            "sunday": "8:00 AM - 3:00 PM"
+        }
+    },
+    {
+        "id": "york-bar",
+        "name": "York Bar",
+        "location": "Connellsville, Pennsylvania",
+        "coordinates": {
+            "lat": 40.0217895507813,
+            "lng": -79.5938034057617
+        },
+        "description": "Local bar in Connellsville, Pennsylvania, known for its cozy and inviting atmosphere. York Bar offers classic bar fare including cheeseburgers and wings, making it a popular spot for locals and visitors. Perfect for a casual meal or drink after exploring the Great Allegheny Passage.",
+        "category": "bar",
+        "cuisine": "American, Bar Food",
+        "priceRange": "$",
+        "rating": 4.6,
+        "reviewCount": 128,
+        "resort": "wisp-resort",
+        "address": "403 York Avenue, Connellsville, PA 15425",
+        "phone": "(724) 628-2200",
+        "website": "",
+        "hours": {
+            "monday": "11:00 AM - 11:00 PM",
+            "tuesday": "11:00 AM - 11:00 PM",
+            "wednesday": "11:00 AM - 11:00 PM",
+            "thursday": "11:00 AM - 11:00 PM",
+            "friday": "11:00 AM - 12:00 AM",
+            "saturday": "11:00 AM - 12:00 AM",
+            "sunday": "11:00 AM - 10:00 PM"
+        }
+    },
+    {
+        "id": "odonnells-pub",
+        "name": "O'Donnell's Pub",
+        "location": "Connellsville, Pennsylvania",
+        "coordinates": {
+            "lat": 40.0185551,
+            "lng": -79.5916048
+        },
+        "description": "Irish pub located just 0.2 miles from the Great Allegheny Passage trail in Connellsville, Pennsylvania. O'Donnell's Pub offers salads and American cuisine in a casual setting, making it a perfect stop for cyclists and hikers. Known for its friendly atmosphere and traditional pub fare.",
+        "category": "bar",
+        "cuisine": "Irish, American, Pub Food",
+        "priceRange": "$$",
+        "rating": 4.7,
+        "reviewCount": 277,
+        "resort": "wisp-resort",
+        "address": "128 S Arch Street, Connellsville, PA 15425",
+        "phone": "(724) 628-2200",
+        "website": "https://www.facebook.com/ODonnells-Pub-832809750241671",
+        "hours": {
+            "monday": "Closed",
+            "tuesday": "4:00 PM - 9:00 PM",
+            "wednesday": "4:00 PM - 9:00 PM",
+            "thursday": "4:00 PM - 9:00 PM",
+            "friday": "4:00 PM - 9:00 PM",
+            "saturday": "4:00 PM - 9:00 PM",
+            "sunday": "4:00 PM - 9:00 PM"
+        }
+    },
+    {
+        "id": "white-house-restaurant",
+        "name": "White House Restaurant",
+        "location": "Meyersdale, Pennsylvania",
+        "coordinates": {
+            "lat": 39.8145,
+            "lng": -79.0242
+        },
+        "description": "Family restaurant in Meyersdale, Pennsylvania, offering a range of American dishes including bruschetta chicken, broiled shrimp scampi, and steak salad. White House Restaurant provides a comfortable dining atmosphere perfect for families and groups. A popular local establishment known for its diverse menu and friendly service.",
+        "category": "restaurant",
+        "cuisine": "American",
+        "priceRange": "$$",
+        "rating": 4.3,
+        "reviewCount": 189,
+        "resort": "wisp-resort",
+        "address": "515 Thomas Street, Meyersdale, PA 15552",
+        "phone": "(814) 634-8145",
+        "website": "",
+        "hours": {
+            "monday": "Closed",
+            "tuesday": "4:00 PM - 7:30 PM",
+            "wednesday": "11:00 AM - 7:30 PM",
+            "thursday": "11:00 AM - 7:30 PM",
+            "friday": "11:00 AM - 8:30 PM",
+            "saturday": "4:00 PM - 8:30 PM",
+            "sunday": "Closed"
+        }
+    },
+    {
+        "id": "donges-drive-in",
+        "name": "Donges Drive-In & Motel",
+        "location": "Meyersdale, Pennsylvania",
+        "coordinates": {
+            "lat": 39.8137,
+            "lng": -79.0247
+        },
+        "description": "Classic drive-in diner and motel in Meyersdale, Pennsylvania, offering a nostalgic dining experience. Donges features menu items like the Blue Onion Burger, roast beef sandwich special, and steak and egg breakfast. A perfect stop for travelers and visitors exploring the Great Allegheny Passage and surrounding area.",
+        "category": "restaurant",
+        "cuisine": "American, Diner, Drive-In",
+        "priceRange": "$",
+        "rating": 4.2,
+        "reviewCount": 156,
+        "resort": "wisp-resort",
+        "address": "100 Center Street, Meyersdale, PA 15552",
+        "phone": "(814) 634-5269",
+        "website": "https://www.dongesdriveinmotel.com",
+        "hours": {
+            "monday": "6:00 AM - 9:00 PM",
+            "tuesday": "6:00 AM - 9:00 PM",
+            "wednesday": "6:00 AM - 9:00 PM",
+            "thursday": "6:00 AM - 9:00 PM",
+            "friday": "6:00 AM - 10:00 PM",
+            "saturday": "6:00 AM - 10:00 PM",
+            "sunday": "7:00 AM - 9:00 PM"
+        }
+    },
+    {
+        "id": "chuckwagon",
+        "name": "The Chuckwagon",
+        "location": "Somerset, Pennsylvania",
+        "coordinates": {
+            "lat": 40.008411,
+            "lng": -79.0780831
+        },
+        "description": "Lunch restaurant in Somerset, Pennsylvania, offering take-out and delivery options. The Chuckwagon is known for its affordable pricing and convenient service, making it a great option for a quick meal. Perfect for skiers looking for a fast, budget-friendly dining option.",
+        "category": "restaurant",
+        "cuisine": "American, Casual Dining",
+        "priceRange": "$",
+        "rating": 4.1,
+        "reviewCount": 134,
+        "resort": "wisp-resort",
+        "address": "305 North Kimberly Avenue, Somerset, PA 15501",
+        "phone": "(814) 445-3500",
+        "website": "",
+        "hours": {
+            "monday": "11:00 AM - 2:30 PM",
+            "tuesday": "11:00 AM - 2:30 PM",
+            "wednesday": "11:00 AM - 2:30 PM",
+            "thursday": "11:00 AM - 2:30 PM",
+            "friday": "11:00 AM - 2:30 PM",
+            "saturday": "Closed",
+            "sunday": "Closed"
+        }
+    },
+    {
+        "id": "italian-oven-somerset",
+        "name": "The Italian Oven",
+        "location": "Somerset, Pennsylvania",
+        "coordinates": {
+            "lat": 40.0225,
+            "lng": -79.1347
+        },
+        "description": "Italian restaurant in Somerset, Pennsylvania, serving lunch and dinner with a variety of authentic Italian dishes. The Italian Oven offers a warm, family-friendly atmosphere perfect for enjoying traditional Italian cuisine. A popular dining destination for families and groups visiting the Laurel Highlands region.",
+        "category": "restaurant",
+        "cuisine": "Italian",
+        "priceRange": "$$",
+        "rating": 4.3,
+        "reviewCount": 245,
+        "resort": "wisp-resort",
+        "address": "4129 Glades Pike, Somerset, PA 15501",
+        "phone": "(814) 445-4141",
+        "website": "https://italianovensomerset.com",
+        "hours": {
+            "monday": "11:00 AM - 9:00 PM",
+            "tuesday": "11:00 AM - 9:00 PM",
+            "wednesday": "11:00 AM - 9:00 PM",
+            "thursday": "11:00 AM - 9:00 PM",
+            "friday": "11:00 AM - 10:00 PM",
+            "saturday": "11:00 AM - 10:00 PM",
+            "sunday": "12:00 PM - 9:00 PM"
+        }
+    }
+]
+
+
+

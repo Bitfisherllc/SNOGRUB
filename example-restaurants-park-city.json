@@ -1,0 +1,61 @@
+[
+    {
+        "id": "ruths-chris-park-city",
+        "name": "Ruth's Chris Steak House",
+        "location": "Park City, Utah",
+        "coordinates": {
+            "lat": 40.6461,
+            "lng": -111.4980
+        },
+        "description": "Upscale steakhouse chain known for sizzling, butter-topped beef in an elegant setting. Located in Park City, perfect for a special après-ski dinner. Features premium steaks, seafood, and an extensive wine selection.",
+        "category": "restaurant",
+        "cuisine": "Steakhouse, American",
+        "priceRange": "$$$$",
+        "rating": 4.5,
+        "reviewCount": 678,
+        "resort": "park-city",
+        "address": "2200 Park Ave, Park City, UT 84060",
+        "phone": "(435) 647-0033",
+        "website": "https://www.ruthschris.com",
+        "hours": {
+            "monday": "5:00 PM - 10:00 PM",
+            "tuesday": "5:00 PM - 10:00 PM",
+            "wednesday": "5:00 PM - 10:00 PM",
+            "thursday": "5:00 PM - 10:00 PM",
+            "friday": "5:00 PM - 11:00 PM",
+            "saturday": "5:00 PM - 11:00 PM",
+            "sunday": "5:00 PM - 10:00 PM"
+        }
+    },
+    {
+        "id": "high-west-distillery",
+        "name": "High West Distillery & Saloon",
+        "location": "Park City, Utah",
+        "coordinates": {
+            "lat": 40.6455,
+            "lng": -111.4975
+        },
+        "description": "Unique distillery and restaurant in Park City's historic district. Known for craft whiskey, innovative cocktails, and Western-inspired cuisine. A popular après-ski destination with a lively atmosphere.",
+        "category": "restaurant",
+        "cuisine": "American, Western",
+        "priceRange": "$$",
+        "rating": 4.4,
+        "reviewCount": 892,
+        "resort": "park-city",
+        "address": "703 Park Ave, Park City, UT 84060",
+        "phone": "(435) 649-8300",
+        "website": "https://www.highwest.com",
+        "hours": {
+            "monday": "11:00 AM - 10:00 PM",
+            "tuesday": "11:00 AM - 10:00 PM",
+            "wednesday": "11:00 AM - 10:00 PM",
+            "thursday": "11:00 AM - 10:00 PM",
+            "friday": "11:00 AM - 11:00 PM",
+            "saturday": "11:00 AM - 11:00 PM",
+            "sunday": "11:00 AM - 10:00 PM"
+        }
+    }
+]
+
+
+

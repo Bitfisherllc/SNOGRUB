@@ -1,0 +1,126 @@
+<!-- OPTION 2: Card-Based Search Panel -->
+<section id="main-content" class="filter-bar-redesign" role="search" aria-label="Restaurant filters and search">
+    <div class="max-w-7xl mx-auto px-6 sm:px-8 py-6">
+        <!-- Prominent Search Card -->
+        <div class="bg-white rounded-2xl shadow-xl border border-gray-100 p-6 mb-6">
+            <div class="grid grid-cols-1 lg:grid-cols-4 gap-4 items-end">
+                <!-- Search Bar (takes 2 columns on large screens) -->
+                <div class="lg:col-span-2">
+                    <label class="block text-sm font-semibold text-gray-700 mb-2">Search</label>
+                    <div class="relative" id="searchContainer">
+                        <input 
+                            type="text" 
+                            id="searchInput"
+                            autocomplete="off"
+                            placeholder="Restaurants, resorts, locations..." 
+                            class="w-full pl-12 pr-12 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[var(--accent-blue)] focus:border-[var(--accent-blue)] transition-all"
+                        >
+                        <div id="searchIcon" class="absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400">
+                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                            </svg>
+                        </div>
+                        <button id="clearSearchBtn" class="absolute right-4 top-1/2 transform -translate-y-1/2 w-6 h-6 flex items-center justify-center text-gray-400 hover:text-gray-600 rounded-full hover:bg-gray-100 opacity-0 pointer-events-none">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                            </svg>
+                        </button>
+                        <!-- Autocomplete Dropdown -->
+                        <div id="autocompleteDropdown" class="absolute top-full left-0 right-0 mt-2 bg-white rounded-xl shadow-xl border border-gray-100 overflow-hidden z-50 max-h-96 overflow-y-auto hidden">
+                            <div id="suggestionsSection">
+                                <div id="suggestionsList" class="py-2"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Resort Filter -->
+                <div>
+                    <label class="block text-sm font-semibold text-gray-700 mb-2">Resort</label>
+                    <div class="relative">
+                        <select id="resortFilter" class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[var(--accent-blue)] focus:border-[var(--accent-blue)] bg-white cursor-pointer appearance-none">
+                            <option value="">All Resorts</option>
+                        </select>
+                        <div class="absolute right-3 top-1/2 transform -translate-y-1/2 pointer-events-none">
+                            <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Cuisine Filter -->
+                <div>
+                    <label class="block text-sm font-semibold text-gray-700 mb-2">Cuisine</label>
+                    <div class="relative">
+                        <select id="cuisineFilter" class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[var(--accent-blue)] focus:border-[var(--accent-blue)] bg-white cursor-pointer appearance-none">
+                            <option value="">All Cuisines</option>
+                        </select>
+                        <div class="absolute right-3 top-1/2 transform -translate-y-1/2 pointer-events-none">
+                            <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Second Row: Sort & Actions -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4 pt-4 border-t border-gray-100">
+                <!-- Sort Options -->
+                <div>
+                    <label class="block text-sm font-semibold text-gray-700 mb-2">Sort By</label>
+                    <div class="relative">
+                        <select id="sortSelect" class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[var(--accent-blue)] focus:border-[var(--accent-blue)] bg-white cursor-pointer appearance-none">
+                            <option value="distance">Distance</option>
+                            <option value="rating">Highest Rated</option>
+                            <option value="name">Name</option>
+                            <option value="resort">Resort</option>
+                        </select>
+                        <div class="absolute right-3 top-1/2 transform -translate-y-1/2 pointer-events-none">
+                            <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Quick Actions -->
+                <div class="flex items-end gap-2">
+                    <button id="toggleAdvancedFilters" class="flex-1 px-4 py-3 border-2 border-gray-200 rounded-xl hover:border-[var(--accent-blue)] hover:text-[var(--accent-blue)] transition-colors text-sm font-medium">
+                        More Filters
+                    </button>
+                </div>
+
+                <!-- View Toggle -->
+                <div class="flex items-end gap-2">
+                    <div class="view-toggle flex-1">
+                        <button id="gridViewBtn" class="view-btn active flex-1 justify-center" aria-label="Grid view">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"></path>
+                            </svg>
+                        </button>
+                        <button id="listViewBtn" class="view-btn flex-1 justify-center" aria-label="List view">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Active Filter Chips -->
+            <div id="activeFilterChips" class="mt-4 pt-4 border-t border-gray-100 flex flex-wrap gap-2 hidden">
+                <span class="text-sm text-gray-600 font-medium">Active:</span>
+            </div>
+        </div>
+
+        <!-- Advanced Filters -->
+        <div id="advancedFilters" class="advanced-filters">
+            <!-- Same content -->
+        </div>
+    </div>
+</section>
+
+
+

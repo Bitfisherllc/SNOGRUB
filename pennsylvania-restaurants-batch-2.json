@@ -1,0 +1,257 @@
+[
+    {
+        "id": "tavern-at-nemacolin",
+        "name": "The Tavern at Nemacolin",
+        "location": "Farmington, Pennsylvania",
+        "coordinates": {
+            "lat": 39.7990,
+            "lng": -79.5550
+        },
+        "description": "Casual dining spot at Nemacolin resort in Farmington, Pennsylvania, serving classic American dishes in a relaxed atmosphere. The Tavern offers a welcoming environment perfect for families and groups, with a menu featuring traditional favorites. Open daily for lunch and dinner, making it convenient for skiers visiting the Laurel Highlands region.",
+        "category": "restaurant",
+        "cuisine": "American, Bar & Grill",
+        "priceRange": "$$",
+        "rating": 4.5,
+        "reviewCount": 44,
+        "resort": "wisp-resort",
+        "address": "1001 Lafayette Drive, Farmington, PA 15437",
+        "phone": "(724) 329-8555",
+        "website": "https://www.nemacolin.com/dining/the-tavern",
+        "hours": {
+            "monday": "11:00 AM - 10:00 PM",
+            "tuesday": "11:00 AM - 10:00 PM",
+            "wednesday": "11:00 AM - 10:00 PM",
+            "thursday": "11:00 AM - 10:00 PM",
+            "friday": "11:00 AM - 10:00 PM",
+            "saturday": "11:00 AM - 10:00 PM",
+            "sunday": "11:00 AM - 10:00 PM"
+        }
+    },
+    {
+        "id": "mels-restaurant-lounge",
+        "name": "Mel's Restaurant & Lounge",
+        "location": "Somerset, Pennsylvania",
+        "coordinates": {
+            "lat": 40.0085,
+            "lng": -79.0792
+        },
+        "description": "Relaxed restaurant and lounge in Somerset, Pennsylvania, offering a variety of dishes including burgers, sandwiches, and wings. Mel's provides a comfortable atmosphere for casual dining, making it a great spot for skiers to grab a meal before or after hitting the slopes. Known for its friendly service and classic American fare.",
+        "category": "restaurant",
+        "cuisine": "American, Bar & Grill",
+        "priceRange": "$$",
+        "rating": 4.4,
+        "reviewCount": 375,
+        "resort": "wisp-resort",
+        "address": "127 W Patriot Street, Somerset, PA 15501",
+        "phone": "(814) 445-4181",
+        "website": "https://www.facebook.com/melsrestaurantandbarllc",
+        "hours": {
+            "monday": "11:00 AM - 10:00 PM",
+            "tuesday": "11:00 AM - 10:00 PM",
+            "wednesday": "11:00 AM - 10:00 PM",
+            "thursday": "11:00 AM - 10:00 PM",
+            "friday": "11:00 AM - 11:00 PM",
+            "saturday": "11:00 AM - 11:00 PM",
+            "sunday": "11:00 AM - 9:00 PM"
+        }
+    },
+    {
+        "id": "summit-diner",
+        "name": "Summit Diner",
+        "location": "Somerset, Pennsylvania",
+        "coordinates": {
+            "lat": 40.0135,
+            "lng": -79.0792
+        },
+        "description": "Classic American diner located at the intersection of Route 219 and Route 31 in Somerset, Pennsylvania. Known for its welcoming atmosphere and traditional American fare, Summit Diner offers breakfast, lunch, and dinner in an authentic diner setting. A perfect stop for skiers looking for hearty comfort food and friendly service.",
+        "category": "restaurant",
+        "cuisine": "American, Diner",
+        "priceRange": "$",
+        "rating": 4.5,
+        "reviewCount": 2128,
+        "resort": "wisp-resort",
+        "address": "791 N Center Avenue, Somerset, PA 15501",
+        "phone": "(814) 445-4181",
+        "website": "https://summitdinerpa.com",
+        "hours": {
+            "monday": "6:00 AM - 9:00 PM",
+            "tuesday": "6:00 AM - 9:00 PM",
+            "wednesday": "6:00 AM - 9:00 PM",
+            "thursday": "6:00 AM - 9:00 PM",
+            "friday": "6:00 AM - 10:00 PM",
+            "saturday": "6:00 AM - 10:00 PM",
+            "sunday": "6:00 AM - 9:00 PM"
+        }
+    },
+    {
+        "id": "eatn-park-somerset",
+        "name": "Eat'n Park",
+        "location": "Somerset, Pennsylvania",
+        "coordinates": {
+            "lat": 40.0195,
+            "lng": -79.0789
+        },
+        "description": "Family-friendly restaurant chain in Somerset, Pennsylvania, offering a diverse menu for breakfast, lunch, and dinner. Eat'n Park is known for its welcoming atmosphere, extensive menu options, and takeout service. A convenient and reliable dining option for families and groups visiting the Laurel Highlands region.",
+        "category": "restaurant",
+        "cuisine": "American, Family Restaurant",
+        "priceRange": "$$",
+        "rating": 4.2,
+        "reviewCount": 2390,
+        "resort": "wisp-resort",
+        "address": "926 N Center Avenue, Somerset, PA 15501",
+        "phone": "(814) 445-4181",
+        "website": "https://locations.eatnpark.com/pa/somerset",
+        "hours": {
+            "monday": "6:00 AM - 11:00 PM",
+            "tuesday": "6:00 AM - 11:00 PM",
+            "wednesday": "6:00 AM - 11:00 PM",
+            "thursday": "6:00 AM - 11:00 PM",
+            "friday": "6:00 AM - 12:00 AM",
+            "saturday": "6:00 AM - 12:00 AM",
+            "sunday": "6:00 AM - 11:00 PM"
+        }
+    },
+    {
+        "id": "maywood-grill",
+        "name": "Maywood Grill",
+        "location": "Chalkhill, Pennsylvania",
+        "coordinates": {
+            "lat": 39.8442426,
+            "lng": -79.6167092
+        },
+        "description": "Cozy grill located a short drive from Ohiopyle in Chalkhill, Pennsylvania, offering a diverse menu in a warm, inviting setting. Maywood Grill provides excellent customer service and a family-friendly atmosphere, making it a great dining destination for visitors exploring the Laurel Highlands and Great Allegheny Passage.",
+        "category": "restaurant",
+        "cuisine": "American, Grill",
+        "priceRange": "$$",
+        "rating": 4.6,
+        "reviewCount": 1099,
+        "resort": "wisp-resort",
+        "address": "2925 National Pike, Chalkhill, PA 15421",
+        "phone": "(724) 437-3564",
+        "website": "http://maywoodgrill.com",
+        "hours": {
+            "monday": "11:00 AM - 9:00 PM",
+            "tuesday": "11:00 AM - 9:00 PM",
+            "wednesday": "11:00 AM - 9:00 PM",
+            "thursday": "11:00 AM - 9:00 PM",
+            "friday": "11:00 AM - 10:00 PM",
+            "saturday": "11:00 AM - 10:00 PM",
+            "sunday": "11:00 AM - 9:00 PM"
+        }
+    },
+    {
+        "id": "gi-dayroom-coffee-shop",
+        "name": "G.I. Dayroom Coffee Shop",
+        "location": "Meyersdale, Pennsylvania",
+        "coordinates": {
+            "lat": 39.8136,
+            "lng": -79.0242
+        },
+        "description": "Cozy coffee shop and diner in Meyersdale, Pennsylvania, known for its friendly atmosphere and home-style cooking. Offering breakfast and lunch options, G.I. Dayroom is a popular spot for both locals and visitors, including cyclists on the Great Allegheny Passage trail. Perfect for starting your day with a hearty breakfast before skiing.",
+        "category": "cafe",
+        "cuisine": "Coffee Shop, Diner, American",
+        "priceRange": "$",
+        "rating": 4.7,
+        "reviewCount": 177,
+        "resort": "wisp-resort",
+        "address": "309 Main Street, Meyersdale, PA 15552",
+        "phone": "(814) 634-5269",
+        "website": "",
+        "hours": {
+            "monday": "6:00 AM - 2:00 PM",
+            "tuesday": "6:00 AM - 2:00 PM",
+            "wednesday": "6:00 AM - 2:00 PM",
+            "thursday": "6:00 AM - 2:00 PM",
+            "friday": "6:00 AM - 2:00 PM",
+            "saturday": "6:00 AM - 2:00 PM",
+            "sunday": "7:00 AM - 2:00 PM"
+        }
+    },
+    {
+        "id": "frans-bar",
+        "name": "Fran's Bar",
+        "location": "Meyersdale, Pennsylvania",
+        "coordinates": {
+            "lat": 39.8137,
+            "lng": -79.0247
+        },
+        "description": "Welcoming local bar in Meyersdale, Pennsylvania, offering a diverse selection of beverages and classic bar food in a relaxed environment. Fran's Bar provides a friendly atmosphere perfect for unwinding after a day on the slopes. Known for its welcoming service and local charm.",
+        "category": "bar",
+        "cuisine": "American, Bar Food",
+        "priceRange": "$",
+        "rating": 4.4,
+        "reviewCount": 52,
+        "resort": "wisp-resort",
+        "address": "416 Main Street, Meyersdale, PA 15552",
+        "phone": "(814) 634-5269",
+        "website": "",
+        "hours": {
+            "monday": "9:00 AM - 1:00 AM",
+            "tuesday": "9:00 AM - 1:00 AM",
+            "wednesday": "9:00 AM - 1:00 AM",
+            "thursday": "9:00 AM - 1:00 AM",
+            "friday": "9:00 AM - 1:00 AM",
+            "saturday": "9:00 AM - 1:00 AM",
+            "sunday": "Closed"
+        }
+    },
+    {
+        "id": "morguen-toole-company-hotel",
+        "name": "Morguen Toole Company Hotel",
+        "location": "Meyersdale, Pennsylvania",
+        "coordinates": {
+            "lat": 39.8135,
+            "lng": -79.0242
+        },
+        "description": "Historic hotel and restaurant in Meyersdale, Pennsylvania, serving American cuisine with a focus on burgers and sandwiches. The establishment features a bar area and offers a unique dining experience in a restored historic building. Perfect for visitors exploring the Great Allegheny Passage and surrounding Laurel Highlands region.",
+        "category": "restaurant",
+        "cuisine": "American, Hotel Restaurant",
+        "priceRange": "$$",
+        "rating": 4.5,
+        "reviewCount": 205,
+        "resort": "wisp-resort",
+        "address": "130 Center Street, Meyersdale, PA 15552",
+        "phone": "(814) 634-5269",
+        "website": "http://www.morguentoole.com",
+        "hours": {
+            "monday": "11:00 AM - 9:00 PM",
+            "tuesday": "11:00 AM - 9:00 PM",
+            "wednesday": "11:00 AM - 9:00 PM",
+            "thursday": "11:00 AM - 9:00 PM",
+            "friday": "11:00 AM - 10:00 PM",
+            "saturday": "11:00 AM - 10:00 PM",
+            "sunday": "11:00 AM - 9:00 PM"
+        }
+    },
+    {
+        "id": "bradys-restaurant",
+        "name": "Brady's Restaurant",
+        "location": "Acme, Pennsylvania",
+        "coordinates": {
+            "lat": 40.1105,
+            "lng": -79.4187
+        },
+        "description": "Local eatery in Acme, Pennsylvania, serving American cuisine including burgers, sandwiches, and soups. Brady's offers a comfortable, family-friendly atmosphere perfect for a casual meal. Located along Route 31, making it a convenient stop for travelers and skiers exploring the Laurel Highlands region.",
+        "category": "restaurant",
+        "cuisine": "American, Family Restaurant",
+        "priceRange": "$$",
+        "rating": 4.5,
+        "reviewCount": 1975,
+        "resort": "wisp-resort",
+        "address": "3242 PA-31, Acme, PA 15610",
+        "phone": "(724) 423-4566",
+        "website": "http://www.bradysrestaurant.com",
+        "hours": {
+            "monday": "7:00 AM - 9:00 PM",
+            "tuesday": "7:00 AM - 9:00 PM",
+            "wednesday": "7:00 AM - 9:00 PM",
+            "thursday": "7:00 AM - 9:00 PM",
+            "friday": "7:00 AM - 10:00 PM",
+            "saturday": "7:00 AM - 10:00 PM",
+            "sunday": "7:00 AM - 9:00 PM"
+        }
+    }
+]
+
+
+

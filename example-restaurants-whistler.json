@@ -1,0 +1,61 @@
+[
+    {
+        "id": "bearfoot-bistro",
+        "name": "Bearfoot Bistro",
+        "location": "Whistler, British Columbia",
+        "coordinates": {
+            "lat": 50.1163,
+            "lng": -122.9574
+        },
+        "description": "Award-winning fine dining restaurant in Whistler Village featuring innovative Pacific Northwest cuisine. Known for its extensive wine cellar and unique dining experiences including sabering champagne bottles. The restaurant offers an elegant atmosphere perfect for special occasions and romantic dinners.",
+        "category": "restaurant",
+        "cuisine": "Pacific Northwest, Fine Dining",
+        "priceRange": "$$$$",
+        "rating": 4.6,
+        "reviewCount": 1247,
+        "resort": "whistler-blackcomb",
+        "address": "4121 Village Green, Whistler, BC V0N 1B4, Canada",
+        "phone": "+1 604-932-3433",
+        "website": "https://www.bearfootbistro.com",
+        "hours": {
+            "monday": "5:00 PM - 10:00 PM",
+            "tuesday": "5:00 PM - 10:00 PM",
+            "wednesday": "5:00 PM - 10:00 PM",
+            "thursday": "5:00 PM - 10:00 PM",
+            "friday": "5:00 PM - 11:00 PM",
+            "saturday": "5:00 PM - 11:00 PM",
+            "sunday": "5:00 PM - 10:00 PM"
+        }
+    },
+    {
+        "id": "araxi-restaurant",
+        "name": "Araxi Restaurant & Oyster Bar",
+        "location": "Whistler, British Columbia",
+        "coordinates": {
+            "lat": 50.1158,
+            "lng": -122.9569
+        },
+        "description": "Renowned Whistler restaurant serving contemporary Pacific Northwest cuisine with a focus on local, sustainable ingredients. Features an extensive oyster bar and award-winning wine list. Located in the heart of Whistler Village, perfect for après-ski dining.",
+        "category": "restaurant",
+        "cuisine": "Pacific Northwest, Seafood",
+        "priceRange": "$$$",
+        "rating": 4.5,
+        "reviewCount": 892,
+        "resort": "whistler-blackcomb",
+        "address": "4222 Village Square, Whistler, BC V0N 1B4, Canada",
+        "phone": "+1 604-932-4540",
+        "website": "https://www.araxi.com",
+        "hours": {
+            "monday": "5:00 PM - 10:00 PM",
+            "tuesday": "5:00 PM - 10:00 PM",
+            "wednesday": "5:00 PM - 10:00 PM",
+            "thursday": "5:00 PM - 10:00 PM",
+            "friday": "5:00 PM - 11:00 PM",
+            "saturday": "5:00 PM - 11:00 PM",
+            "sunday": "5:00 PM - 10:00 PM"
+        }
+    }
+]
+
+
+

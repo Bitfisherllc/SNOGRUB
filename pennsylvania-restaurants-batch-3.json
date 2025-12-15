@@ -1,0 +1,201 @@
+[
+    {
+        "id": "sullivans-bar-restaurant",
+        "name": "Sullivan's Bar and Restaurant",
+        "location": "Somerset, Pennsylvania",
+        "coordinates": {
+            "lat": 40.0225,
+            "lng": -79.1347
+        },
+        "description": "Bar and restaurant in Somerset, Pennsylvania, offering a variety of dishes including rodeo burgers and grilled chicken salads. Sullivan's provides a casual dining atmosphere perfect for enjoying a meal with friends or family. A popular local spot known for its friendly service and diverse menu.",
+        "category": "bar",
+        "cuisine": "American, Bar & Grill",
+        "priceRange": "$$",
+        "rating": 4.2,
+        "reviewCount": 217,
+        "resort": "wisp-resort",
+        "address": "1239 Glades Pike, Somerset, PA 15501",
+        "phone": "(814) 443-2741",
+        "website": "",
+        "hours": {
+            "monday": "3:00 PM - 10:00 PM",
+            "tuesday": "3:00 PM - 10:00 PM",
+            "wednesday": "3:00 PM - 10:00 PM",
+            "thursday": "3:00 PM - 10:00 PM",
+            "friday": "3:00 PM - 12:00 AM",
+            "saturday": "11:00 AM - 12:00 AM",
+            "sunday": "Closed"
+        }
+    },
+    {
+        "id": "rock-city-cafe",
+        "name": "Rock City Café",
+        "location": "Rockwood, Pennsylvania",
+        "coordinates": {
+            "lat": 39.9156,
+            "lng": -79.1523
+        },
+        "description": "Cozy bar and grill in Rockwood, Pennsylvania, known for its hearty appetizers like honey BBQ wings and loaded nachos. Rock City Café offers a welcoming atmosphere with friendly service, making it a great spot for casual dining. Perfect for visitors exploring the Great Allegheny Passage and surrounding Laurel Highlands region.",
+        "category": "restaurant",
+        "cuisine": "American, Bar & Grill",
+        "priceRange": "$$",
+        "rating": 4.4,
+        "reviewCount": 175,
+        "resort": "wisp-resort",
+        "address": "671 Main Street, Rockwood, PA 15557",
+        "phone": "(814) 926-1009",
+        "website": "https://www.facebook.com/RockCityCafe2013",
+        "hours": {
+            "monday": "Closed",
+            "tuesday": "Closed",
+            "wednesday": "3:00 PM - 10:00 PM",
+            "thursday": "3:00 PM - 10:00 PM",
+            "friday": "3:00 PM - 10:00 PM",
+            "saturday": "3:00 PM - 10:00 PM",
+            "sunday": "Closed"
+        }
+    },
+    {
+        "id": "trailhead-brewing-company",
+        "name": "Trailhead Brewing Company",
+        "location": "Rockwood, Pennsylvania",
+        "coordinates": {
+            "lat": 39.9156,
+            "lng": -79.1523
+        },
+        "description": "Craft brewery located just off the Great Allegheny Passage near mile marker 44 in Rockwood, Pennsylvania, close to the Casselman River. Trailhead Brewing Company serves a range of unique and flavorful craft beers in a cozy atmosphere, perfect for a relaxed evening. A must-visit spot for craft beer enthusiasts exploring the Laurel Highlands.",
+        "category": "bar",
+        "cuisine": "Brewery, American, Bar Food",
+        "priceRange": "$$",
+        "rating": 4.9,
+        "reviewCount": 62,
+        "resort": "wisp-resort",
+        "address": "402 Main Street, Suite C, Rockwood, PA 15557",
+        "phone": "(814) 926-1009",
+        "website": "https://www.drinktrailhead.com",
+        "hours": {
+            "monday": "4:00 PM - 10:00 PM",
+            "tuesday": "4:00 PM - 10:00 PM",
+            "wednesday": "4:00 PM - 10:00 PM",
+            "thursday": "4:00 PM - 10:00 PM",
+            "friday": "4:00 PM - 11:00 PM",
+            "saturday": "12:00 PM - 11:00 PM",
+            "sunday": "12:00 PM - 8:00 PM"
+        }
+    },
+    {
+        "id": "rey-azteca-mexican-restaurant",
+        "name": "Rey Azteca Mexican Restaurant",
+        "location": "Somerset, Pennsylvania",
+        "coordinates": {
+            "lat": 40.0205,
+            "lng": -79.0789
+        },
+        "description": "Authentic Mexican restaurant in Somerset, Pennsylvania, serving traditional Mexican cuisine for lunch and dinner. Rey Azteca offers a full bar and a welcoming atmosphere, making it a great choice for families and groups looking for flavorful Mexican dishes. A popular dining destination in the Laurel Highlands region.",
+        "category": "restaurant",
+        "cuisine": "Mexican",
+        "priceRange": "$$",
+        "rating": 4.3,
+        "reviewCount": 234,
+        "resort": "wisp-resort",
+        "address": "780 N Center Avenue, Somerset, PA 15501",
+        "phone": "(814) 443-2329",
+        "website": "https://reyaztecasomerset.com",
+        "hours": {
+            "monday": "11:00 AM - 9:00 PM",
+            "tuesday": "11:00 AM - 9:00 PM",
+            "wednesday": "11:00 AM - 9:00 PM",
+            "thursday": "11:00 AM - 9:00 PM",
+            "friday": "11:00 AM - 9:00 PM",
+            "saturday": "11:00 AM - 9:00 PM",
+            "sunday": "Closed"
+        }
+    },
+    {
+        "id": "oakhurst-grille-event-center",
+        "name": "Oakhurst Grille & Event Center",
+        "location": "Somerset, Pennsylvania",
+        "coordinates": {
+            "lat": 40.0590,
+            "lng": -79.1845
+        },
+        "description": "Full-service restaurant and event center in Somerset, Pennsylvania, offering brunch, lunch, and dinner with a full bar and outdoor seating. Oakhurst Grille provides a versatile dining experience suitable for both casual meals and special events. Perfect for groups and families visiting the Laurel Highlands region.",
+        "category": "restaurant",
+        "cuisine": "American, Event Venue",
+        "priceRange": "$$",
+        "rating": 4.2,
+        "reviewCount": 189,
+        "resort": "wisp-resort",
+        "address": "2409 Glades Pike, Somerset, PA 15501",
+        "phone": "(814) 445-4181",
+        "website": "https://oakhurstgrille.com",
+        "hours": {
+            "monday": "11:00 AM - 9:00 PM",
+            "tuesday": "11:00 AM - 9:00 PM",
+            "wednesday": "11:00 AM - 9:00 PM",
+            "thursday": "11:00 AM - 9:00 PM",
+            "friday": "11:00 AM - 10:00 PM",
+            "saturday": "11:00 AM - 10:00 PM",
+            "sunday": "10:00 AM - 8:00 PM"
+        }
+    },
+    {
+        "id": "potters-bar-grille",
+        "name": "Potter's Bar & Grille",
+        "location": "Uniontown, Pennsylvania",
+        "coordinates": {
+            "lat": 39.8937236,
+            "lng": -79.7326391
+        },
+        "description": "Family-owned restaurant in Uniontown, Pennsylvania, serving the community since 1950. Potter's Bar & Grille is known for its classic American cuisine and friendly atmosphere. A local favorite offering traditional comfort food in a welcoming setting, perfect for families and groups visiting the Laurel Highlands region.",
+        "category": "restaurant",
+        "cuisine": "American, Family Restaurant",
+        "priceRange": "$$",
+        "rating": 4.4,
+        "reviewCount": 312,
+        "resort": "wisp-resort",
+        "address": "304 Morgantown Street, Uniontown, PA 15401",
+        "phone": "(724) 438-9835",
+        "website": "https://www.pottersbarandgrille.com",
+        "hours": {
+            "monday": "10:00 AM - 9:00 PM",
+            "tuesday": "4:00 PM - 9:00 PM",
+            "wednesday": "4:00 PM - 9:00 PM",
+            "thursday": "4:00 PM - 10:00 PM",
+            "friday": "10:00 AM - 10:00 PM",
+            "saturday": "10:00 AM - 10:00 PM",
+            "sunday": "11:00 AM - 7:00 PM"
+        }
+    },
+    {
+        "id": "smittys-bar-restaurant",
+        "name": "Smitty's Bar & Restaurant",
+        "location": "Uniontown, Pennsylvania",
+        "coordinates": {
+            "lat": 39.9293,
+            "lng": -79.6824
+        },
+        "description": "Casual bar and restaurant in Uniontown, Pennsylvania, offering a range of dishes in a relaxed setting. Smitty's provides a comfortable atmosphere for casual dining and gathering with friends. A popular local spot perfect for après-ski dining or a casual meal.",
+        "category": "bar",
+        "cuisine": "American, Bar & Grill",
+        "priceRange": "$$",
+        "rating": 4.1,
+        "reviewCount": 178,
+        "resort": "wisp-resort",
+        "address": "999 N Gallatin Avenue Ext, Uniontown, PA 15401",
+        "phone": "(724) 438-0000",
+        "website": "",
+        "hours": {
+            "monday": "11:00 AM - 10:00 PM",
+            "tuesday": "11:00 AM - 10:00 PM",
+            "wednesday": "11:00 AM - 10:00 PM",
+            "thursday": "11:00 AM - 10:00 PM",
+            "friday": "11:00 AM - 11:00 PM",
+            "saturday": "11:00 AM - 11:00 PM",
+            "sunday": "11:00 AM - 9:00 PM"
+        }
+    }
+]
+
+
+

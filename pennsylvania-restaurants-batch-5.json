@@ -1,0 +1,259 @@
+[
+    {
+        "id": "braddocks-inn-restaurant-tavern",
+        "name": "Braddock's Inn Restaurant & Tavern",
+        "location": "Farmington, Pennsylvania",
+        "coordinates": {
+            "lat": 39.807220,
+            "lng": -79.566154
+        },
+        "description": "Historic restaurant and tavern in Farmington, Pennsylvania, serving classic American dishes in a historic setting. Braddock's Inn offers breakfast, lunch, and dinner with the tavern remaining open after restaurant hours. A charming establishment perfect for visitors exploring the Laurel Highlands and Nemacolin area.",
+        "category": "restaurant",
+        "cuisine": "American, Historic Tavern",
+        "priceRange": "$$",
+        "rating": 4.3,
+        "reviewCount": 234,
+        "resort": "wisp-resort",
+        "address": "3261 National Pike, Farmington, PA 15437",
+        "phone": "(724) 329-5508",
+        "website": "https://www.braddocksinn.com",
+        "hours": {
+            "monday": "Closed",
+            "tuesday": "Closed",
+            "wednesday": "8:00 AM - 8:00 PM",
+            "thursday": "8:00 AM - 8:00 PM",
+            "friday": "8:00 AM - 9:00 PM",
+            "saturday": "8:00 AM - 9:00 PM",
+            "sunday": "8:00 AM - 8:00 PM"
+        },
+        "note": "Tavern remains open after restaurant hours"
+    },
+    {
+        "id": "stone-house-restaurant-country-inn",
+        "name": "Stone House Restaurant & Country Inn",
+        "location": "Farmington, Pennsylvania",
+        "coordinates": {
+            "lat": 39.8090,
+            "lng": -79.5640
+        },
+        "description": "Restaurant and country inn in Farmington, Pennsylvania, featuring a diverse menu with a focus on regional cuisine. Stone House offers a charming atmosphere in a historic setting, perfect for a memorable dining experience. Ideal for visitors exploring the Nemacolin area and Laurel Highlands region.",
+        "category": "restaurant",
+        "cuisine": "American, Regional Cuisine",
+        "priceRange": "$$",
+        "rating": 4.2,
+        "reviewCount": 189,
+        "resort": "wisp-resort",
+        "address": "3023 National Pike, Farmington, PA 15437",
+        "phone": "(724) 329-5508",
+        "website": "",
+        "hours": {
+            "monday": "11:00 AM - 9:00 PM",
+            "tuesday": "11:00 AM - 9:00 PM",
+            "wednesday": "11:00 AM - 9:00 PM",
+            "thursday": "11:00 AM - 9:00 PM",
+            "friday": "11:00 AM - 10:00 PM",
+            "saturday": "11:00 AM - 10:00 PM",
+            "sunday": "11:00 AM - 9:00 PM"
+        }
+    },
+    {
+        "id": "great-day-juice-company",
+        "name": "Great Day Juice Company",
+        "location": "Somerset, Pennsylvania",
+        "coordinates": {
+            "lat": 40.0085,
+            "lng": -79.0817
+        },
+        "description": "Health-focused juice shop and café in Somerset, Pennsylvania, offering a variety of fresh juices and healthy food options for breakfast, lunch, and dinner. Great Day Juice Company provides nutritious meals perfect for health-conscious diners. A great option for skiers looking for healthy, energizing meals.",
+        "category": "cafe",
+        "cuisine": "Juice Bar, Healthy, American",
+        "priceRange": "$$",
+        "rating": 4.7,
+        "reviewCount": 51,
+        "resort": "wisp-resort",
+        "address": "253 West Main Street, Somerset, PA 15501",
+        "phone": "(814) 445-4181",
+        "website": "http://www.greatdayjuice.com",
+        "hours": {
+            "monday": "7:00 AM - 7:00 PM",
+            "tuesday": "7:00 AM - 7:00 PM",
+            "wednesday": "7:00 AM - 7:00 PM",
+            "thursday": "7:00 AM - 7:00 PM",
+            "friday": "7:00 AM - 8:00 PM",
+            "saturday": "7:00 AM - 8:00 PM",
+            "sunday": "8:00 AM - 6:00 PM"
+        }
+    },
+    {
+        "id": "whitehorse-brewing",
+        "name": "Whitehorse Brewing",
+        "location": "Berlin, Pennsylvania",
+        "coordinates": {
+            "lat": 39.9206,
+            "lng": -78.9572
+        },
+        "description": "Local brewery in Berlin, Pennsylvania, offering a variety of craft beers in a welcoming environment. Whitehorse Brewing provides a cozy atmosphere perfect for craft beer enthusiasts. A great spot to sample local brews while exploring the Laurel Highlands region.",
+        "category": "bar",
+        "cuisine": "Brewery, American, Bar Food",
+        "priceRange": "$$",
+        "rating": 4.9,
+        "reviewCount": 110,
+        "resort": "wisp-resort",
+        "address": "824 Diamond Street, Berlin, PA 15530",
+        "phone": "(814) 267-0000",
+        "website": "http://www.whbrewing.com",
+        "hours": {
+            "monday": "4:00 PM - 10:00 PM",
+            "tuesday": "4:00 PM - 10:00 PM",
+            "wednesday": "4:00 PM - 10:00 PM",
+            "thursday": "4:00 PM - 10:00 PM",
+            "friday": "4:00 PM - 11:00 PM",
+            "saturday": "12:00 PM - 11:00 PM",
+            "sunday": "12:00 PM - 8:00 PM"
+        }
+    },
+    {
+        "id": "east-end-grille",
+        "name": "East End Grille",
+        "location": "Berlin, Pennsylvania",
+        "coordinates": {
+            "lat": 39.9206,
+            "lng": -78.9533
+        },
+        "description": "Bar and grill in Berlin, Pennsylvania, known for its chicken wings and casual dining experience. East End Grille offers a relaxed atmosphere perfect for enjoying classic bar food and drinks. A popular local spot for casual dining and gathering with friends.",
+        "category": "bar",
+        "cuisine": "American, Bar & Grill",
+        "priceRange": "$$",
+        "rating": 4.5,
+        "reviewCount": 228,
+        "resort": "wisp-resort",
+        "address": "1310 Main Street, Berlin, PA 15530",
+        "phone": "(814) 267-0000",
+        "website": "",
+        "hours": {
+            "monday": "11:00 AM - 10:00 PM",
+            "tuesday": "11:00 AM - 10:00 PM",
+            "wednesday": "11:00 AM - 10:00 PM",
+            "thursday": "11:00 AM - 10:00 PM",
+            "friday": "11:00 AM - 11:00 PM",
+            "saturday": "11:00 AM - 11:00 PM",
+            "sunday": "11:00 AM - 9:00 PM"
+        }
+    },
+    {
+        "id": "mountain-pies",
+        "name": "Mountain Pies",
+        "location": "Markleysburg, Pennsylvania",
+        "coordinates": {
+            "lat": 39.7212,
+            "lng": -79.5470
+        },
+        "description": "Family-owned pizzeria and bakery in Markleysburg, Pennsylvania, established in 2016. Mountain Pies offers a variety of hand-tossed pizzas, subs, salads, strombolis, breadsticks, and desserts, including gluten-friendly crusts. A perfect stop for families and groups looking for quality pizza and Italian fare in the Laurel Highlands region.",
+        "category": "restaurant",
+        "cuisine": "Italian, Pizza, Bakery",
+        "priceRange": "$$",
+        "rating": 4.5,
+        "reviewCount": 234,
+        "resort": "wisp-resort",
+        "address": "4633 National Pike, Markleysburg, PA 15459",
+        "phone": "(724) 329-7437",
+        "website": "http://mountainpies.org",
+        "hours": {
+            "monday": "11:00 AM - 8:00 PM",
+            "tuesday": "11:00 AM - 8:00 PM",
+            "wednesday": "11:00 AM - 8:00 PM",
+            "thursday": "11:00 AM - 8:00 PM",
+            "friday": "11:00 AM - 9:00 PM",
+            "saturday": "11:00 AM - 9:00 PM",
+            "sunday": "11:00 AM - 8:00 PM"
+        }
+    },
+    {
+        "id": "albrights-pizza-more",
+        "name": "Albright's Pizza & More",
+        "location": "Meyersdale, Pennsylvania",
+        "coordinates": {
+            "lat": 39.8136,
+            "lng": -79.0242
+        },
+        "description": "Family restaurant in Meyersdale, Pennsylvania, offering a variety of menu items including pizza, wings, burgers, subs, stromboli, and soups. Albright's serves a full home-cooked breakfast starting at 7:00 AM and has a daily lunch buffet beginning at 11:00 AM. A popular local spot perfect for families and groups.",
+        "category": "restaurant",
+        "cuisine": "Pizza, American, Italian",
+        "priceRange": "$$",
+        "rating": 4.2,
+        "reviewCount": 178,
+        "resort": "wisp-resort",
+        "address": "316 Grant Street, Meyersdale, PA 15552",
+        "phone": "(814) 634-5120",
+        "website": "",
+        "hours": {
+            "monday": "7:00 AM - 9:00 PM",
+            "tuesday": "7:00 AM - 9:00 PM",
+            "wednesday": "7:00 AM - 9:00 PM",
+            "thursday": "7:00 AM - 9:00 PM",
+            "friday": "7:00 AM - 10:00 PM",
+            "saturday": "7:00 AM - 10:00 PM",
+            "sunday": "Closed"
+        },
+        "note": "Full breakfast starting at 7:00 AM, daily lunch buffet at 11:00 AM"
+    },
+    {
+        "id": "take-six-pizza-subs",
+        "name": "Take Six Pizza & Subs",
+        "location": "Meyersdale, Pennsylvania",
+        "coordinates": {
+            "lat": 39.8128,
+            "lng": -79.0256
+        },
+        "description": "Pizza and sub shop in Meyersdale, Pennsylvania, offering a diverse menu featuring grilled chicken salads, chicken wraps, and chili dogs. Take Six provides quick, casual dining perfect for a fast meal. A convenient option for skiers and visitors exploring the Great Allegheny Passage area.",
+        "category": "restaurant",
+        "cuisine": "Pizza, Subs, American",
+        "priceRange": "$",
+        "rating": 4.1,
+        "reviewCount": 145,
+        "resort": "wisp-resort",
+        "address": "202 Grant Street, Meyersdale, PA 15552",
+        "phone": "(814) 634-5120",
+        "website": "",
+        "hours": {
+            "monday": "10:00 AM - 9:00 PM",
+            "tuesday": "10:00 AM - 9:00 PM",
+            "wednesday": "10:00 AM - 9:00 PM",
+            "thursday": "10:00 AM - 9:00 PM",
+            "friday": "10:00 AM - 10:00 PM",
+            "saturday": "10:00 AM - 10:00 PM",
+            "sunday": "11:00 AM - 8:00 PM"
+        }
+    },
+    {
+        "id": "corner-cup",
+        "name": "The Corner Cup",
+        "location": "Meyersdale, Pennsylvania",
+        "coordinates": {
+            "lat": 39.8137,
+            "lng": -79.0247
+        },
+        "description": "Charming coffee shop in Meyersdale, Pennsylvania, offering a variety of beverages and light snacks. The Corner Cup provides a cozy atmosphere perfect for starting your day with a cup of coffee or taking a break while exploring the Great Allegheny Passage and surrounding Laurel Highlands region.",
+        "category": "cafe",
+        "cuisine": "Coffee Shop, Café, Light Fare",
+        "priceRange": "$",
+        "rating": 4.3,
+        "reviewCount": 98,
+        "resort": "wisp-resort",
+        "address": "311 Main Street, Meyersdale, PA 15552",
+        "phone": "(814) 634-5269",
+        "website": "",
+        "hours": {
+            "monday": "6:00 AM - 5:00 PM",
+            "tuesday": "6:00 AM - 5:00 PM",
+            "wednesday": "6:00 AM - 5:00 PM",
+            "thursday": "6:00 AM - 5:00 PM",
+            "friday": "6:00 AM - 6:00 PM",
+            "saturday": "7:00 AM - 5:00 PM",
+            "sunday": "8:00 AM - 3:00 PM"
+        }
+    }
+]
+
+
+

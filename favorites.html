@@ -1,0 +1,644 @@
+<!-- Apple-Style Ski Dining UI - Favorites Page -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Favorites - SNOGRUB</title>
+    
+    <!-- TailwindCSS via CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Load Universal Resort Card Component -->
+    <script src="js/resort-card-universal.js"></script>
+    
+    <!-- Load data.js -->
+    <script src="data.js"></script>
+    <!-- Home Base Functionality -->
+    <script src="js/homebase.js"></script>
+    <script src="js/homebase-bar.js"></script>
+    
+    <!-- Inter font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --accent-blue: #0071e3;
+        }
+        
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+        
+        .frosted-glass {
+            background: rgba(251, 251, 253, 0.8);
+            backdrop-filter: saturate(180%) blur(20px);
+            -webkit-backdrop-filter: saturate(180%) blur(20px);
+        }
+        
+        * {
+            transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        /* Favorites button styling for resort cards */
+        .favorite-button {
+            transition: all 0.2s ease;
+        }
+        
+        .favorite-button:hover svg {
+            transform: scale(1.1);
+        }
+        
+        .favorite-button.favorited svg {
+            animation: favoritePulse 0.3s ease;
+        }
+        
+        @keyframes favoritePulse {
+            0%, 100% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.2);
+            }
+        }
+        
+        /* Logo overlay container - hidden by default */
+        .resort-logo-overlay-container {
+            display: none !important;
+        }
+        
+        .resort-logo-overlay-container[style*="flex"] {
+            display: flex !important;
+        }
+    </style>
+</head>
+<body class="bg-white text-gray-900 antialiased">
+    
+    <!-- Navigation Bar -->
+    <nav class="fixed top-0 left-0 right-0 z-50 frosted-glass border-b border-gray-200/50">
+        <div class="max-w-7xl mx-auto px-6 sm:px-8">
+            <div class="flex items-center justify-between h-14">
+                <div class="flex-shrink-0">
+                    <a href="index.html" class="text-2xl font-semibold hover:opacity-80 transition-opacity duration-300">
+                        <span class="bg-[var(--accent-blue)] text-white px-1">SNO</span><span class="text-[var(--accent-blue)]">GRUB</span>
+                    </a>
+                </div>
+                
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="resorts.html" class="text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors duration-200">
+                        Resorts
+                    </a>
+                    <a href="restaurants.html" class="text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors duration-200">
+                        Restaurants
+                    </a>
+                    <a href="map.html" class="text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors duration-200">
+                        Map
+                    </a>
+                    <a href="blog.html" class="text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors duration-200">
+                        Blog
+                    </a>
+                    <a href="favorites.html" class="text-sm font-medium text-[var(--accent-blue)] transition-colors duration-200">
+                        Favorites
+                    </a>
+                    <a href="trips.html" class="text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors duration-200">
+                        Trips
+                    </a>
+                </div>
+                
+                <!-- Mobile Menu Button -->
+                <button id="mobileMenuButton" class="md:hidden text-gray-600 hover:text-gray-900 transition-colors" aria-label="Menu">
+                    <svg id="menuIcon" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                    </svg>
+                    <svg id="closeIcon" class="w-6 h-6 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                    </svg>
+                </button>
+            </div>
+            
+            <!-- Mobile Menu Dropdown -->
+            <div id="mobileMenu" class="hidden md:hidden border-t border-gray-200/50 bg-white/95 backdrop-blur-lg">
+                <div class="px-6 py-4 space-y-4">
+                    <a href="resorts.html" class="block text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors duration-200">Resorts</a>
+                    <a href="restaurants.html" class="block text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors duration-200">Restaurants</a>
+                    <a href="map.html" class="block text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors duration-200">Map</a>
+                    <a href="blog.html" class="block text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors duration-200">Blog</a>
+                    <a href="favorites.html" class="block text-sm font-medium text-[var(--accent-blue)] transition-colors duration-200">Favorites</a>
+                    <a href="trips.html" class="block text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors duration-200">Trips</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+    
+    <script>
+        // Mobile menu toggle
+        document.addEventListener('DOMContentLoaded', () => {
+            const mobileMenuButton = document.getElementById('mobileMenuButton');
+            const mobileMenu = document.getElementById('mobileMenu');
+            const menuIcon = document.getElementById('menuIcon');
+            const closeIcon = document.getElementById('closeIcon');
+            
+            if (mobileMenuButton) {
+                mobileMenuButton.addEventListener('click', () => {
+                    mobileMenu.classList.toggle('hidden');
+                    menuIcon.classList.toggle('hidden');
+                    closeIcon.classList.toggle('hidden');
+                });
+            }
+            
+            // Close mobile menu when clicking a link
+            if (mobileMenu) {
+                mobileMenu.querySelectorAll('a').forEach(link => {
+                    link.addEventListener('click', () => {
+                        mobileMenu.classList.add('hidden');
+                        menuIcon.classList.remove('hidden');
+                        closeIcon.classList.add('hidden');
+                    });
+                });
+            }
+        });
+    </script>
+    
+    <!-- Header -->
+    <section class="pt-32 pb-12 px-6 sm:px-8 bg-gradient-to-b from-gray-50 to-white">
+        <div class="max-w-7xl mx-auto">
+            <h1 class="text-4xl sm:text-5xl font-semibold text-gray-900 mb-4 tracking-tight">
+                My Favorites
+            </h1>
+            <p class="text-xl text-gray-600 font-light">
+                Restaurants and resorts you've saved for later
+            </p>
+        </div>
+    </section>
+    
+    <!-- Favorites List -->
+    <section class="py-12 px-6 sm:px-8">
+        <div class="max-w-7xl mx-auto">
+            <div id="favoritesContainer" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Favorites will be loaded here via JavaScript -->
+            </div>
+            
+            <!-- Empty State -->
+            <div id="emptyState" class="hidden text-center py-16">
+                <svg class="w-24 h-24 mx-auto text-gray-300 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
+                </svg>
+                <h3 class="text-xl font-semibold text-gray-900 mb-2">No favorites yet</h3>
+                <p class="text-gray-600 mb-6">Start saving restaurants and resorts you want to visit!</p>
+                <a href="restaurants.html" class="inline-block px-6 py-3 bg-[var(--accent-blue)] text-white rounded-full font-medium hover:opacity-90 transition-opacity">
+                    Explore Restaurants
+                </a>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Footer -->
+    <footer class="py-12 px-6 sm:px-8 border-t border-gray-200 bg-white">
+        <div class="max-w-7xl mx-auto">
+            <div class="flex flex-col md:flex-row justify-between items-center">
+                <p class="text-sm text-gray-600 mb-4 md:mb-0">
+                    © 2025 <span class="bg-[var(--accent-blue)] text-white px-1">SNO</span><span class="text-[var(--accent-blue)]">GRUB</span>. All rights reserved.
+                </p>
+                <div class="flex space-x-6">
+                    <a href="#" class="text-sm text-gray-600 hover:text-gray-900 transition-colors duration-200">About</a>
+                    <a href="#" class="text-sm text-gray-600 hover:text-gray-900 transition-colors duration-200">Contact</a>
+                    <a href="#" class="text-sm text-gray-600 hover:text-gray-900 transition-colors duration-200">Privacy</a>
+                    <a href="#" class="text-sm text-gray-600 hover:text-gray-900 transition-colors duration-200">Terms</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+    
+    <script>
+        // Global function to toggle favorites (used by resort card component)
+        window.toggleResortFavorite = function(resortId, resortName, event) {
+            if (event) {
+                event.stopPropagation();
+                event.preventDefault();
+            }
+            
+            try {
+                const favorites = JSON.parse(localStorage.getItem('snogrub_favorites') || '[]');
+                const existingIndex = favorites.findIndex(fav => fav.id === resortId && fav.type === 'resort');
+                
+                let isFavorited = false;
+                if (existingIndex >= 0) {
+                    // Remove from favorites
+                    favorites.splice(existingIndex, 1);
+                    isFavorited = false;
+                } else {
+                    // Add to favorites
+                    favorites.push({
+                        id: resortId,
+                        type: 'resort',
+                        name: resortName,
+                        addedAt: new Date().toISOString()
+                    });
+                    isFavorited = true;
+                }
+                localStorage.setItem('snogrub_favorites', JSON.stringify(favorites));
+                
+                // Update button
+                const button = event?.target?.closest('.favorite-button');
+                if (button) {
+                    button.setAttribute('aria-checked', isFavorited ? 'true' : 'false');
+                    if (isFavorited) {
+                        button.classList.add('favorited');
+                    } else {
+                        button.classList.remove('favorited');
+                    }
+                    const icon = button.querySelector('svg');
+                    if (icon) {
+                        if (isFavorited) {
+                            icon.classList.add('fill-red-500', 'text-red-500');
+                            icon.classList.remove('fill-none', 'text-gray-400');
+                            icon.setAttribute('fill', 'currentColor');
+                        } else {
+                            icon.classList.remove('fill-red-500', 'text-red-500');
+                            icon.classList.add('fill-none', 'text-gray-400');
+                            icon.setAttribute('fill', 'none');
+                        }
+                    }
+                }
+                
+                // Reload favorites to update the page
+                loadFavorites();
+                
+                // Dispatch custom event for other components to listen
+                window.dispatchEvent(new CustomEvent('favoritesChanged', {
+                    detail: { resortId, favorited: isFavorited }
+                }));
+            } catch (e) {
+                console.error('Error toggling favorite:', e);
+            }
+        };
+        
+        // Initialize Universal Resort Card component
+        let favoritesResortCard;
+        if (typeof UniversalResortCard !== 'undefined') {
+            favoritesResortCard = new UniversalResortCard({
+                showLogo: true,
+                showTrailMap: true,
+                showStats: true,
+                showRating: true,
+                showPriceRating: true,
+                showFeaturedBadge: true,
+                showDistance: false, // Favorites page doesn't show distance
+                showQuickView: false,
+                showHoverOverlay: true,
+                imageHeight: 'h-48',
+                cardVariant: 'default',
+                showInlineLogo: false,
+                clickable: true,
+                hoverEffect: true,
+                animation: true
+            });
+        }
+        
+        // Load and display favorites
+        function loadFavorites() {
+            const favorites = JSON.parse(localStorage.getItem('snogrub_favorites') || '[]');
+            const container = document.getElementById('favoritesContainer');
+            const emptyState = document.getElementById('emptyState');
+            
+            if (favorites.length === 0) {
+                if (container) container.classList.add('hidden');
+                if (emptyState) emptyState.classList.remove('hidden');
+                return;
+            }
+            
+            if (container) container.classList.remove('hidden');
+            if (emptyState) emptyState.classList.add('hidden');
+            
+            // Separate resorts and restaurants
+            const resortFavorites = favorites.filter(f => f.type === 'resort');
+            const restaurantFavorites = favorites.filter(f => f.type === 'restaurant');
+            
+            if (container && typeof skiEatsData !== 'undefined' && skiEatsData.resorts) {
+                let html = '';
+                
+                // Render resort favorites using UniversalResortCard
+                if (resortFavorites.length > 0 && favoritesResortCard && typeof favoritesResortCard.renderMultiple === 'function') {
+                    const resorts = resortFavorites.map(fav => {
+                        const resort = skiEatsData.resorts.find(r => r.id === fav.id);
+                        if (resort) {
+                            // Mark as favorited
+                            return { ...resort, _isFavorited: true };
+                        }
+                        return null;
+                    }).filter(Boolean);
+                    
+                    if (resorts.length > 0) {
+                        html += favoritesResortCard.renderMultiple(resorts);
+                    }
+                }
+                
+                // Render restaurant favorites (keep existing simple card for now)
+                if (restaurantFavorites.length > 0) {
+                    html += restaurantFavorites.map(favorite => {
+                        const restaurant = typeof skiEatsData !== 'undefined' && skiEatsData.restaurants 
+                            ? skiEatsData.restaurants.find(r => r.id === favorite.id)
+                            : null;
+                        
+                        return `
+                            <div class="group bg-white border border-gray-200 rounded-lg overflow-hidden hover:shadow-lg transition-all duration-300">
+                                <a href="restaurant-detail.html?id=${favorite.id}" class="block">
+                                    <div class="aspect-[16/9] bg-gradient-to-br from-amber-50 to-orange-50 relative overflow-hidden">
+                                        ${restaurant && restaurant.image ? 
+                                            `<img src="${restaurant.image}" alt="${favorite.name}" class="w-full h-full object-cover">` :
+                                            `<div class="absolute inset-0 flex items-center justify-center">
+                                                <svg class="w-20 h-20 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+                                                </svg>
+                                            </div>`
+                                        }
+                                    </div>
+                                    <div class="p-6">
+                                        <div class="flex items-start justify-between mb-2">
+                                            <h3 class="text-lg font-semibold text-gray-900 group-hover:text-[var(--accent-blue)] transition-colors duration-200">
+                                                ${favorite.name}
+                                            </h3>
+                                            <button class="remove-favorite-btn" data-id="${favorite.id}" onclick="event.preventDefault(); event.stopPropagation(); removeFavorite('${favorite.id}')">
+                                                <svg class="w-5 h-5 text-red-500 fill-current" fill="currentColor" viewBox="0 0 24 24">
+                                                    <path d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
+                                                </svg>
+                                            </button>
+                                        </div>
+                                        <p class="text-sm text-gray-600 mb-3">${restaurant ? (restaurant.location || restaurant.resort || '') : ''}</p>
+                                        ${restaurant && restaurant.rating ? `
+                                            <div class="flex items-center gap-2">
+                                                <svg class="w-4 h-4 text-yellow-400" fill="currentColor" viewBox="0 0 20 20">
+                                                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path>
+                                                </svg>
+                                                <span class="text-sm font-medium text-gray-900">${restaurant.rating.toFixed(1)}</span>
+                                            </div>
+                                        ` : ''}
+                                    </div>
+                                </a>
+                            </div>
+                        `;
+                    }).join('');
+                }
+                
+                container.innerHTML = html;
+                
+                // Load logos for resort cards if function exists
+                if (resortFavorites.length > 0 && typeof loadResortLogos === 'function') {
+                    const resorts = resortFavorites.map(fav => {
+                        return skiEatsData.resorts.find(r => r.id === fav.id);
+                    }).filter(Boolean);
+                    if (resorts.length > 0) {
+                        loadResortLogos(resorts);
+                    }
+                }
+                
+                // Initialize price ratings if available
+                if (resortFavorites.length > 0 && typeof initializePriceRatings === 'function') {
+                    initializePriceRatings();
+                }
+            }
+        }
+        
+        function removeFavorite(id) {
+            let favorites = JSON.parse(localStorage.getItem('snogrub_favorites') || '[]');
+            favorites = favorites.filter(f => f.id !== id);
+            localStorage.setItem('snogrub_favorites', JSON.stringify(favorites));
+            loadFavorites();
+        }
+        
+        // Logo API service with caching (from resorts.html)
+        const logoCache = new Map();
+        
+        // Resort domain mapping for logo fetching
+        const resortDomains = {
+            'whistler-blackcomb': 'whistlerblackcomb.com',
+            'vail': 'vail.com',
+            'park-city': 'parkcitymountain.com',
+            'mont-tremblant': 'tremblant.ca',
+            'aspen-snowmass': 'aspensnowmass.com',
+            'breckenridge': 'breckenridge.com',
+            'steamboat': 'steamboat.com',
+            'telluride': 'tellurideskiresort.com',
+            'beaver-creek': 'beavercreek.com',
+            'keystone': 'keystoneresort.com',
+            'copper-mountain': 'coppercolorado.com',
+            'winter-park': 'winterparkresort.com',
+            'arapahoe-basin': 'arapahoebasin.com',
+            'jackson-hole': 'jacksonhole.com',
+            'big-sky': 'bigskyresort.com',
+            'stowe': 'stowe.com',
+            'mammoth-mountain': 'mammothmountain.com',
+            'deer-valley': 'deervalley.com',
+            'alta': 'alta.com',
+            'snowbird': 'snowbird.com',
+            'solitude': 'solitudemountain.com',
+            'brighton': 'brightonresort.com',
+            'sundance': 'sundanceresort.com',
+            'palisades-tahoe': 'palisadestahoe.com',
+            'northstar': 'northstarcalifornia.com',
+            'kirkwood': 'kirkwood.com',
+            'killington': 'killington.com',
+            'sugarbush': 'sugarbush.com',
+            'mount-snow': 'mountsnow.com',
+            'sun-valley': 'sunvalley.com',
+            'crested-butte': 'skicb.com',
+            'jay-peak': 'jaypeakresort.com',
+            'snowshoe': 'snowshoemtn.com',
+            'taos': 'skitaos.com',
+            'smugglers-notch': 'smuggs.com',
+            'wisp-resort': 'wispresort.com'
+        };
+        
+        /**
+         * Fetch logo from multiple API services with fallback
+         * @param {string} resortId - The resort ID
+         * @param {string} resortName - The resort name
+         * @returns {Promise<string|null>} - Logo URL or null
+         */
+        async function fetchResortLogo(resortId, resortName) {
+            // Check cache first
+            if (logoCache.has(resortId)) {
+                return logoCache.get(resortId);
+            }
+            
+            const domain = resortDomains[resortId];
+            if (!domain) {
+                console.warn(`No domain mapping for resort: ${resortId}`);
+                logoCache.set(resortId, null);
+                return null;
+            }
+            
+            // Try multiple logo API services
+            const logoApis = [
+                // Google's favicon service (most reliable, no CORS issues)
+                {
+                    url: `https://www.google.com/s2/favicons?domain=${domain}&sz=128`,
+                    type: 'image'
+                },
+                // iFetchly Logo API (free tier: 5,000 requests/month)
+                {
+                    url: `https://logo.ifetchly.com/api/${domain}?size=256&format=png`,
+                    type: 'json'
+                },
+                // Direct favicon fetch (may have CORS issues, but try anyway)
+                {
+                    url: `https://${domain}/favicon.ico`,
+                    type: 'image'
+                }
+            ];
+            
+            // Try each API in sequence
+            for (const api of logoApis) {
+                try {
+                    // For direct image URLs, use img tag approach to avoid CORS
+                    if (api.type === 'image' && api.url.includes('google.com')) {
+                        // Google's service works well, just return the URL
+                        logoCache.set(resortId, api.url);
+                        return api.url;
+                    }
+                    
+                    // For other APIs, try fetch
+                    const response = await fetch(api.url, {
+                        method: 'GET',
+                        mode: 'cors',
+                        cache: 'default',
+                        headers: {
+                            'Accept': api.type === 'json' ? 'application/json' : 'image/*'
+                        }
+                    });
+                    
+                    if (response.ok) {
+                        if (api.type === 'json') {
+                            try {
+                                const data = await response.json();
+                                if (data.logo || data.url) {
+                                    const logoUrl = data.logo || data.url;
+                                    logoCache.set(resortId, logoUrl);
+                                    return logoUrl;
+                                }
+                            } catch (e) {
+                                // Not JSON, continue
+                            }
+                        } else {
+                            // For image responses, check content type
+                            const contentType = response.headers.get('content-type');
+                            if (contentType && contentType.startsWith('image/')) {
+                                logoCache.set(resortId, api.url);
+                                return api.url;
+                            }
+                        }
+                    }
+                } catch (error) {
+                    // Continue to next API
+                    console.debug(`Logo API failed for ${domain}:`, api.url);
+                }
+            }
+            
+            // All APIs failed, cache null
+            logoCache.set(resortId, null);
+            return null;
+        }
+        
+        async function loadResortLogos(resorts) {
+            const logoPromises = resorts.map(async (resort) => {
+                try {
+                    const logoUrl = await fetchResortLogo(resort.id, resort.name);
+                    
+                    const overlayContainer = document.querySelector(`.resort-logo-overlay-container[data-resort-logo-overlay="${resort.id}"]`);
+                    if (overlayContainer) {
+                        if (logoUrl) {
+                            const img = overlayContainer.querySelector('.resort-logo-img');
+                            const loading = overlayContainer.querySelector('.resort-logo-loading');
+                            if (img && loading) {
+                                img.onload = function() {
+                                    const container = this.closest('.resort-logo-overlay-container');
+                                    if (container) {
+                                        container.style.display = 'flex';
+                                        this.style.display = 'block';
+                                    }
+                                    if (loading) loading.style.display = 'none';
+                                };
+                                img.onerror = function() {
+                                    const container = this.closest('.resort-logo-overlay-container');
+                                    if (container) container.style.display = 'none';
+                                };
+                                img.src = logoUrl;
+                                overlayContainer.style.display = 'flex';
+                            }
+                        } else {
+                            overlayContainer.style.display = 'none';
+                        }
+                    }
+                } catch (error) {
+                    console.warn(`Failed to load logo for ${resort.name}:`, error);
+                    const overlayContainer = document.querySelector(`.resort-logo-overlay-container[data-resort-logo-overlay="${resort.id}"]`);
+                    if (overlayContainer) {
+                        overlayContainer.style.display = 'none';
+                    }
+                }
+            });
+            
+            await Promise.allSettled(logoPromises);
+        }
+        
+        // Initialize price ratings (simplified version)
+        function initializePriceRatings() {
+            // This can be expanded if price rating functionality is needed on favorites page
+            const priceContainers = document.querySelectorAll('.price-rating-container');
+            priceContainers.forEach(container => {
+                const resortId = container.getAttribute('data-resort-id');
+                if (resortId && typeof skiEatsData !== 'undefined' && skiEatsData.resorts) {
+                    const resort = skiEatsData.resorts.find(r => r.id === resortId);
+                    if (resort && resort.pricing && resort.pricing.weekdayAdult) {
+                        // Price rating would be rendered by UniversalResortCard
+                        // This is just a placeholder for future enhancement
+                    } else {
+                        container.style.display = 'none';
+                    }
+                }
+            });
+        }
+        
+        // Load favorites on page load
+        document.addEventListener('DOMContentLoaded', () => {
+            // Wait for data.js to load
+            if (typeof skiEatsData !== 'undefined') {
+                loadFavorites();
+            } else {
+                // Wait a bit for data.js to load
+                setTimeout(loadFavorites, 100);
+            }
+            
+            // Adjust nav positioning for home base bar
+            function adjustNavForHomeBase() {
+                const homebaseBar = document.getElementById('homebase-bar');
+                const nav = document.querySelector('nav');
+                if (homebaseBar && nav) {
+                    const barHeight = homebaseBar.offsetHeight;
+                    nav.style.top = `${barHeight}px`;
+                }
+            }
+            
+            // Watch for home base bar visibility changes
+            setTimeout(() => {
+                adjustNavForHomeBase();
+                const observer = new MutationObserver(adjustNavForHomeBase);
+                const homebaseBar = document.getElementById('homebase-bar');
+                if (homebaseBar) {
+                    observer.observe(homebaseBar, { attributes: true, attributeFilter: ['style'] });
+                }
+            }, 500);
+        });
+        
+        // Listen for favorites changes from other pages
+        window.addEventListener('favoritesChanged', () => {
+            loadFavorites();
+        });
+    </script>
+</body>
+</html>
+

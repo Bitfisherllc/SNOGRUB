@@ -1,0 +1,142 @@
+<!-- Style 6: Stock Photo with Branding -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blog Preview - Style 6: Stock Photo with Branding - SNOGRUB</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root { --accent-blue: #0071e3; }
+        body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif; -webkit-font-smoothing: antialiased; }
+        .frosted-glass { background: rgba(251, 251, 253, 0.8); backdrop-filter: saturate(180%) blur(20px); -webkit-backdrop-filter: saturate(180%) blur(20px); }
+        .brand-overlay { background: linear-gradient(135deg, rgba(0, 113, 227, 0.15) 0%, rgba(6, 182, 212, 0.1) 100%); }
+    </style>
+</head>
+<body class="bg-white text-gray-900 antialiased">
+    <nav class="fixed top-0 left-0 right-0 z-50 frosted-glass border-b border-gray-200/50">
+        <div class="max-w-7xl mx-auto px-6 sm:px-8">
+            <div class="flex items-center justify-between h-14">
+                <a href="blog.html" class="text-2xl font-semibold"><span class="bg-[var(--accent-blue)] text-white px-1">SNO</span><span class="text-[var(--accent-blue)]">GRUB</span></a>
+                <div class="text-sm text-gray-600">Style 6: Stock Photo with Branding</div>
+            </div>
+        </div>
+    </nav>
+    
+    <section class="pt-32 pb-16 px-6 sm:px-8 bg-gradient-to-b from-gray-50 to-white">
+        <div class="max-w-4xl mx-auto text-center">
+            <h1 class="text-5xl sm:text-6xl font-semibold text-gray-900 mb-6">Style 6 Preview</h1>
+            <p class="text-xl text-gray-600 font-light">Stock Photo with Branding - Curated stock-style photos with consistent color grading and subtle brand overlays</p>
+        </div>
+    </section>
+    
+    <section class="py-16 px-6 sm:px-8">
+        <div class="max-w-7xl mx-auto">
+            <div class="mb-16">
+                <a href="#" class="group block bg-white border border-gray-200 rounded-lg overflow-hidden hover:shadow-xl transition-all duration-300">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-0">
+                        <div class="aspect-video md:aspect-auto relative overflow-hidden">
+                            <img src="https://images.unsplash.com/photo-1551524164-6cf77f7e7e8c?w=800&h=600&fit=crop" alt="Whistler après-ski" class="w-full h-full object-cover">
+                            <div class="absolute inset-0 brand-overlay"></div>
+                            <div class="absolute bottom-4 left-4 right-4">
+                                <div class="bg-white/95 backdrop-blur-sm px-4 py-2 rounded-lg">
+                                    <div class="text-xs font-semibold uppercase tracking-wide"><span class="bg-[var(--accent-blue)] text-white px-1">SNO</span><span class="text-[var(--accent-blue)]">GRUB</span></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="p-8 md:p-12">
+                            <span class="inline-block px-3 py-1 bg-[var(--accent-blue)] text-white rounded-full text-xs font-medium mb-4">Featured</span>
+                            <h2 class="text-3xl font-semibold text-gray-900 mb-4 group-hover:text-[var(--accent-blue)] transition-colors">The Ultimate Guide to Après-Ski Dining in Whistler</h2>
+                            <p class="text-gray-600 leading-relaxed mb-4">From cozy mountain lodges to vibrant après-ski bars, discover where to refuel and celebrate after a day on the slopes.</p>
+                            <div class="flex items-center gap-4 text-sm text-gray-500"><span>January 15, 2025</span><span>•</span><span>5 min read</span></div>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <a href="#" class="group bg-white border border-gray-200 rounded-lg overflow-hidden hover:shadow-lg transition-all">
+                    <div class="aspect-video relative overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1514933651103-005eec06c04b?w=600&h=400&fit=crop" alt="Vail fine dining" class="w-full h-full object-cover" style="filter: sepia(5%) saturate(110%) contrast(105%);">
+                        <div class="absolute inset-0 brand-overlay opacity-60"></div>
+                    </div>
+                    <div class="p-6">
+                        <span class="inline-block px-3 py-1 bg-gray-100 text-gray-700 rounded-full text-xs font-medium mb-3">Dining Guide</span>
+                        <h3 class="text-xl font-semibold text-gray-900 mb-3 group-hover:text-[var(--accent-blue)]">Best Fine Dining Restaurants at Vail Resort</h3>
+                        <p class="text-gray-600 text-sm mb-4">Explore Vail's upscale dining scene with our curated guide.</p>
+                        <div class="flex items-center gap-3 text-xs text-gray-500"><span>January 10, 2025</span><span>•</span><span>4 min read</span></div>
+                    </div>
+                </a>
+                
+                <a href="#" class="group bg-white border border-gray-200 rounded-lg overflow-hidden hover:shadow-lg transition-all">
+                    <div class="aspect-video relative overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=600&h=400&fit=crop" alt="Park City" class="w-full h-full object-cover" style="filter: sepia(5%) saturate(110%) contrast(105%);">
+                        <div class="absolute inset-0 brand-overlay opacity-60"></div>
+                    </div>
+                    <div class="p-6">
+                        <span class="inline-block px-3 py-1 bg-gray-100 text-gray-700 rounded-full text-xs font-medium mb-3">Resort Spotlight</span>
+                        <h3 class="text-xl font-semibold text-gray-900 mb-3 group-hover:text-[var(--accent-blue)]">Park City: A Food Lover's Paradise</h3>
+                        <p class="text-gray-600 text-sm mb-4">Discover why Park City has become one of North America's premier culinary destinations.</p>
+                        <div class="flex items-center gap-3 text-xs text-gray-500"><span>January 5, 2025</span><span>•</span><span>6 min read</span></div>
+                    </div>
+                </a>
+                
+                <a href="#" class="group bg-white border border-gray-200 rounded-lg overflow-hidden hover:shadow-lg transition-all">
+                    <div class="aspect-video relative overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1551698618-1dfe5d97d256?w=600&h=400&fit=crop" alt="Après-ski culture" class="w-full h-full object-cover" style="filter: sepia(5%) saturate(110%) contrast(105%);">
+                        <div class="absolute inset-0 brand-overlay opacity-60"></div>
+                    </div>
+                    <div class="p-6">
+                        <span class="inline-block px-3 py-1 bg-gray-100 text-gray-700 rounded-full text-xs font-medium mb-3">Culture</span>
+                        <h3 class="text-xl font-semibold text-gray-900 mb-3 group-hover:text-[var(--accent-blue)]">The Art of Après-Ski: A Cultural Guide</h3>
+                        <p class="text-gray-600 text-sm mb-4">Explore the rich tradition of après-ski culture across North American resorts.</p>
+                        <div class="flex items-center gap-3 text-xs text-gray-500"><span>December 28, 2024</span><span>•</span><span>7 min read</span></div>
+                    </div>
+                </a>
+                
+                <a href="#" class="group bg-white border border-gray-200 rounded-lg overflow-hidden hover:shadow-lg transition-all">
+                    <div class="aspect-video relative overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=600&h=400&fit=crop" alt="Restaurant reservation" class="w-full h-full object-cover" style="filter: sepia(5%) saturate(110%) contrast(105%);">
+                        <div class="absolute inset-0 brand-overlay opacity-60"></div>
+                    </div>
+                    <div class="p-6">
+                        <span class="inline-block px-3 py-1 bg-gray-100 text-gray-700 rounded-full text-xs font-medium mb-3">Tips & Tricks</span>
+                        <h3 class="text-xl font-semibold text-gray-900 mb-3 group-hover:text-[var(--accent-blue)]">How to Make Restaurant Reservations at Ski Resorts</h3>
+                        <p class="text-gray-600 text-sm mb-4">Essential tips for securing reservations at popular ski resort restaurants.</p>
+                        <div class="flex items-center gap-3 text-xs text-gray-500"><span>December 20, 2024</span><span>•</span><span>3 min read</span></div>
+                    </div>
+                </a>
+                
+                <a href="#" class="group bg-white border border-gray-200 rounded-lg overflow-hidden hover:shadow-lg transition-all">
+                    <div class="aspect-video relative overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=600&h=400&fit=crop" alt="Mont Tremblant" class="w-full h-full object-cover" style="filter: sepia(5%) saturate(110%) contrast(105%);">
+                        <div class="absolute inset-0 brand-overlay opacity-60"></div>
+                    </div>
+                    <div class="p-6">
+                        <span class="inline-block px-3 py-1 bg-gray-100 text-gray-700 rounded-full text-xs font-medium mb-3">Resort Spotlight</span>
+                        <h3 class="text-xl font-semibold text-gray-900 mb-3 group-hover:text-[var(--accent-blue)]">Mont Tremblant: French-Inspired Dining</h3>
+                        <p class="text-gray-600 text-sm mb-4">Experience European charm and exceptional French cuisine at Mont Tremblant.</p>
+                        <div class="flex items-center gap-3 text-xs text-gray-500"><span>December 15, 2024</span><span>•</span><span>5 min read</span></div>
+                    </div>
+                </a>
+                
+                <a href="#" class="group bg-white border border-gray-200 rounded-lg overflow-hidden hover:shadow-lg transition-all">
+                    <div class="aspect-video relative overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=600&h=400&fit=crop" alt="Budget dining" class="w-full h-full object-cover" style="filter: sepia(5%) saturate(110%) contrast(105%);">
+                        <div class="absolute inset-0 brand-overlay opacity-60"></div>
+                    </div>
+                    <div class="p-6">
+                        <span class="inline-block px-3 py-1 bg-gray-100 text-gray-700 rounded-full text-xs font-medium mb-3">Dining Guide</span>
+                        <h3 class="text-xl font-semibold text-gray-900 mb-3 group-hover:text-[var(--accent-blue)]">Budget-Friendly Dining Options at Ski Resorts</h3>
+                        <p class="text-gray-600 text-sm mb-4">Great food doesn't have to break the bank. Discover affordable dining options.</p>
+                        <div class="flex items-center gap-3 text-xs text-gray-500"><span>December 10, 2024</span><span>•</span><span>4 min read</span></div>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </section>
+</body>
+</html>

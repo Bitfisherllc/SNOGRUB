@@ -1,0 +1,1533 @@
+<!-- Comprehensive Map Page for SkiEats -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Map - SNOGRUB</title>
+    
+    <!-- TailwindCSS via CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Leaflet CSS for Maps -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+          integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+          crossorigin=""/>
+    
+    <!-- Inter font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Leaflet JS -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+            integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+            crossorigin=""></script>
+    
+    <style>
+        :root {
+            --accent-blue: #0071e3;
+            --accent-light: #5ac8fa;
+            --text-primary: #1d1d1f;
+            --text-secondary: #86868b;
+        }
+        
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            margin: 0;
+            padding: 0;
+        }
+        
+        .frosted-glass {
+            background: rgba(251, 251, 253, 0.8);
+            backdrop-filter: saturate(180%) blur(20px);
+            -webkit-backdrop-filter: saturate(180%) blur(20px);
+        }
+        
+        #mapContainer {
+            height: calc(100vh - 56px);
+            width: 100%;
+            z-index: 1;
+        }
+        
+        .sticky-search-bar {
+            position: sticky;
+            top: 56px;
+            z-index: 40;
+            background: white;
+            border-bottom: 1px solid #e5e7eb;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+        
+        @media (max-width: 768px) {
+            .sticky-search-bar {
+                top: 56px;
+            }
+            
+            #filterRow {
+                max-height: 60vh;
+                overflow-y: auto;
+            }
+        }
+        
+        .sidebar {
+            height: calc(100vh - 56px);
+            overflow-y: auto;
+            background: white;
+            border-right: 1px solid #e5e7eb;
+        }
+        
+        .list-item {
+            transition: all 0.2s ease;
+            cursor: pointer;
+        }
+        
+        .list-item:hover {
+            background: #f9fafb;
+            transform: translateX(4px);
+        }
+        
+        .list-item.active {
+            background: #eff6ff;
+            border-left: 3px solid var(--accent-blue);
+        }
+        
+        .map-controls {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+            background: white;
+            border-radius: 12px;
+            padding: 16px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            min-width: 280px;
+            max-height: calc(100vh - 200px);
+            overflow-y: auto;
+        }
+        
+        .map-controls-mobile {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            right: 20px;
+            z-index: 1000;
+            background: white;
+            border-radius: 12px;
+            padding: 16px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            max-height: 60vh;
+            overflow-y: auto;
+        }
+        
+        .filter-chip {
+            display: inline-flex;
+            align-items: center;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border: 1px solid #e5e7eb;
+            background: white;
+        }
+        
+        .filter-chip.active {
+            background: var(--accent-blue);
+            color: white;
+            border-color: var(--accent-blue);
+        }
+        
+        .filter-chip:hover:not(.active) {
+            background: #f3f4f6;
+            border-color: #d1d5db;
+        }
+        
+        .distance-badge {
+            background: var(--accent-blue);
+            color: white;
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: 600;
+        }
+        
+        @keyframes pulse {
+            0%, 100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+            50% {
+                transform: scale(1.1);
+                opacity: 0.9;
+            }
+        }
+        
+        .pulse-marker {
+            animation: pulse 1s ease-in-out infinite;
+        }
+        
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: #f5f5f7;
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: #d2d2d7;
+            border-radius: 4px;
+        }
+        
+        ::-webkit-scrollbar-thumb:hover {
+            background: #a1a1a6;
+        }
+        
+        /* Leaflet popup styling */
+        .leaflet-popup-content-wrapper {
+            border-radius: 12px;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+        }
+        
+        .leaflet-popup-content {
+            margin: 16px;
+            font-size: 14px;
+        }
+        
+        .map-marker-popup h3 {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 4px;
+            color: #1d1d1f;
+        }
+        
+        .map-marker-popup p {
+            font-size: 13px;
+            color: #86868b;
+            margin: 4px 0;
+        }
+        
+        .state-boundary {
+            cursor: pointer;
+        }
+        
+    </style>
+</head>
+<body class="bg-gray-50">
+    <!-- Navigation -->
+    <nav class="frosted-glass fixed top-0 left-0 right-0 z-50 border-b border-gray-200/50">
+        <div class="max-w-7xl mx-auto px-6 sm:px-8">
+            <div class="flex items-center justify-between h-14">
+                <div class="flex-shrink-0">
+                    <a href="index.html" class="text-2xl font-semibold hover:opacity-80 transition-opacity duration-300">
+                        <span class="bg-[var(--accent-blue)] text-white px-1">SNO</span><span class="text-[var(--accent-blue)]">GRUB</span>
+                    </a>
+                </div>
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="resorts.html" class="text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors duration-200">
+                        Resorts
+                    </a>
+                    <a href="restaurants.html" class="text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors duration-200">
+                        Restaurants
+                    </a>
+                    <a href="map.html" class="text-sm font-medium text-[var(--accent-blue)] transition-colors duration-200">
+                        Map
+                    </a>
+                    <a href="blog.html" class="text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors duration-200">
+                        Blog
+                    </a>
+                    <a href="favorites.html" class="text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors duration-200">
+                        Favorites
+                    </a>
+                    <a href="trips.html" class="text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors duration-200">
+                        Trips
+                    </a>
+                </div>
+                <!-- Mobile Menu Button -->
+                <button id="mobileMenuButton" class="md:hidden text-gray-600 hover:text-gray-900 transition-colors" aria-label="Menu">
+                    <svg id="menuIcon" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                    </svg>
+                    <svg id="closeIcon" class="w-6 h-6 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                    </svg>
+                </button>
+            </div>
+            <!-- Mobile Menu Dropdown -->
+            <div id="mobileMenu" class="hidden md:hidden border-t border-gray-200/50 bg-white/95 backdrop-blur-lg">
+                <div class="px-6 py-4 space-y-4">
+                    <a href="resorts.html" class="block text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors duration-200">Resorts</a>
+                    <a href="restaurants.html" class="block text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors duration-200">Restaurants</a>
+                    <a href="map.html" class="block text-sm font-medium text-[var(--accent-blue)] transition-colors duration-200">Map</a>
+                    <a href="blog.html" class="block text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors duration-200">Blog</a>
+                    <a href="favorites.html" class="block text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors duration-200">Favorites</a>
+                    <a href="trips.html" class="block text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors duration-200">Trips</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+    
+    <script>
+        // Mobile menu toggle
+        document.addEventListener('DOMContentLoaded', () => {
+            const mobileMenuButton = document.getElementById('mobileMenuButton');
+            const mobileMenu = document.getElementById('mobileMenu');
+            const menuIcon = document.getElementById('menuIcon');
+            const closeIcon = document.getElementById('closeIcon');
+            
+            if (mobileMenuButton) {
+                mobileMenuButton.addEventListener('click', () => {
+                    mobileMenu.classList.toggle('hidden');
+                    menuIcon.classList.toggle('hidden');
+                    closeIcon.classList.toggle('hidden');
+                });
+            }
+            
+            // Close mobile menu when clicking a link
+            if (mobileMenu) {
+                mobileMenu.querySelectorAll('a').forEach(link => {
+                    link.addEventListener('click', () => {
+                        mobileMenu.classList.add('hidden');
+                        menuIcon.classList.remove('hidden');
+                        closeIcon.classList.add('hidden');
+                    });
+                });
+            }
+        });
+    </script>
+    
+    <!-- Main Content -->
+    <div class="pt-14">
+        <!-- Sticky Search and Filter Bar -->
+        <div class="sticky-search-bar">
+            <div class="max-w-7xl mx-auto px-6 py-4">
+                <!-- Search Row -->
+                <div class="flex flex-col md:flex-row gap-4 items-start md:items-center justify-between mb-4">
+                    <!-- Search -->
+                    <div class="flex-1 max-w-md">
+                        <div class="relative">
+                            <input type="text" id="searchInput" placeholder="Search restaurants, resorts, or locations..." 
+                                   class="w-full px-4 py-2.5 pl-10 border border-gray-300 rounded-full text-sm focus:outline-none focus:ring-2 focus:ring-[var(--accent-blue)] focus:border-transparent">
+                            <svg class="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                            </svg>
+                        </div>
+                    </div>
+                    
+                    <!-- Quick Actions -->
+                    <div class="flex items-center gap-3">
+                        <button id="findMyLocationBtn" class="px-4 py-2 bg-[var(--accent-blue)] text-white rounded-full text-sm font-medium hover:opacity-90 transition-opacity flex items-center gap-2">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                            </svg>
+                            My Location
+                        </button>
+                        <button id="toggleListViewBtn" class="px-4 py-2 bg-white text-gray-700 border border-gray-300 rounded-full text-sm font-medium hover:bg-gray-50 transition-colors md:hidden">
+                            List
+                        </button>
+                        <button id="toggleFiltersBtn" class="px-4 py-2 bg-white text-gray-700 border border-gray-300 rounded-full text-sm font-medium hover:bg-gray-50 transition-colors md:hidden flex items-center gap-2">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z"></path>
+                            </svg>
+                            Filters
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Enhanced Filter Row -->
+                <div id="filterRow" class="hidden md:flex flex-wrap gap-3 items-center">
+                    <!-- Type Filters -->
+                    <div class="flex items-center gap-2">
+                        <span class="text-xs font-semibold text-gray-600 uppercase tracking-wide">Type:</span>
+                        <div class="flex flex-wrap gap-2">
+                            <button class="filter-chip active" data-filter="all">All</button>
+                            <button class="filter-chip" data-filter="resorts">Resorts</button>
+                            <button class="filter-chip" data-filter="restaurants">Restaurants</button>
+                            <button class="filter-chip" data-filter="bars">Bars</button>
+                            <button class="filter-chip" data-filter="cafes">Cafés</button>
+                        </div>
+                    </div>
+                    
+                    <!-- Price Filters (hidden for resorts) -->
+                    <div id="priceFilterContainer" class="flex items-center gap-2">
+                        <span class="text-xs font-semibold text-gray-600 uppercase tracking-wide">Price:</span>
+                        <div class="flex flex-wrap gap-2">
+                            <button class="filter-chip price-filter" data-price="$">$</button>
+                            <button class="filter-chip price-filter" data-price="$$">$$</button>
+                            <button class="filter-chip price-filter" data-price="$$$">$$$</button>
+                            <button class="filter-chip price-filter" data-price="$$$$">$$$$</button>
+                        </div>
+                    </div>
+                    
+                    <!-- Rating Filters (hidden for resorts) -->
+                    <div id="ratingFilterContainer" class="flex items-center gap-2">
+                        <span class="text-xs font-semibold text-gray-600 uppercase tracking-wide">Rating:</span>
+                        <div class="flex flex-wrap gap-2">
+                            <button class="filter-chip rating-filter" data-rating="4.5">4.5+ ⭐</button>
+                            <button class="filter-chip rating-filter" data-rating="4.0">4.0+ ⭐</button>
+                            <button class="filter-chip rating-filter" data-rating="3.5">3.5+ ⭐</button>
+                        </div>
+                    </div>
+                    
+                    <!-- Cuisine Filter (hidden for resorts) -->
+                    <div id="cuisineFilterContainer" class="flex items-center gap-2">
+                        <span class="text-xs font-semibold text-gray-600 uppercase tracking-wide">Cuisine:</span>
+                        <select id="cuisineFilter" class="text-xs border border-gray-300 rounded-lg px-3 py-1.5 focus:outline-none focus:ring-1 focus:ring-[var(--accent-blue)] bg-white">
+                            <option value="">All Cuisines</option>
+                            <option value="American">American</option>
+                            <option value="Italian">Italian</option>
+                            <option value="French">French</option>
+                            <option value="Asian">Asian</option>
+                            <option value="Mexican">Mexican</option>
+                            <option value="Seafood">Seafood</option>
+                            <option value="Japanese">Japanese</option>
+                            <option value="Mediterranean">Mediterranean</option>
+                            <option value="Steakhouse">Steakhouse</option>
+                            <option value="Pizza">Pizza</option>
+                        </select>
+                    </div>
+                    
+                    <!-- Distance Filter -->
+                    <div class="flex items-center gap-2">
+                        <span class="text-xs font-semibold text-gray-600 uppercase tracking-wide">Within:</span>
+                        <select id="distanceFilter" class="text-xs border border-gray-300 rounded-lg px-3 py-1.5 focus:outline-none focus:ring-1 focus:ring-[var(--accent-blue)] bg-white">
+                            <option value="">Any Distance</option>
+                            <option value="5">5 miles</option>
+                            <option value="10">10 miles</option>
+                            <option value="25">25 miles</option>
+                            <option value="50">50 miles</option>
+                            <option value="100">100 miles</option>
+                        </select>
+                    </div>
+                    
+                    <!-- Clear Filters Button -->
+                    <button id="clearFiltersBtn" class="ml-auto px-3 py-1.5 text-xs text-gray-600 hover:text-gray-900 font-medium hover:underline">
+                        Clear All
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Map and Sidebar Container -->
+        <div class="flex flex-col md:flex-row relative">
+            <!-- Sidebar (List View) -->
+            <div id="sidebar" class="hidden sidebar w-full md:w-96 lg:w-[420px] flex-shrink-0 border-r border-gray-200">
+                <div class="h-full flex flex-col bg-white">
+                    <!-- Header with controls -->
+                    <div class="p-4 border-b border-gray-200 bg-white sticky top-0 z-10">
+                        <div class="flex items-center justify-between mb-3">
+                            <h3 class="text-lg font-semibold text-gray-900">Results</h3>
+                            <button id="closeSidebarBtn" class="md:hidden text-gray-400 hover:text-gray-600">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                                </svg>
+                            </button>
+                        </div>
+                        
+                        <div class="flex items-center gap-2 mb-3">
+                            <span id="resultCount" class="text-sm text-gray-500 flex-1">0 found</span>
+                        </div>
+                        
+                        <!-- Sort Options -->
+                        <div class="flex items-center gap-2 mb-3">
+                            <label class="text-xs text-gray-600 font-medium">Sort:</label>
+                            <select id="sortSelect" class="flex-1 text-xs border border-gray-300 rounded-lg px-2 py-1.5 focus:outline-none focus:ring-1 focus:ring-[var(--accent-blue)] bg-white">
+                                <option value="distance">Distance</option>
+                                <option value="name">Name (A-Z)</option>
+                                <option value="rating">Rating (High to Low)</option>
+                                <option value="rating-low">Rating (Low to High)</option>
+                                <option value="price-low">Price (Low to High)</option>
+                                <option value="price-high">Price (High to Low)</option>
+                            </select>
+                        </div>
+                        
+                        <!-- Quick Filters -->
+                        <div class="flex flex-wrap gap-2">
+                            <button class="filter-chip active" data-filter="all" style="font-size: 11px; padding: 4px 10px;">All</button>
+                            <button class="filter-chip" data-filter="resorts" style="font-size: 11px; padding: 4px 10px;">Resorts</button>
+                            <button class="filter-chip" data-filter="restaurants" style="font-size: 11px; padding: 4px 10px;">Restaurants</button>
+                            <button class="filter-chip" data-filter="bars" style="font-size: 11px; padding: 4px 10px;">Bars</button>
+                            <button class="filter-chip" data-filter="cafes" style="font-size: 11px; padding: 4px 10px;">Cafés</button>
+                        </div>
+                    </div>
+                    
+                    <!-- Results List -->
+                    <div id="resultsList" class="flex-1 overflow-y-auto divide-y divide-gray-100">
+                        <!-- Results will be populated here -->
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Map Container -->
+            <div class="flex-1 relative">
+                <div id="mapContainer"></div>
+                
+                <!-- Map Controls Overlay (Map-specific controls only) -->
+                <div id="mapControls" class="map-controls hidden md:block">
+                    <div class="mb-4">
+                        <h4 class="text-sm font-semibold text-gray-900 mb-3">Map Tools</h4>
+                        <div class="flex flex-col gap-2">
+                            <button id="selectStateBtn" class="w-full px-4 py-2 bg-white text-gray-700 border border-gray-300 rounded-lg text-sm font-medium hover:bg-gray-50 transition-colors text-left">
+                                <span id="selectStateBtnText">Select State/Province</span>
+                            </button>
+                            <button id="fitToAllBtn" class="w-full px-4 py-2 bg-[var(--accent-blue)] text-white rounded-lg text-sm font-medium hover:opacity-90 transition-opacity">
+                                Fit to All Results
+                            </button>
+                        </div>
+                    </div>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Mobile Controls (Bottom Sheet) - Now integrated into sticky header, keeping for backward compatibility -->
+    <div id="mobileControls" class="map-controls-mobile md:hidden hidden">
+        <div class="mb-4">
+            <div class="flex items-center justify-between mb-4">
+                <h4 class="text-base font-semibold text-gray-900">Map Tools</h4>
+                <button id="closeMobileControls" class="text-gray-400 hover:text-gray-600">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                    </svg>
+                </button>
+            </div>
+            
+            <button id="selectStateBtnMobile" class="w-full px-4 py-2 bg-white text-gray-700 border border-gray-300 rounded-lg text-sm font-medium hover:bg-gray-50 transition-colors text-left mb-3">
+                <span id="selectStateBtnTextMobile">Select State/Province</span>
+            </button>
+            
+            <div class="space-y-2">
+                <button id="fitToAllBtnMobile" class="w-full px-4 py-2 bg-[var(--accent-blue)] text-white rounded-lg text-sm font-medium hover:opacity-90 transition-opacity">
+                    Fit to All Results
+                </button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Mobile Menu -->
+    <div id="mobileMenu" class="hidden fixed inset-0 z-50 bg-black bg-opacity-50 md:hidden">
+        <div class="bg-white w-64 h-full shadow-xl">
+            <div class="p-6">
+                <div class="flex items-center justify-between mb-8">
+                    <a href="index.html" class="text-2xl font-semibold"><span class="text-[var(--accent-blue)]">SNO</span><span class="text-[var(--text-primary)]">GRUB</span></a>
+                    <button id="closeMobileMenu" class="text-gray-700">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                        </svg>
+                    </button>
+                </div>
+                <nav class="space-y-4">
+                    <a href="resorts.html" class="block text-gray-700 hover:text-[var(--accent-blue)] transition-colors">Resorts</a>
+                    <a href="restaurants.html" class="block text-gray-700 hover:text-[var(--accent-blue)] transition-colors">Restaurants</a>
+                    <a href="map.html" class="block text-[var(--accent-blue)] font-medium">Map</a>
+                    <a href="blog.html" class="block text-gray-700 hover:text-[var(--accent-blue)] transition-colors">Blog</a>
+                    <a href="favorites.html" class="block text-gray-700 hover:text-[var(--accent-blue)] transition-colors">Favorites</a>
+                    <a href="trips.html" class="block text-gray-700 hover:text-[var(--accent-blue)] transition-colors">Trips</a>
+                </nav>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Load data.js -->
+    <script src="data.js"></script>
+    <!-- Home Base Functionality -->
+    <script src="js/homebase.js"></script>
+    <script src="js/homebase-bar.js"></script>
+    
+    <script>
+        // Global variables
+        let mapInstance = null;
+        let resortMarkers = [];
+        let restaurantMarkers = [];
+        let userLocationMarker = null;
+        let stateLayerGroup = null;
+        let stateSelectionMode = false;
+        let currentFilter = 'all';
+        let userLat = null;
+        let userLng = null;
+        let allResults = [];
+        let filteredResults = [];
+        
+        // State boundaries
+        const stateBounds = {
+            'Colorado': { center: [39.0, -105.5], bounds: [[36.9, -109.0], [41.0, -102.0]] },
+            'Utah': { center: [39.5, -111.5], bounds: [[37.0, -114.0], [42.0, -109.0]] },
+            'California': { center: [37.0, -120.0], bounds: [[32.5, -124.5], [42.0, -114.0]] },
+            'Wyoming': { center: [43.0, -107.5], bounds: [[41.0, -111.0], [45.0, -104.0]] },
+            'Vermont': { center: [44.0, -72.7], bounds: [[42.7, -73.4], [45.0, -71.5]] },
+            'New Hampshire': { center: [43.7, -71.6], bounds: [[42.7, -72.6], [45.3, -70.6]] },
+            'Maine': { center: [44.3, -69.8], bounds: [[43.0, -71.1], [47.5, -66.9]] },
+            'New York': { center: [42.7, -74.8], bounds: [[40.5, -79.8], [45.0, -71.8]] },
+            'Pennsylvania': { center: [40.5, -77.2], bounds: [[39.7, -80.5], [42.3, -74.7]] },
+            'Idaho': { center: [44.2, -114.5], bounds: [[42.0, -117.0], [49.0, -111.0]] },
+            'Montana': { center: [47.0, -110.5], bounds: [[45.0, -116.0], [49.0, -104.0]] },
+            'New Mexico': { center: [34.5, -106.0], bounds: [[31.3, -109.0], [37.0, -103.0]] },
+            'Nevada': { center: [39.0, -117.0], bounds: [[35.0, -120.0], [42.0, -114.0]] },
+            'Oregon': { center: [44.0, -120.5], bounds: [[42.0, -124.5], [46.3, -116.5]] },
+            'Washington': { center: [47.4, -120.5], bounds: [[45.5, -124.8], [49.0, -116.9]] },
+            'British Columbia': { center: [53.7, -125.0], bounds: [[48.2, -139.0], [60.0, -114.0]] },
+            'Alberta': { center: [53.9, -116.6], bounds: [[49.0, -120.0], [60.0, -110.0]] },
+            'Quebec': { center: [46.8, -71.2], bounds: [[45.0, -79.8], [50.0, -57.0]] },
+            'Ontario': { center: [50.0, -85.0], bounds: [[41.7, -95.2], [56.9, -74.4]] }
+        };
+        
+        // Map data - will be populated after data.js loads
+        let mapData = {
+            resorts: [],
+            restaurants: []
+        };
+        
+        
+        // Initialize map data from skiEatsData
+        function initializeMapData() {
+            if (typeof skiEatsData !== 'undefined') {
+                if (skiEatsData.resorts) {
+                    mapData.resorts = skiEatsData.resorts.map(r => ({
+                        name: r.name,
+                        lat: r.coordinates.lat,
+                        lng: r.coordinates.lng,
+                        location: r.location,
+                        type: 'resort',
+                        id: r.id,
+                        data: r
+                    }));
+                }
+                
+                if (skiEatsData.restaurants) {
+                    mapData.restaurants = skiEatsData.restaurants.map(r => ({
+                        name: r.name,
+                        lat: r.coordinates.lat,
+                        lng: r.coordinates.lng,
+                        location: r.location,
+                        type: 'restaurant',
+                        category: r.category,
+                        id: r.id,
+                        rating: r.rating,
+                        priceRange: r.priceRange,
+                        cuisine: r.cuisine,
+                        data: r
+                    }));
+                }
+            }
+        }
+        
+        // Initialize map
+        function initMap() {
+            // Initialize data first
+            initializeMapData();
+            
+            mapInstance = L.map('mapContainer', {
+                maxBounds: null
+            });
+            
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '© OpenStreetMap contributors',
+                maxZoom: 19
+            }).addTo(mapInstance);
+            
+            // Add all markers
+            addMarkers();
+            
+            // Check if home base is active and zoom to it
+            if (typeof HomeBase !== 'undefined' && HomeBase.isActive()) {
+                const homeBaseResort = HomeBase.getHomeBaseResort();
+                if (homeBaseResort && homeBaseResort.coordinates && homeBaseResort.coordinates.lat && homeBaseResort.coordinates.lng) {
+                    // Zoom to home base resort
+                    const lat = homeBaseResort.coordinates.lat;
+                    const lng = homeBaseResort.coordinates.lng;
+                    // Use zoom level 11 for a good regional view (adjustable: 10 = wider, 12 = closer)
+                    mapInstance.setView([lat, lng], 11);
+                    // Set max bounds around the home base area (approximately 50km radius)
+                    const bounds = L.latLngBounds(
+                        [lat - 0.5, lng - 0.5],
+                        [lat + 0.5, lng + 0.5]
+                    );
+                    mapInstance.setMaxBounds(bounds);
+                } else {
+                    // Home base active but no coordinates - fall back to fit bounds
+                    fitMapToAllMarkers();
+                }
+            } else {
+                // No home base - fit to all markers
+                fitMapToAllMarkers();
+            }
+            
+            // Try to get user location
+            tryGetUserLocation();
+        }
+        
+        // Helper function to fit map to all markers
+        function fitMapToAllMarkers() {
+            if (resortMarkers.length > 0 || restaurantMarkers.length > 0) {
+                const allMarkers = [...resortMarkers, ...restaurantMarkers];
+                const group = new L.featureGroup(allMarkers);
+                const bounds = group.getBounds();
+                mapInstance.fitBounds(bounds.pad(0.1));
+                mapInstance.setMaxBounds(bounds.pad(0.1));
+            }
+        }
+        
+        // Add markers to map
+        function addMarkers() {
+            // Add resort markers
+            mapData.resorts.forEach(resort => {
+                const icon = L.divIcon({
+                    className: 'resort-marker',
+                    html: '<div style="width: 32px; height: 32px; background: #0071e3; border: 3px solid white; border-radius: 50%; box-shadow: 0 2px 8px rgba(0,0,0,0.3); display: flex; align-items: center; justify-center;"><svg width="16" height="16" fill="white" viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg></div>',
+                    iconSize: [32, 32],
+                    iconAnchor: [16, 16]
+                });
+                
+                const marker = L.marker([resort.lat, resort.lng], { icon: icon })
+                    .addTo(mapInstance)
+                    .bindPopup(createResortPopup(resort));
+                
+                resortMarkers.push(marker);
+            });
+            
+            // Add restaurant markers
+            mapData.restaurants.forEach(restaurant => {
+                const colors = {
+                    restaurant: '#10b981',
+                    bar: '#3b82f6',
+                    cafe: '#f59e0b'
+                };
+                
+                const icon = L.divIcon({
+                    className: 'restaurant-marker',
+                    html: `<div style="width: 24px; height: 24px; background: ${colors[restaurant.category] || '#6b7280'}; border: 2px solid white; border-radius: 50%; box-shadow: 0 2px 6px rgba(0,0,0,0.3);"></div>`,
+                    iconSize: [24, 24],
+                    iconAnchor: [12, 12]
+                });
+                
+                const marker = L.marker([restaurant.lat, restaurant.lng], { 
+                    icon: icon,
+                    category: restaurant.category // Store category in marker options
+                })
+                    .addTo(mapInstance)
+                    .bindPopup(createRestaurantPopup(restaurant));
+                
+                restaurantMarkers.push(marker);
+            });
+            
+            updateResults();
+        }
+        
+        // Create popup content
+        function createResortPopup(resort) {
+            const link = `resort-detail.html?id=${resort.id || resort.name.toLowerCase().replace(/[^a-z0-9]+/g, '-')}`;
+            return `
+                <div class="map-marker-popup">
+                    <h3>${resort.name}</h3>
+                    <p>${resort.location}</p>
+                    <p style="color: #0071e3; font-weight: 500; margin-bottom: 12px;">Ski Resort</p>
+                    <a href="${link}" style="display: inline-block; padding: 8px 16px; background: #0071e3; color: white; border-radius: 20px; text-decoration: none; font-size: 14px; font-weight: 500;">
+                        View Resort →
+                    </a>
+                </div>
+            `;
+        }
+        
+        function createRestaurantPopup(restaurant) {
+            const colors = {
+                restaurant: '#10b981',
+                bar: '#3b82f6',
+                cafe: '#f59e0b'
+            };
+            const categoryColor = colors[restaurant.category] || '#6b7280';
+            const categoryLabel = restaurant.category === 'bar' ? 'Après Bar' : restaurant.category === 'cafe' ? 'Café' : 'Restaurant';
+            const link = `restaurant-detail.html?id=${restaurant.id || restaurant.name.toLowerCase().replace(/[^a-z0-9]+/g, '-')}`;
+            
+            return `
+                <div class="map-marker-popup">
+                    <h3>${restaurant.name}</h3>
+                    <p>${restaurant.location}</p>
+                    <p style="color: ${categoryColor}; font-weight: 500; text-transform: capitalize; margin-bottom: 12px;">
+                        ${categoryLabel}
+                    </p>
+                    <a href="${link}" style="display: inline-block; padding: 8px 16px; background: ${categoryColor}; color: white; border-radius: 20px; text-decoration: none; font-size: 14px; font-weight: 500;">
+                        View Details →
+                    </a>
+                </div>
+            `;
+        }
+        
+        // Calculate distance
+        function calculateDistance(lat1, lon1, lat2, lon2) {
+            const R = 6371;
+            const dLat = (lat2 - lat1) * Math.PI / 180;
+            const dLon = (lon2 - lon1) * Math.PI / 180;
+            const a = 
+                Math.sin(dLat/2) * Math.sin(dLat/2) +
+                Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
+                Math.sin(dLon/2) * Math.sin(dLon/2);
+            const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+            return R * c;
+        }
+        
+        // Get user location
+        function tryGetUserLocation() {
+            const storedLocation = localStorage.getItem('snogrub_user_location');
+            if (storedLocation) {
+                try {
+                    const location = JSON.parse(storedLocation);
+                    const age = Date.now() - (location.timestamp || 0);
+                    if (age < 3600000) { // Less than 1 hour old
+                        userLat = location.lat;
+                        userLng = location.lng;
+                    }
+                } catch (e) {
+                    console.error('Error parsing stored location:', e);
+                }
+            }
+        }
+        
+        function getUserLocation() {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(
+                    (position) => {
+                        userLat = position.coords.latitude;
+                        userLng = position.coords.longitude;
+                        
+                        localStorage.setItem('snogrub_user_location', JSON.stringify({
+                            lat: userLat,
+                            lng: userLng,
+                            timestamp: Date.now()
+                        }));
+                        
+                        // Add user location marker
+                        if (userLocationMarker) {
+                            mapInstance.removeLayer(userLocationMarker);
+                        }
+                        
+                        userLocationMarker = L.marker([userLat, userLng], {
+                            icon: L.divIcon({
+                                className: 'user-location-marker',
+                                html: '<div style="width: 20px; height: 20px; background: #ef4444; border: 3px solid white; border-radius: 50%; box-shadow: 0 2px 8px rgba(0,0,0,0.3);"></div>',
+                                iconSize: [20, 20],
+                                iconAnchor: [10, 10]
+                            })
+                        }).addTo(mapInstance).bindPopup('<strong>Your Location</strong>');
+                        
+                        // Center map on user location
+                        mapInstance.setView([userLat, userLng], 10);
+                        
+                        updateResults();
+                    },
+                    (error) => {
+                        console.error('Error getting location:', error);
+                        alert('Unable to get your location. Please enable location services.');
+                    }
+                );
+            } else {
+                alert('Geolocation is not supported by your browser.');
+            }
+        }
+        
+        // Filter markers by type
+        function filterMarkers(filter) {
+            currentFilter = filter;
+            
+            // Update filter chips
+            document.querySelectorAll('.filter-chip[data-filter]').forEach(chip => {
+                chip.classList.remove('active');
+            });
+            document.querySelectorAll(`[data-filter="${filter}"]`).forEach(chip => {
+                chip.classList.add('active');
+            });
+            
+            // Show/hide restaurant-specific filters based on selected type
+            const cuisineFilterContainer = document.getElementById('cuisineFilterContainer');
+            const priceFilterContainer = document.getElementById('priceFilterContainer');
+            const ratingFilterContainer = document.getElementById('ratingFilterContainer');
+            
+            if (filter === 'resorts') {
+                // Hide cuisine, price, and rating filters for resorts (resorts don't have these fields)
+                if (cuisineFilterContainer) cuisineFilterContainer.style.display = 'none';
+                if (priceFilterContainer) priceFilterContainer.style.display = 'none';
+                if (ratingFilterContainer) ratingFilterContainer.style.display = 'none';
+                
+                // Clear filters when switching to resorts
+                const cuisineFilter = document.getElementById('cuisineFilter');
+                if (cuisineFilter) cuisineFilter.value = '';
+                
+                // Clear price filters when switching to resorts
+                document.querySelectorAll('.price-filter.active').forEach(chip => {
+                    chip.classList.remove('active');
+                });
+                
+                // Clear rating filters when switching to resorts
+                document.querySelectorAll('.rating-filter.active').forEach(chip => {
+                    chip.classList.remove('active');
+                });
+            } else {
+                // Show all filters for restaurants/bars/cafes
+                if (cuisineFilterContainer) cuisineFilterContainer.style.display = 'flex';
+                if (priceFilterContainer) priceFilterContainer.style.display = 'flex';
+                if (ratingFilterContainer) ratingFilterContainer.style.display = 'flex';
+            }
+            
+            // Update results (which will update both list and map markers)
+            updateResults();
+        }
+        
+        // Update results list
+        function updateResults() {
+            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+            const sortBy = document.getElementById('sortSelect')?.value || 'distance';
+            
+            // Get active filters
+            const activePriceFilters = Array.from(document.querySelectorAll('.price-filter.active')).map(btn => btn.dataset.price);
+            const activeRatingFilters = Array.from(document.querySelectorAll('.rating-filter.active')).map(btn => parseFloat(btn.dataset.rating));
+            const cuisineFilter = document.getElementById('cuisineFilter')?.value || document.getElementById('cuisineFilterMobile')?.value || '';
+            const distanceFilter = document.getElementById('distanceFilter')?.value || '';
+            
+            // Collect all results based on type filter (before other filters)
+            allResults = [];
+            
+            if (currentFilter === 'all' || currentFilter === 'resorts') {
+                mapData.resorts.forEach((resort, index) => {
+                    const distance = userLat && userLng ? calculateDistance(userLat, userLng, resort.lat, resort.lng) : null;
+                    allResults.push({
+                        ...resort,
+                        distance,
+                        marker: resortMarkers[index],
+                        type: 'resort'
+                    });
+                });
+            }
+            
+            if (currentFilter === 'all' || currentFilter === 'restaurants' || currentFilter === 'bars' || currentFilter === 'cafes') {
+                mapData.restaurants.forEach((restaurant, index) => {
+                    const category = restaurant.category;
+                    if (currentFilter === 'all' || 
+                        (currentFilter === 'restaurants' && category === 'restaurant') ||
+                        (currentFilter === 'bars' && category === 'bar') ||
+                        (currentFilter === 'cafes' && category === 'cafe')) {
+                        const distance = userLat && userLng ? calculateDistance(userLat, userLng, restaurant.lat, restaurant.lng) : null;
+                        allResults.push({
+                            ...restaurant,
+                            distance,
+                            marker: restaurantMarkers[index],
+                            type: 'restaurant'
+                        });
+                    }
+                });
+            }
+            
+            // Filter by search term and all filters
+            filteredResults = allResults.filter(item => {
+                // Search filter
+                if (searchTerm && !item.name.toLowerCase().includes(searchTerm) && 
+                    !item.location.toLowerCase().includes(searchTerm) &&
+                    !(item.cuisine && item.cuisine.toLowerCase().includes(searchTerm))) {
+                    return false;
+                }
+                
+                // Distance filter (convert miles to km for comparison)
+                if (distanceFilter && userLat && userLng && item.distance !== null) {
+                    const maxDistanceMiles = parseFloat(distanceFilter);
+                    const maxDistanceKm = maxDistanceMiles * 1.60934; // Convert miles to km
+                    if (item.distance > maxDistanceKm) {
+                        return false;
+                    }
+                }
+                
+                // Price filter (only for restaurants)
+                if (activePriceFilters.length > 0 && item.type === 'restaurant' && item.priceRange) {
+                    if (!activePriceFilters.includes(item.priceRange)) {
+                        return false;
+                    }
+                }
+                
+                // Rating filter
+                if (activeRatingFilters.length > 0 && item.rating) {
+                    const maxRating = Math.max(...activeRatingFilters);
+                    if (item.rating < maxRating) {
+                        return false;
+                    }
+                }
+                
+                // Cuisine filter (only for restaurants)
+                if (cuisineFilter && item.type === 'restaurant' && item.cuisine) {
+                    if (!item.cuisine.toLowerCase().includes(cuisineFilter.toLowerCase())) {
+                        return false;
+                    }
+                }
+                
+                return true;
+            });
+            
+            // Sort results
+            filteredResults.sort((a, b) => {
+                if (sortBy === 'distance') {
+                    if (a.distance === null && b.distance === null) return 0;
+                    if (a.distance === null) return 1;
+                    if (b.distance === null) return -1;
+                    return a.distance - b.distance;
+                } else if (sortBy === 'name') {
+                    return a.name.localeCompare(b.name);
+                } else if (sortBy === 'rating') {
+                    return (b.rating || 0) - (a.rating || 0);
+                } else if (sortBy === 'rating-low') {
+                    return (a.rating || 0) - (b.rating || 0);
+                } else if (sortBy === 'price-low') {
+                    const priceOrder = { '$': 1, '$$': 2, '$$$': 3, '$$$$': 4 };
+                    return (priceOrder[a.priceRange] || 99) - (priceOrder[b.priceRange] || 99);
+                } else if (sortBy === 'price-high') {
+                    const priceOrder = { '$': 1, '$$': 2, '$$$': 3, '$$$$': 4 };
+                    return (priceOrder[b.priceRange] || 99) - (priceOrder[a.priceRange] || 99);
+                }
+                return 0;
+            });
+            
+            // Update map markers based on filtered results
+            updateMapMarkers();
+            
+            // Update UI
+            renderResults();
+            updateResultCount();
+        }
+        
+        // Update map markers to show only filtered results
+        function updateMapMarkers() {
+            // Create a set of markers that should be visible
+            const visibleMarkers = new Set();
+            filteredResults.forEach(item => {
+                if (item.marker) {
+                    visibleMarkers.add(item.marker);
+                }
+            });
+            
+            // Hide all markers that are not in filtered results
+            resortMarkers.forEach(marker => {
+                if (mapInstance.hasLayer(marker) && !visibleMarkers.has(marker)) {
+                    mapInstance.removeLayer(marker);
+                }
+            });
+            
+            restaurantMarkers.forEach(marker => {
+                if (mapInstance.hasLayer(marker) && !visibleMarkers.has(marker)) {
+                    mapInstance.removeLayer(marker);
+                }
+            });
+            
+            // Show markers that are in filtered results
+            filteredResults.forEach(item => {
+                if (item.marker && !mapInstance.hasLayer(item.marker)) {
+                    mapInstance.addLayer(item.marker);
+                }
+            });
+        }
+        
+        // Render results list
+        function renderResults() {
+            const resultsList = document.getElementById('resultsList');
+            if (!resultsList) return;
+            
+            if (filteredResults.length === 0) {
+                resultsList.innerHTML = `
+                    <div class="p-8 text-center">
+                        <svg class="w-16 h-16 text-gray-300 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                        </svg>
+                        <p class="text-gray-500 text-sm">No results found. Try adjusting your filters.</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            resultsList.innerHTML = filteredResults.map((item, index) => {
+                const distance = item.distance ? `${(item.distance * 0.621371).toFixed(1)} mi` : '';
+                const categoryLabel = item.category === 'bar' ? 'Après Bar' : item.category === 'cafe' ? 'Café' : item.type === 'resort' ? 'Resort' : 'Restaurant';
+                const link = item.type === 'resort' 
+                    ? `resort-detail.html?id=${item.id || item.name.toLowerCase().replace(/[^a-z0-9]+/g, '-')}`
+                    : `restaurant-detail.html?id=${item.id || item.name.toLowerCase().replace(/[^a-z0-9]+/g, '-')}`;
+                
+                const priceDisplay = item.priceRange ? item.priceRange : '';
+                const cuisineDisplay = item.cuisine ? item.cuisine : '';
+                
+                return `
+                    <div class="list-item p-4 hover:bg-gray-50 cursor-pointer" data-index="${index}">
+                        <div class="flex items-start justify-between gap-3">
+                            <div class="flex-1 min-w-0">
+                                <h4 class="font-semibold text-gray-900 mb-1 truncate">${item.name}</h4>
+                                <p class="text-xs text-gray-600 mb-2">${item.location}</p>
+                                <div class="flex items-center gap-2 flex-wrap">
+                                    <span class="text-xs px-2 py-0.5 rounded-full ${item.type === 'resort' ? 'bg-blue-100 text-blue-700' : item.category === 'bar' ? 'bg-blue-100 text-blue-700' : item.category === 'cafe' ? 'bg-yellow-100 text-yellow-700' : 'bg-green-100 text-green-700'}">
+                                        ${categoryLabel}
+                                    </span>
+                                    ${item.rating ? `<span class="text-xs text-gray-600 flex items-center gap-0.5">⭐ ${item.rating.toFixed(1)}</span>` : ''}
+                                    ${priceDisplay ? `<span class="text-xs text-gray-500">${priceDisplay}</span>` : ''}
+                                    ${cuisineDisplay ? `<span class="text-xs text-gray-500 truncate">${cuisineDisplay}</span>` : ''}
+                                    ${distance ? `<span class="distance-badge">${distance}</span>` : ''}
+                                </div>
+                            </div>
+                            <a href="${link}" onclick="event.stopPropagation()" class="ml-2 text-[var(--accent-blue)] hover:underline text-sm font-medium flex-shrink-0">
+                                View →
+                            </a>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+            
+            // Add click handlers
+            resultsList.querySelectorAll('.list-item').forEach(item => {
+                item.addEventListener('click', (e) => {
+                    if (e.target.tagName === 'A') return;
+                    const index = parseInt(item.dataset.index);
+                    const result = filteredResults[index];
+                    if (result && result.marker) {
+                        mapInstance.setView([result.lat, result.lng], 13);
+                        result.marker.openPopup();
+                        result.marker._icon.classList.add('pulse-marker');
+                        setTimeout(() => {
+                            result.marker._icon.classList.remove('pulse-marker');
+                        }, 2000);
+                    }
+                });
+            });
+        }
+        
+        // Update result count
+        function updateResultCount() {
+            const countEl = document.getElementById('resultCount');
+            if (countEl) {
+                countEl.textContent = `${filteredResults.length} found`;
+            }
+        }
+        
+        // State selection mode
+        function createStateLayers() {
+            if (!mapInstance) return;
+            
+            if (stateLayerGroup) {
+                mapInstance.removeLayer(stateLayerGroup);
+            }
+            
+            stateLayerGroup = L.layerGroup();
+            
+            Object.keys(stateBounds).forEach(stateName => {
+                const bounds = stateBounds[stateName].bounds;
+                const rectangle = L.rectangle(bounds, {
+                    color: 'transparent',
+                    fillColor: 'transparent',
+                    fillOpacity: 0,
+                    weight: 0,
+                    interactive: true,
+                    className: 'state-boundary'
+                });
+                
+                rectangle.on('mouseover', function() {
+                    this.setStyle({
+                        fillColor: '#0071e3',
+                        fillOpacity: 0.2,
+                        color: '#0071e3',
+                        weight: 2
+                    });
+                });
+                
+                rectangle.on('mouseout', function() {
+                    this.setStyle({
+                        fillColor: 'transparent',
+                        fillOpacity: 0,
+                        color: 'transparent',
+                        weight: 0
+                    });
+                });
+                
+                rectangle.on('click', function() {
+                    filterByState(stateName);
+                    deactivateStateSelectionMode();
+                });
+                
+                rectangle.stateName = stateName;
+                stateLayerGroup.addLayer(rectangle);
+            });
+            
+            stateLayerGroup.addTo(mapInstance);
+        }
+        
+        function removeStateLayers() {
+            if (stateLayerGroup && mapInstance) {
+                mapInstance.removeLayer(stateLayerGroup);
+                stateLayerGroup = null;
+            }
+        }
+        
+        function activateStateSelectionMode() {
+            stateSelectionMode = true;
+            const btn = document.getElementById('selectStateBtn');
+            const btnText = document.getElementById('selectStateBtnText');
+            const btnMobile = document.getElementById('selectStateBtnMobile');
+            const btnTextMobile = document.getElementById('selectStateBtnTextMobile');
+            
+            if (btn) {
+                btn.classList.add('bg-[var(--accent-blue)]', 'text-white');
+                btn.classList.remove('bg-white', 'text-gray-700');
+            }
+            if (btnText) btnText.textContent = 'Click a State on the Map';
+            if (btnMobile) {
+                btnMobile.classList.add('bg-[var(--accent-blue)]', 'text-white');
+                btnMobile.classList.remove('bg-white', 'text-gray-700');
+            }
+            if (btnTextMobile) btnTextMobile.textContent = 'Click a State on the Map';
+            
+            createStateLayers();
+        }
+        
+        function deactivateStateSelectionMode() {
+            stateSelectionMode = false;
+            const btn = document.getElementById('selectStateBtn');
+            const btnText = document.getElementById('selectStateBtnText');
+            const btnMobile = document.getElementById('selectStateBtnMobile');
+            const btnTextMobile = document.getElementById('selectStateBtnTextMobile');
+            
+            if (btn) {
+                btn.classList.remove('bg-[var(--accent-blue)]', 'text-white');
+                btn.classList.add('bg-white', 'text-gray-700');
+            }
+            if (btnText) btnText.textContent = 'Select State/Province';
+            if (btnMobile) {
+                btnMobile.classList.remove('bg-[var(--accent-blue)]', 'text-white');
+                btnMobile.classList.add('bg-white', 'text-gray-700');
+            }
+            if (btnTextMobile) btnTextMobile.textContent = 'Select State/Province';
+            
+            removeStateLayers();
+        }
+        
+        function filterByState(state) {
+            if (!mapInstance) return;
+            
+            // Hide all markers
+            resortMarkers.forEach(m => mapInstance.removeLayer(m));
+            restaurantMarkers.forEach(m => mapInstance.removeLayer(m));
+            
+            const visibleResortMarkers = [];
+            const visibleRestaurantMarkers = [];
+            
+            mapData.resorts.forEach((resort, index) => {
+                if (resort.location.includes(state)) {
+                    visibleResortMarkers.push(resortMarkers[index]);
+                }
+            });
+            
+            mapData.restaurants.forEach((restaurant, index) => {
+                if (restaurant.location.includes(state)) {
+                    visibleRestaurantMarkers.push(restaurantMarkers[index]);
+                }
+            });
+            
+            // Apply current filter
+            if (currentFilter === 'all' || currentFilter === 'resorts') {
+                visibleResortMarkers.forEach(m => mapInstance.addLayer(m));
+            }
+            
+            if (currentFilter === 'all' || currentFilter === 'restaurants' || currentFilter === 'bars' || currentFilter === 'cafes') {
+                visibleRestaurantMarkers.forEach(m => {
+                    const category = m.options.category;
+                    if (currentFilter === 'all' || 
+                        (currentFilter === 'restaurants' && category === 'restaurant') ||
+                        (currentFilter === 'bars' && category === 'bar') ||
+                        (currentFilter === 'cafes' && category === 'cafe')) {
+                        mapInstance.addLayer(m);
+                    }
+                });
+            }
+            
+            // Zoom to state
+            if (stateBounds[state]) {
+                const bounds = stateBounds[state].bounds;
+                const latLngBounds = L.latLngBounds(bounds);
+                const visibleMarkers = currentFilter === 'all' 
+                    ? [...visibleResortMarkers, ...visibleRestaurantMarkers]
+                    : currentFilter === 'resorts' 
+                    ? visibleResortMarkers 
+                    : visibleRestaurantMarkers;
+                
+                if (visibleMarkers.length > 0) {
+                    const markerGroup = new L.featureGroup(visibleMarkers);
+                    const markerBounds = markerGroup.getBounds();
+                    mapInstance.fitBounds(markerBounds.pad(0.1));
+                    mapInstance.setMaxBounds(latLngBounds.pad(0.1));
+                } else {
+                    mapInstance.setView(stateBounds[state].center, 7);
+                    mapInstance.setMaxBounds(latLngBounds.pad(0.1));
+                }
+            }
+            
+            updateResults();
+        }
+        
+        
+        // Event listeners
+        document.addEventListener('DOMContentLoaded', () => {
+            initMap();
+            
+            // Initialize filter visibility based on default filter (all)
+            const cuisineFilterContainer = document.getElementById('cuisineFilterContainer');
+            const priceFilterContainer = document.getElementById('priceFilterContainer');
+            const ratingFilterContainer = document.getElementById('ratingFilterContainer');
+            if (cuisineFilterContainer) cuisineFilterContainer.style.display = 'flex';
+            if (priceFilterContainer) priceFilterContainer.style.display = 'flex';
+            if (ratingFilterContainer) ratingFilterContainer.style.display = 'flex';
+            
+            // Search
+            document.getElementById('searchInput').addEventListener('input', updateResults);
+            
+            // Sort
+            const sortSelect = document.getElementById('sortSelect');
+            if (sortSelect) {
+                sortSelect.addEventListener('change', updateResults);
+            }
+            
+            // Filter chips (type filters)
+            document.querySelectorAll('.filter-chip[data-filter]').forEach(chip => {
+                chip.addEventListener('click', () => {
+                    const filter = chip.dataset.filter;
+                    filterMarkers(filter);
+                });
+            });
+            
+            // Price filter chips
+            document.querySelectorAll('.price-filter').forEach(chip => {
+                chip.addEventListener('click', () => {
+                    chip.classList.toggle('active');
+                    updateResults();
+                });
+            });
+            
+            // Rating filter chips
+            document.querySelectorAll('.rating-filter').forEach(chip => {
+                chip.addEventListener('click', () => {
+                    chip.classList.toggle('active');
+                    updateResults();
+                });
+            });
+            
+            // Cuisine filter
+            const cuisineFilter = document.getElementById('cuisineFilter');
+            if (cuisineFilter) {
+                cuisineFilter.addEventListener('change', updateResults);
+            }
+            
+            // Distance filter
+            const distanceFilter = document.getElementById('distanceFilter');
+            if (distanceFilter) {
+                distanceFilter.addEventListener('change', updateResults);
+            }
+            
+            // Clear filters button
+            const clearFiltersBtn = document.getElementById('clearFiltersBtn');
+            if (clearFiltersBtn) {
+                clearFiltersBtn.addEventListener('click', () => {
+                    // Clear all filter chips
+                    document.querySelectorAll('.filter-chip').forEach(chip => {
+                        if (chip.dataset.filter === 'all') {
+                            chip.classList.add('active');
+                        } else {
+                            chip.classList.remove('active');
+                        }
+                    });
+                    
+                    // Reset selects
+                    if (cuisineFilter) cuisineFilter.value = '';
+                    if (distanceFilter) distanceFilter.value = '';
+                    
+                    // Reset mobile cuisine filter if it exists
+                    const cuisineFilterMobile = document.getElementById('cuisineFilterMobile');
+                    if (cuisineFilterMobile) cuisineFilterMobile.value = '';
+                    
+                    // Reset search
+                    document.getElementById('searchInput').value = '';
+                    
+                    // Reset to 'all' filter
+                    filterMarkers('all');
+                });
+            }
+            
+            // Toggle filters on mobile
+            const toggleFiltersBtn = document.getElementById('toggleFiltersBtn');
+            const filterRow = document.getElementById('filterRow');
+            if (toggleFiltersBtn && filterRow) {
+                toggleFiltersBtn.addEventListener('click', () => {
+                    filterRow.classList.toggle('hidden');
+                    // Update button text
+                    const isHidden = filterRow.classList.contains('hidden');
+                    const icon = toggleFiltersBtn.querySelector('svg');
+                    if (isHidden) {
+                        toggleFiltersBtn.innerHTML = `
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z"></path>
+                            </svg>
+                            Filters
+                        `;
+                    } else {
+                        toggleFiltersBtn.innerHTML = `
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                            </svg>
+                            Hide
+                        `;
+                    }
+                });
+            }
+            
+            // Find my location
+            document.getElementById('findMyLocationBtn').addEventListener('click', getUserLocation);
+            
+            // State selection
+            const selectStateBtn = document.getElementById('selectStateBtn');
+            const selectStateBtnMobile = document.getElementById('selectStateBtnMobile');
+            if (selectStateBtn) {
+                selectStateBtn.addEventListener('click', () => {
+                    if (stateSelectionMode) {
+                        deactivateStateSelectionMode();
+                    } else {
+                        activateStateSelectionMode();
+                    }
+                });
+            }
+            if (selectStateBtnMobile) {
+                selectStateBtnMobile.addEventListener('click', () => {
+                    if (stateSelectionMode) {
+                        deactivateStateSelectionMode();
+                    } else {
+                        activateStateSelectionMode();
+                    }
+                });
+            }
+            
+            // Fit to all
+            const fitToAllBtn = document.getElementById('fitToAllBtn');
+            const fitToAllBtnMobile = document.getElementById('fitToAllBtnMobile');
+            if (fitToAllBtn) {
+                fitToAllBtn.addEventListener('click', () => {
+                    const visibleMarkers = currentFilter === 'all' ? [...resortMarkers, ...restaurantMarkers] :
+                                          currentFilter === 'resorts' ? resortMarkers :
+                                          restaurantMarkers.filter(m => {
+                                              const category = m.options.category;
+                                              return currentFilter === 'all' || 
+                                                     (currentFilter === 'restaurants' && category === 'restaurant') ||
+                                                     (currentFilter === 'bars' && category === 'bar') ||
+                                                     (currentFilter === 'cafes' && category === 'cafe');
+                                          });
+                    if (visibleMarkers.length > 0) {
+                        const group = new L.featureGroup(visibleMarkers);
+                        const bounds = group.getBounds();
+                        mapInstance.fitBounds(bounds.pad(0.1));
+                        mapInstance.setMaxBounds(bounds.pad(0.1));
+                    }
+                });
+            }
+            if (fitToAllBtnMobile) {
+                fitToAllBtnMobile.addEventListener('click', () => {
+                    const visibleMarkers = currentFilter === 'all' ? [...resortMarkers, ...restaurantMarkers] :
+                                          currentFilter === 'resorts' ? resortMarkers :
+                                          restaurantMarkers.filter(m => {
+                                              const category = m.options.category;
+                                              return currentFilter === 'all' || 
+                                                     (currentFilter === 'restaurants' && category === 'restaurant') ||
+                                                     (currentFilter === 'bars' && category === 'bar') ||
+                                                     (currentFilter === 'cafes' && category === 'cafe');
+                                          });
+                    if (visibleMarkers.length > 0) {
+                        const group = new L.featureGroup(visibleMarkers);
+                        const bounds = group.getBounds();
+                        mapInstance.fitBounds(bounds.pad(0.1));
+                        mapInstance.setMaxBounds(bounds.pad(0.1));
+                    }
+                });
+            }
+            
+            // Mobile menu
+            const mobileMenuButton = document.getElementById('mobileMenuButton');
+            const mobileMenu = document.getElementById('mobileMenu');
+            const menuIcon = document.getElementById('menuIcon');
+            const closeIcon = document.getElementById('closeIcon');
+            const closeMobileMenu = document.getElementById('closeMobileMenu');
+            
+            if (mobileMenuButton) {
+                mobileMenuButton.addEventListener('click', () => {
+                    if (mobileMenu) {
+                        mobileMenu.classList.toggle('hidden');
+                        if (menuIcon) menuIcon.classList.toggle('hidden');
+                        if (closeIcon) closeIcon.classList.toggle('hidden');
+                    }
+                });
+            }
+            
+            if (closeMobileMenu) {
+                closeMobileMenu.addEventListener('click', () => {
+                    if (mobileMenu) mobileMenu.classList.add('hidden');
+                    if (menuIcon) menuIcon.classList.remove('hidden');
+                    if (closeIcon) closeIcon.classList.add('hidden');
+                });
+            }
+            
+            // Mobile controls
+            const mobileControls = document.getElementById('mobileControls');
+            const closeMobileControls = document.getElementById('closeMobileControls');
+            
+            if (closeMobileControls) {
+                closeMobileControls.addEventListener('click', () => {
+                    mobileControls.classList.add('hidden');
+                });
+            }
+            
+            // Adjust nav positioning for home base bar
+            function adjustNavForHomeBase() {
+                const homebaseBar = document.getElementById('homebase-bar');
+                const nav = document.querySelector('nav');
+                if (homebaseBar && nav) {
+                    const barHeight = homebaseBar.offsetHeight;
+                    nav.style.top = `${barHeight}px`;
+                }
+            }
+            
+            // Watch for home base bar visibility changes
+            setTimeout(() => {
+                adjustNavForHomeBase();
+                const observer = new MutationObserver(adjustNavForHomeBase);
+                const homebaseBar = document.getElementById('homebase-bar');
+                if (homebaseBar) {
+                    observer.observe(homebaseBar, { attributes: true, attributeFilter: ['style'] });
+                }
+            }, 500);
+            
+            // Listen for home base changes and re-center map
+            window.addEventListener('homebaseChanged', () => {
+                if (typeof mapInstance !== 'undefined' && mapInstance) {
+                    if (typeof HomeBase !== 'undefined' && HomeBase.isActive()) {
+                        const homeBaseResort = HomeBase.getHomeBaseResort();
+                        if (homeBaseResort && homeBaseResort.coordinates && homeBaseResort.coordinates.lat && homeBaseResort.coordinates.lng) {
+                            const lat = homeBaseResort.coordinates.lat;
+                            const lng = homeBaseResort.coordinates.lng;
+                            // Zoom to home base resort
+                            mapInstance.setView([lat, lng], 11);
+                            // Set max bounds around the home base area
+                            const bounds = L.latLngBounds(
+                                [lat - 0.5, lng - 0.5],
+                                [lat + 0.5, lng + 0.5]
+                            );
+                            mapInstance.setMaxBounds(bounds);
+                        }
+                    } else {
+                        // Home base cleared - fit to all markers
+                        fitMapToAllMarkers();
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>
+

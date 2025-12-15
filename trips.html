@@ -1,0 +1,641 @@
+<!-- Trip Planning Page for SNOGRUB -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Trips - SNOGRUB</title>
+    
+    <!-- TailwindCSS via CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Inter font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --accent-blue: #0071e3;
+        }
+        
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+        
+        .frosted-glass {
+            background: rgba(251, 251, 253, 0.8);
+            backdrop-filter: saturate(180%) blur(20px);
+            -webkit-backdrop-filter: saturate(180%) blur(20px);
+        }
+        
+        .trip-card {
+            transition: all 0.3s ease;
+        }
+        
+        .trip-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 24px rgba(0,0,0,0.1);
+        }
+        
+        .place-item {
+            transition: all 0.2s ease;
+        }
+        
+        .place-item:hover {
+            background: #f9fafb;
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <!-- Navigation -->
+    <nav class="frosted-glass fixed top-0 left-0 right-0 z-50 border-b border-gray-200/50">
+        <div class="max-w-7xl mx-auto px-6 sm:px-8">
+            <div class="flex items-center justify-between h-14">
+                <div class="flex-shrink-0">
+                    <a href="index.html" class="text-2xl font-semibold hover:opacity-80 transition-opacity duration-300">
+                        <span class="bg-[var(--accent-blue)] text-white px-1">SNO</span><span class="text-[var(--accent-blue)]">GRUB</span>
+                    </a>
+                </div>
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="resorts.html" class="text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors duration-200">
+                        Resorts
+                    </a>
+                    <a href="restaurants.html" class="text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors duration-200">
+                        Restaurants
+                    </a>
+                    <a href="map.html" class="text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors duration-200">
+                        Map
+                    </a>
+                    <a href="blog.html" class="text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors duration-200">
+                        Blog
+                    </a>
+                    <a href="favorites.html" class="text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors duration-200">
+                        Favorites
+                    </a>
+                    <a href="trips.html" class="text-sm font-medium text-[var(--accent-blue)] transition-colors duration-200">
+                        Trips
+                    </a>
+                </div>
+                <!-- Mobile Menu Button -->
+                <button id="mobileMenuButton" class="md:hidden text-gray-600 hover:text-gray-900 transition-colors" aria-label="Menu">
+                    <svg id="menuIcon" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                    </svg>
+                    <svg id="closeIcon" class="w-6 h-6 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                    </svg>
+                </button>
+            </div>
+            <!-- Mobile Menu Dropdown -->
+            <div id="mobileMenu" class="hidden md:hidden border-t border-gray-200/50 bg-white/95 backdrop-blur-lg">
+                <div class="px-6 py-4 space-y-4">
+                    <a href="resorts.html" class="block text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors duration-200">Resorts</a>
+                    <a href="restaurants.html" class="block text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors duration-200">Restaurants</a>
+                    <a href="map.html" class="block text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors duration-200">Map</a>
+                    <a href="blog.html" class="block text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors duration-200">Blog</a>
+                    <a href="favorites.html" class="block text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors duration-200">Favorites</a>
+                    <a href="trips.html" class="block text-sm font-medium text-[var(--accent-blue)] transition-colors duration-200">Trips</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+    
+    <script>
+        // Mobile menu toggle
+        document.addEventListener('DOMContentLoaded', () => {
+            const mobileMenuButton = document.getElementById('mobileMenuButton');
+            const mobileMenu = document.getElementById('mobileMenu');
+            const menuIcon = document.getElementById('menuIcon');
+            const closeIcon = document.getElementById('closeIcon');
+            
+            if (mobileMenuButton) {
+                mobileMenuButton.addEventListener('click', () => {
+                    mobileMenu.classList.toggle('hidden');
+                    menuIcon.classList.toggle('hidden');
+                    closeIcon.classList.toggle('hidden');
+                });
+            }
+            
+            // Close mobile menu when clicking a link
+            if (mobileMenu) {
+                mobileMenu.querySelectorAll('a').forEach(link => {
+                    link.addEventListener('click', () => {
+                        mobileMenu.classList.add('hidden');
+                        menuIcon.classList.remove('hidden');
+                        closeIcon.classList.add('hidden');
+                    });
+                });
+            }
+        });
+    </script>
+    
+    <!-- Main Content -->
+    <div class="pt-20 pb-12">
+        <!-- Header -->
+        <section class="px-6 sm:px-8 py-12 bg-white border-b border-gray-200">
+            <div class="max-w-7xl mx-auto">
+                <div class="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+                    <div>
+                        <h1 class="text-4xl sm:text-5xl font-semibold text-gray-900 mb-2 tracking-tight">
+                            My Trips
+                        </h1>
+                        <p class="text-xl text-gray-600 font-light">
+                            Plan your ski resort dining adventures
+                        </p>
+                    </div>
+                    <button id="createTripBtn" class="px-6 py-3 bg-[var(--accent-blue)] text-white rounded-full font-medium hover:opacity-90 transition-opacity flex items-center gap-2">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
+                        </svg>
+                        Create New Trip
+                    </button>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Trips Grid -->
+        <section class="px-6 sm:px-8 py-12">
+            <div class="max-w-7xl mx-auto">
+                <div id="tripsContainer" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <!-- Trips will be loaded here -->
+                </div>
+                
+                <div id="noTripsMessage" class="text-center py-16">
+                    <svg class="w-24 h-24 text-gray-300 mx-auto mb-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7"></path>
+                    </svg>
+                    <h3 class="text-xl font-semibold text-gray-900 mb-2">No trips yet</h3>
+                    <p class="text-gray-600 mb-6">Create your first trip to start planning your ski resort dining adventure!</p>
+                    <button id="createFirstTripBtn" class="px-6 py-3 bg-[var(--accent-blue)] text-white rounded-full font-medium hover:opacity-90 transition-opacity">
+                        Create Your First Trip
+                    </button>
+                </div>
+            </div>
+        </section>
+    </div>
+    
+    <!-- Create Trip Modal -->
+    <div id="createTripModal" class="hidden fixed inset-0 bg-black bg-opacity-40 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl p-8 max-w-md w-full">
+            <div class="flex items-center justify-between mb-6">
+                <h3 class="text-2xl font-semibold text-gray-900">Create New Trip</h3>
+                <button id="closeCreateTripModal" class="text-gray-400 hover:text-gray-600 transition-colors">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                    </svg>
+                </button>
+            </div>
+            <form id="createTripForm" class="space-y-4">
+                <div>
+                    <label for="tripName" class="block text-sm font-medium text-gray-900 mb-2">Trip Name</label>
+                    <input type="text" id="tripName" name="name" required
+                           class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[var(--accent-blue)]"
+                           placeholder="e.g., Weekend in Vail">
+                </div>
+                <div>
+                    <label for="tripDescription" class="block text-sm font-medium text-gray-900 mb-2">Description (Optional)</label>
+                    <textarea id="tripDescription" name="description" rows="3"
+                              class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[var(--accent-blue)]"
+                              placeholder="Tell us about your trip..."></textarea>
+                </div>
+                <div>
+                    <label for="tripDate" class="block text-sm font-medium text-gray-900 mb-2">Trip Date (Optional)</label>
+                    <input type="date" id="tripDate" name="date"
+                           class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[var(--accent-blue)]">
+                </div>
+                <div class="flex gap-4 pt-4">
+                    <button type="submit" class="flex-1 px-6 py-3 bg-[var(--accent-blue)] text-white rounded-full font-medium hover:opacity-90 transition-opacity">
+                        Create Trip
+                    </button>
+                    <button type="button" id="cancelCreateTrip" class="px-6 py-3 bg-white text-gray-700 border border-gray-300 rounded-full font-medium hover:bg-gray-50 transition-colors">
+                        Cancel
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+    
+    <!-- Trip Detail Modal -->
+    <div id="tripDetailModal" class="hidden fixed inset-0 bg-black bg-opacity-40 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl p-8 max-w-4xl w-full max-h-[90vh] overflow-y-auto">
+            <div class="flex items-center justify-between mb-6">
+                <div>
+                    <h3 id="tripDetailName" class="text-2xl font-semibold text-gray-900"></h3>
+                    <p id="tripDetailMeta" class="text-sm text-gray-500 mt-1"></p>
+                </div>
+                <button id="closeTripDetailModal" class="text-gray-400 hover:text-gray-600 transition-colors">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                    </svg>
+                </button>
+            </div>
+            
+            <div id="tripPlacesContainer" class="space-y-4 mb-6">
+                <!-- Places will be loaded here -->
+            </div>
+            
+            <div id="noPlacesMessage" class="text-center py-12 border-2 border-dashed border-gray-200 rounded-lg">
+                <svg class="w-16 h-16 text-gray-300 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+                </svg>
+                <p class="text-gray-600 mb-4">No places added yet</p>
+                <p class="text-sm text-gray-500">Visit restaurant or resort pages to add them to this trip</p>
+            </div>
+            
+            <div class="flex gap-4 pt-6 border-t border-gray-200">
+                <button id="shareTripBtn" class="px-4 py-2 bg-white text-gray-700 border border-gray-300 rounded-full font-medium hover:bg-gray-50 transition-colors flex items-center gap-2">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"></path>
+                    </svg>
+                    Share Trip
+                </button>
+                <button id="deleteTripBtn" class="px-4 py-2 bg-red-50 text-red-600 border border-red-200 rounded-full font-medium hover:bg-red-100 transition-colors flex items-center gap-2">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+                    </svg>
+                    Delete Trip
+                </button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Mobile Menu -->
+    <div id="mobileMenu" class="hidden fixed inset-0 z-50 bg-black bg-opacity-50 md:hidden">
+        <div class="bg-white w-64 h-full shadow-xl">
+            <div class="p-6">
+                <div class="flex items-center justify-between mb-8">
+                    <a href="index.html" class="text-xl font-semibold text-gray-900">SkiEats</a>
+                    <button id="closeMobileMenu" class="text-gray-700">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                        </svg>
+                    </button>
+                </div>
+                <nav class="space-y-4">
+                    <a href="index.html" class="block text-gray-700 hover:text-[var(--accent-blue)] transition-colors">Home</a>
+                    <a href="search-results.html" class="block text-gray-700 hover:text-[var(--accent-blue)] transition-colors">Search</a>
+                    <a href="map.html" class="block text-gray-700 hover:text-[var(--accent-blue)] transition-colors">Map</a>
+                    <a href="blog.html" class="block text-gray-700 hover:text-[var(--accent-blue)] transition-colors">Blog</a>
+                    <a href="favorites.html" class="block text-gray-700 hover:text-[var(--accent-blue)] transition-colors">Favorites</a>
+                    <a href="trips.html" class="block text-[var(--accent-blue)] font-medium">Trips</a>
+                </nav>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Load data.js -->
+    <script src="data.js"></script>
+    <!-- Home Base Functionality -->
+    <script src="js/homebase.js"></script>
+    <script src="js/homebase-bar.js"></script>
+    
+    <script>
+        let currentTripId = null;
+        
+        // Load trips from localStorage
+        function loadTrips() {
+            const trips = JSON.parse(localStorage.getItem('snogrub_trips') || '[]');
+            const container = document.getElementById('tripsContainer');
+            const noTripsMessage = document.getElementById('noTripsMessage');
+            
+            if (!container) return;
+            
+            if (trips.length === 0) {
+                container.innerHTML = '';
+                if (noTripsMessage) noTripsMessage.style.display = 'block';
+                return;
+            }
+            
+            if (noTripsMessage) noTripsMessage.style.display = 'none';
+            
+            container.innerHTML = trips.map(trip => {
+                const placeCount = trip.places ? trip.places.length : 0;
+                const dateStr = trip.date ? new Date(trip.date).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' }) : 'No date set';
+                
+                return `
+                    <div class="trip-card bg-white border border-gray-200 rounded-lg overflow-hidden cursor-pointer" data-trip-id="${trip.id}">
+                        <div class="p-6">
+                            <div class="flex items-start justify-between mb-4">
+                                <div class="flex-1">
+                                    <h3 class="text-xl font-semibold text-gray-900 mb-2">${trip.name}</h3>
+                                    ${trip.description ? `<p class="text-sm text-gray-600 mb-2">${trip.description}</p>` : ''}
+                                    <div class="flex items-center gap-4 text-sm text-gray-500">
+                                        <span>${placeCount} place${placeCount !== 1 ? 's' : ''}</span>
+                                        <span>•</span>
+                                        <span>${dateStr}</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="flex items-center gap-2 mt-4">
+                                <button onclick="viewTrip('${trip.id}')" class="flex-1 px-4 py-2 bg-[var(--accent-blue)] text-white rounded-full text-sm font-medium hover:opacity-90 transition-opacity">
+                                    View Trip
+                                </button>
+                                <button onclick="deleteTrip('${trip.id}')" class="px-4 py-2 bg-red-50 text-red-600 border border-red-200 rounded-full text-sm font-medium hover:bg-red-100 transition-colors">
+                                    Delete
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+        
+        // Create new trip
+        function createTrip(name, description, date) {
+            const trips = JSON.parse(localStorage.getItem('snogrub_trips') || '[]');
+            const newTrip = {
+                id: Date.now().toString(),
+                name: name,
+                description: description || '',
+                date: date || null,
+                places: [],
+                createdAt: new Date().toISOString()
+            };
+            trips.push(newTrip);
+            localStorage.setItem('skieats_trips', JSON.stringify(trips));
+            loadTrips();
+        }
+        
+        // View trip details
+        window.viewTrip = function(tripId) {
+            const trips = JSON.parse(localStorage.getItem('snogrub_trips') || '[]');
+            const trip = trips.find(t => t.id === tripId);
+            if (!trip) return;
+            
+            currentTripId = tripId;
+            const modal = document.getElementById('tripDetailModal');
+            const nameEl = document.getElementById('tripDetailName');
+            const metaEl = document.getElementById('tripDetailMeta');
+            const placesContainer = document.getElementById('tripPlacesContainer');
+            const noPlacesMessage = document.getElementById('noPlacesMessage');
+            
+            if (nameEl) nameEl.textContent = trip.name;
+            if (metaEl) {
+                const placeCount = trip.places ? trip.places.length : 0;
+                const dateStr = trip.date ? new Date(trip.date).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }) : 'No date set';
+                metaEl.textContent = `${placeCount} places • ${dateStr}`;
+            }
+            
+            if (trip.places && trip.places.length > 0) {
+                if (noPlacesMessage) noPlacesMessage.style.display = 'none';
+                if (placesContainer) {
+                    placesContainer.innerHTML = trip.places.map(place => {
+                        const link = place.type === 'resort' 
+                            ? `resort-detail.html?id=${place.id}`
+                            : `restaurant-detail.html?id=${place.id}`;
+                        
+                        return `
+                            <div class="place-item bg-gray-50 border border-gray-200 rounded-lg p-4 flex items-center justify-between">
+                                <div class="flex-1">
+                                    <h4 class="font-semibold text-gray-900 mb-1">${place.name}</h4>
+                                    <p class="text-sm text-gray-600">${place.location}</p>
+                                    <span class="inline-block mt-2 px-2 py-1 bg-blue-100 text-blue-700 text-xs rounded-full">
+                                        ${place.type === 'resort' ? 'Resort' : place.category === 'bar' ? 'Après Bar' : place.category === 'cafe' ? 'Café' : 'Restaurant'}
+                                    </span>
+                                </div>
+                                <div class="flex items-center gap-2 ml-4">
+                                    <a href="${link}" class="px-3 py-1.5 bg-[var(--accent-blue)] text-white rounded-full text-sm font-medium hover:opacity-90 transition-opacity">
+                                        View
+                                    </a>
+                                    <button onclick="removePlaceFromTrip('${place.id}')" class="px-3 py-1.5 bg-red-50 text-red-600 border border-red-200 rounded-full text-sm font-medium hover:bg-red-100 transition-colors">
+                                        Remove
+                                    </button>
+                                </div>
+                            </div>
+                        `;
+                    }).join('');
+                }
+            } else {
+                if (placesContainer) placesContainer.innerHTML = '';
+                if (noPlacesMessage) noPlacesMessage.style.display = 'block';
+            }
+            
+            if (modal) modal.classList.remove('hidden');
+        };
+        
+        // Delete trip
+        window.deleteTrip = function(tripId) {
+            if (!confirm('Are you sure you want to delete this trip?')) return;
+            
+            const trips = JSON.parse(localStorage.getItem('snogrub_trips') || '[]');
+            const filtered = trips.filter(t => t.id !== tripId);
+                localStorage.setItem('snogrub_trips', JSON.stringify(filtered));
+            loadTrips();
+            
+            // Close modal if open
+            const modal = document.getElementById('tripDetailModal');
+            if (modal) modal.classList.add('hidden');
+        };
+        
+        // Remove place from trip
+        window.removePlaceFromTrip = function(placeId) {
+            if (!currentTripId) return;
+            
+            const trips = JSON.parse(localStorage.getItem('snogrub_trips') || '[]');
+            const trip = trips.find(t => t.id === currentTripId);
+            if (trip && trip.places) {
+                trip.places = trip.places.filter(p => p.id !== placeId);
+                localStorage.setItem('snogrub_trips', JSON.stringify(trips));
+                viewTrip(currentTripId);
+            }
+        };
+        
+        // Share trip
+        document.getElementById('shareTripBtn')?.addEventListener('click', () => {
+            if (!currentTripId) return;
+            
+            const trips = JSON.parse(localStorage.getItem('snogrub_trips') || '[]');
+            const trip = trips.find(t => t.id === currentTripId);
+            if (!trip) return;
+            
+            const tripData = {
+                name: trip.name,
+                description: trip.description,
+                date: trip.date,
+                places: trip.places
+            };
+            
+            const shareText = `Check out my ${trip.name} trip on SNOGRUB! ${trip.places.length} places planned.`;
+            const shareUrl = `${window.location.origin}${window.location.pathname}?trip=${currentTripId}`;
+            
+            if (navigator.share) {
+                navigator.share({
+                    title: trip.name,
+                    text: shareText,
+                    url: shareUrl
+                });
+            } else {
+                // Fallback: copy to clipboard
+                navigator.clipboard.writeText(shareUrl).then(() => {
+                    alert('Trip link copied to clipboard!');
+                });
+            }
+        });
+        
+        // Delete trip from detail modal
+        document.getElementById('deleteTripBtn')?.addEventListener('click', () => {
+            if (currentTripId) {
+                deleteTrip(currentTripId);
+            }
+        });
+        
+        // Event listeners
+        document.addEventListener('DOMContentLoaded', () => {
+            loadTrips();
+            
+            // Create trip modal
+            const createTripBtn = document.getElementById('createTripBtn');
+            const createFirstTripBtn = document.getElementById('createFirstTripBtn');
+            const createTripModal = document.getElementById('createTripModal');
+            const closeCreateTripModal = document.getElementById('closeCreateTripModal');
+            const cancelCreateTrip = document.getElementById('cancelCreateTrip');
+            const createTripForm = document.getElementById('createTripForm');
+            
+            const openCreateModal = () => {
+                if (createTripModal) createTripModal.classList.remove('hidden');
+            };
+            
+            const closeCreateModal = () => {
+                if (createTripModal) createTripModal.classList.add('hidden');
+                if (createTripForm) createTripForm.reset();
+            };
+            
+            if (createTripBtn) createTripBtn.addEventListener('click', openCreateModal);
+            if (createFirstTripBtn) createFirstTripBtn.addEventListener('click', openCreateModal);
+            if (closeCreateTripModal) closeCreateTripModal.addEventListener('click', closeCreateModal);
+            if (cancelCreateTrip) cancelCreateTrip.addEventListener('click', closeCreateModal);
+            
+            if (createTripForm) {
+                createTripForm.addEventListener('submit', (e) => {
+                    e.preventDefault();
+                    const formData = new FormData(createTripForm);
+                    createTrip(
+                        formData.get('name'),
+                        formData.get('description'),
+                        formData.get('date')
+                    );
+                    closeCreateModal();
+                });
+            }
+            
+            // Trip detail modal
+            const tripDetailModal = document.getElementById('tripDetailModal');
+            const closeTripDetailModal = document.getElementById('closeTripDetailModal');
+            
+            if (closeTripDetailModal) {
+                closeTripDetailModal.addEventListener('click', () => {
+                    if (tripDetailModal) tripDetailModal.classList.add('hidden');
+                    currentTripId = null;
+                });
+            }
+            
+            if (tripDetailModal) {
+                tripDetailModal.addEventListener('click', (e) => {
+                    if (e.target === tripDetailModal) {
+                        tripDetailModal.classList.add('hidden');
+                        currentTripId = null;
+                    }
+                });
+            }
+            
+            // Mobile menu
+            const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+            const mobileMenu = document.getElementById('mobileMenu');
+            const closeMobileMenu = document.getElementById('closeMobileMenu');
+            
+            if (mobileMenuBtn) {
+                mobileMenuBtn.addEventListener('click', () => {
+                    if (mobileMenu) mobileMenu.classList.remove('hidden');
+                });
+            }
+            
+            if (closeMobileMenu) {
+                closeMobileMenu.addEventListener('click', () => {
+                    if (mobileMenu) mobileMenu.classList.add('hidden');
+                });
+            }
+        });
+        
+        // Function to add place to trip (called from other pages)
+        window.addToTrip = function(placeId, placeName, placeLocation, placeType, placeCategory) {
+            const trips = JSON.parse(localStorage.getItem('snogrub_trips') || '[]');
+            
+            if (trips.length === 0) {
+                if (confirm('You don\'t have any trips yet. Create one now?')) {
+                    const tripName = prompt('Enter trip name:');
+                    if (tripName) {
+                        createTrip(tripName);
+                        // Retry adding after creating
+                        setTimeout(() => addToTrip(placeId, placeName, placeLocation, placeType, placeCategory), 100);
+                    }
+                }
+                return;
+            }
+            
+            // Show trip selection
+            const tripOptions = trips.map(t => t.name).join('\n');
+            const selectedIndex = prompt(`Select a trip (enter number):\n${trips.map((t, i) => `${i + 1}. ${t.name}`).join('\n')}`);
+            const tripIndex = parseInt(selectedIndex) - 1;
+            
+            if (tripIndex >= 0 && tripIndex < trips.length) {
+                const trip = trips[tripIndex];
+                if (!trip.places) trip.places = [];
+                
+                // Check if already added
+                if (trip.places.find(p => p.id === placeId)) {
+                    alert('This place is already in this trip!');
+                    return;
+                }
+                
+                trip.places.push({
+                    id: placeId,
+                    name: placeName,
+                    location: placeLocation,
+                    type: placeType,
+                    category: placeCategory
+                });
+                
+                localStorage.setItem('snogrub_trips', JSON.stringify(trips));
+                alert(`Added to ${trip.name}!`);
+            }
+        };
+        
+        // Adjust nav positioning for home base bar
+        function adjustNavForHomeBase() {
+            const homebaseBar = document.getElementById('homebase-bar');
+            const nav = document.querySelector('nav');
+            if (homebaseBar && nav) {
+                const barHeight = homebaseBar.offsetHeight;
+                nav.style.top = `${barHeight}px`;
+            }
+        }
+        
+        // Watch for home base bar visibility changes
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', () => {
+                setTimeout(() => {
+                    adjustNavForHomeBase();
+                    const observer = new MutationObserver(adjustNavForHomeBase);
+                    const homebaseBar = document.getElementById('homebase-bar');
+                    if (homebaseBar) {
+                        observer.observe(homebaseBar, { attributes: true, attributeFilter: ['style'] });
+                    }
+                }, 500);
+            });
+        } else {
+            setTimeout(() => {
+                adjustNavForHomeBase();
+                const observer = new MutationObserver(adjustNavForHomeBase);
+                const homebaseBar = document.getElementById('homebase-bar');
+                if (homebaseBar) {
+                    observer.observe(homebaseBar, { attributes: true, attributeFilter: ['style'] });
+                }
+            }, 500);
+        }
+    </script>
+</body>
+</html>
+

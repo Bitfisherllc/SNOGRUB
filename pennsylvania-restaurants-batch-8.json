@@ -1,0 +1,203 @@
+[
+    {
+        "id": "caporellas-italian-ristorante",
+        "name": "Caporella's Italian Ristorante",
+        "location": "Uniontown, Pennsylvania",
+        "coordinates": {
+            "lat": 39.9000,
+            "lng": -79.7167
+        },
+        "description": "Italian restaurant located in a beautifully restored train station (Grindle Station) in Uniontown, Pennsylvania. Caporella's Italian Ristorante specializes in authentic Italian cuisine in a unique historic setting. Perfect for a special dining experience with a banquet room available for events.",
+        "category": "restaurant",
+        "cuisine": "Italian",
+        "priceRange": "$$$",
+        "rating": 4.4,
+        "reviewCount": 312,
+        "resort": "wisp-resort",
+        "address": "90 Pittsburgh Street, Uniontown, PA 15401",
+        "phone": "(724) 438-8466",
+        "website": "https://www.caporellas.com",
+        "hours": {
+            "monday": "4:00 PM - 9:00 PM",
+            "tuesday": "4:00 PM - 9:00 PM",
+            "wednesday": "4:00 PM - 9:00 PM",
+            "thursday": "4:00 PM - 9:00 PM",
+            "friday": "4:00 PM - 10:00 PM",
+            "saturday": "4:00 PM - 10:00 PM",
+            "sunday": "4:00 PM - 9:00 PM"
+        },
+        "note": "Reservations recommended, banquet room available"
+    },
+    {
+        "id": "dimarcos-bistro-cantina",
+        "name": "DiMarco's Bistro & Cantina",
+        "location": "Uniontown, Pennsylvania",
+        "coordinates": {
+            "lat": 39.8995,
+            "lng": -79.7240
+        },
+        "description": "Bistro and cantina in Uniontown, Pennsylvania, offering a diverse menu in a welcoming setting. DiMarco's provides lunch, dinner, and Sunday brunch, with a bar that stays open until midnight. A popular spot for both casual dining and evening entertainment in the Laurel Highlands region.",
+        "category": "restaurant",
+        "cuisine": "American, Bistro, Mexican",
+        "priceRange": "$$",
+        "rating": 4.3,
+        "reviewCount": 245,
+        "resort": "wisp-resort",
+        "address": "26 Morgantown Street, Uniontown, PA 15401",
+        "phone": "(724) 438-1611",
+        "website": "https://www.dimarcosonline.com",
+        "hours": {
+            "monday": "11:00 AM - 10:00 PM",
+            "tuesday": "11:00 AM - 10:00 PM",
+            "wednesday": "11:00 AM - 10:00 PM",
+            "thursday": "11:00 AM - 10:00 PM",
+            "friday": "11:00 AM - 10:00 PM",
+            "saturday": "4:00 PM - 10:00 PM",
+            "sunday": "11:00 AM - 8:00 PM"
+        },
+        "note": "Bar open until midnight, Sunday brunch 11 AM - 3 PM"
+    },
+    {
+        "id": "bud-murphys",
+        "name": "Bud Murphy's",
+        "location": "Connellsville, Pennsylvania",
+        "coordinates": {
+            "lat": 40.0245796,
+            "lng": -79.5895789
+        },
+        "description": "Local favorite in Connellsville, Pennsylvania, known for its diverse menu and welcoming atmosphere. Bud Murphy's offers a comfortable dining experience perfect for families and groups. A popular spot for locals and visitors exploring the Great Allegheny Passage and Laurel Highlands region.",
+        "category": "restaurant",
+        "cuisine": "American, Family Restaurant",
+        "priceRange": "$$",
+        "rating": 4.2,
+        "reviewCount": 198,
+        "resort": "wisp-resort",
+        "address": "718 McCormick Avenue, Connellsville, PA 15425",
+        "phone": "(724) 628-9884",
+        "website": "",
+        "hours": {
+            "monday": "11:00 AM - 10:00 PM",
+            "tuesday": "11:00 AM - 10:00 PM",
+            "wednesday": "11:00 AM - 10:00 PM",
+            "thursday": "11:00 AM - 10:00 PM",
+            "friday": "11:00 AM - 11:00 PM",
+            "saturday": "11:00 AM - 11:00 PM",
+            "sunday": "11:00 AM - 9:00 PM"
+        }
+    },
+    {
+        "id": "bali-brothers-kitchen",
+        "name": "Bali Brothers Kitchen",
+        "location": "Connellsville, Pennsylvania",
+        "coordinates": {
+            "lat": 40.0195,
+            "lng": -79.5946
+        },
+        "description": "Unique dining experience in Connellsville, Pennsylvania, offering a diverse menu in a welcoming setting. Bali Brothers Kitchen provides a comfortable atmosphere perfect for enjoying a meal with friends or family. A popular spot for visitors exploring the Great Allegheny Passage area.",
+        "category": "restaurant",
+        "cuisine": "American, International",
+        "priceRange": "$$",
+        "rating": 4.3,
+        "reviewCount": 178,
+        "resort": "wisp-resort",
+        "address": "502 West Crawford Avenue, Connellsville, PA 15425",
+        "phone": "(724) 931-2997",
+        "website": "",
+        "hours": {
+            "monday": "11:30 AM - 8:00 PM",
+            "tuesday": "11:30 AM - 8:00 PM",
+            "wednesday": "Closed",
+            "thursday": "11:30 AM - 8:00 PM",
+            "friday": "11:30 AM - 8:00 PM",
+            "saturday": "11:30 AM - 8:00 PM",
+            "sunday": "11:30 AM - 8:00 PM"
+        }
+    },
+    {
+        "id": "hometown-pizza-rockwood",
+        "name": "Hometown Pizza",
+        "location": "Rockwood, Pennsylvania",
+        "coordinates": {
+            "lat": 39.9111,
+            "lng": -79.1556
+        },
+        "description": "Pizza restaurant in Rockwood, Pennsylvania, serving mouth-watering pizzas with various toppings. Hometown Pizza is known for fresh ingredients and perfect crust, making it a popular choice for pizza lovers. A great option for families and groups visiting the Great Allegheny Passage area.",
+        "category": "restaurant",
+        "cuisine": "Pizza, Italian",
+        "priceRange": "$$",
+        "rating": 4.2,
+        "reviewCount": 145,
+        "resort": "wisp-resort",
+        "address": "905 Main Street, Rockwood, PA 15557",
+        "phone": "(814) 926-4922",
+        "website": "",
+        "hours": {
+            "monday": "Closed",
+            "tuesday": "11:00 AM - 7:00 PM",
+            "wednesday": "11:00 AM - 7:00 PM",
+            "thursday": "11:00 AM - 7:00 PM",
+            "friday": "11:00 AM - 8:00 PM",
+            "saturday": "11:00 AM - 1:00 PM",
+            "sunday": "Closed"
+        }
+    },
+    {
+        "id": "fuel-coffee-works",
+        "name": "Fuel Coffee Works",
+        "location": "Farmington, Pennsylvania",
+        "coordinates": {
+            "lat": 39.807220,
+            "lng": -79.566154
+        },
+        "description": "Specialty coffee shop in Farmington, Pennsylvania, offering organic and fair-trade beans, along with espresso, cold brew, and more. Fuel Coffee Works provides a welcoming atmosphere perfect for coffee enthusiasts. Open daily from 7 AM to 3 PM, making it ideal for morning coffee or an afternoon break.",
+        "category": "cafe",
+        "cuisine": "Coffee Shop, Specialty Coffee",
+        "priceRange": "$",
+        "rating": 4.8,
+        "reviewCount": 554,
+        "resort": "wisp-resort",
+        "address": "100 Farmington-Ohiopyle Road, Farmington, PA 15437",
+        "phone": "(724) 329-1122",
+        "website": "https://fuelcoffeeworks.com",
+        "hours": {
+            "monday": "7:00 AM - 3:00 PM",
+            "tuesday": "7:00 AM - 3:00 PM",
+            "wednesday": "7:00 AM - 3:00 PM",
+            "thursday": "7:00 AM - 3:00 PM",
+            "friday": "7:00 AM - 3:00 PM",
+            "saturday": "7:00 AM - 3:00 PM",
+            "sunday": "7:00 AM - 3:00 PM"
+        }
+    },
+    {
+        "id": "foggy-mountain-lodge-pub",
+        "name": "Foggy Mountain Lodge & Pub",
+        "location": "Stahlstown, Pennsylvania",
+        "coordinates": {
+            "lat": 40.1530,
+            "lng": -79.3440
+        },
+        "description": "Rustic lodge and pub in Stahlstown, Pennsylvania, providing a rustic dining experience with a menu that includes comfort foods and a selection of beverages. Foggy Mountain Lodge & Pub offers a cozy atmosphere perfect for enjoying a meal in a mountain setting. A unique destination in the Laurel Highlands region.",
+        "category": "restaurant",
+        "cuisine": "American, Lodge Food, Comfort Food",
+        "priceRange": "$$",
+        "rating": 4.5,
+        "reviewCount": 567,
+        "resort": "wisp-resort",
+        "address": "117 Foggy Mountain Lane, Stahlstown, PA 15687",
+        "phone": "(724) 593-3663",
+        "website": "http://foggymountainlodge.com",
+        "hours": {
+            "monday": "11:00 AM - 9:00 PM",
+            "tuesday": "11:00 AM - 9:00 PM",
+            "wednesday": "11:00 AM - 9:00 PM",
+            "thursday": "11:00 AM - 9:00 PM",
+            "friday": "11:00 AM - 10:00 PM",
+            "saturday": "11:00 AM - 10:00 PM",
+            "sunday": "11:00 AM - 9:00 PM"
+        }
+    }
+]
+
+
+

@@ -1,0 +1,1452 @@
+<!-- Apple-Style Ski Dining UI - Blog Post Page -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Ultimate Guide to Après-Ski Dining in Whistler - SNOGRUB Blog</title>
+    
+    <!-- TailwindCSS via CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Inter font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --accent-blue: #0071e3;
+        }
+        
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+        
+        .frosted-glass {
+            background: rgba(251, 251, 253, 0.8);
+            backdrop-filter: saturate(180%) blur(20px);
+            -webkit-backdrop-filter: saturate(180%) blur(20px);
+        }
+        
+        * {
+            transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .article-content {
+            max-width: 700px;
+        }
+        
+        .article-content p {
+            margin-bottom: 1.5rem;
+            line-height: 1.75;
+        }
+        
+        .article-content h2 {
+            font-size: 1.875rem;
+            font-weight: 600;
+            margin-top: 3rem;
+            margin-bottom: 1.5rem;
+            color: #1d1d1f;
+        }
+        
+        .article-content h3 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-top: 2rem;
+            margin-bottom: 1rem;
+            color: #1d1d1f;
+        }
+    </style>
+</head>
+<body class="bg-white text-gray-900 antialiased">
+    
+    <!-- Navigation Bar -->
+    <nav class="fixed top-0 left-0 right-0 z-50 frosted-glass border-b border-gray-200/50">
+        <div class="max-w-7xl mx-auto px-6 sm:px-8">
+            <div class="flex items-center justify-between h-14">
+                <div class="flex-shrink-0">
+                    <a href="index.html" class="text-2xl font-semibold hover:opacity-80 transition-opacity duration-300">
+                        <span class="bg-[var(--accent-blue)] text-white px-1">SNO</span><span class="text-[var(--accent-blue)]">GRUB</span>
+                    </a>
+                </div>
+                
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="resorts.html" class="text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors duration-200">
+                        Resorts
+                    </a>
+                    <a href="restaurants.html" class="text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors duration-200">
+                        Restaurants
+                    </a>
+                    <a href="map.html" class="text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors duration-200">
+                        Map
+                    </a>
+                    <a href="blog.html" class="text-sm font-medium text-gray-900 border-b-2 border-[var(--accent-blue)] pb-1">
+                        Blog
+                    </a>
+                    <a href="favorites.html" class="text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors duration-200">
+                        Favorites
+                    </a>
+                    <a href="trips.html" class="text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors duration-200">
+                        Trips
+                    </a>
+                </div>
+                
+                <!-- Mobile Menu Button -->
+                <button id="mobileMenuButton" class="md:hidden text-gray-600 hover:text-gray-900 transition-colors" aria-label="Menu">
+                    <svg id="menuIcon" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                    </svg>
+                    <svg id="closeIcon" class="w-6 h-6 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                    </svg>
+                </button>
+            </div>
+            
+            <!-- Mobile Menu Dropdown -->
+            <div id="mobileMenu" class="hidden md:hidden border-t border-gray-200/50 bg-white/95 backdrop-blur-lg">
+                <div class="px-6 py-4 space-y-4">
+                    <a href="resorts.html" class="block text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors duration-200">Resorts</a>
+                    <a href="restaurants.html" class="block text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors duration-200">Restaurants</a>
+                    <a href="map.html" class="block text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors duration-200">Map</a>
+                    <a href="blog.html" class="block text-sm font-medium text-[var(--accent-blue)] transition-colors duration-200">Blog</a>
+                    <a href="favorites.html" class="block text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors duration-200">Favorites</a>
+                    <a href="trips.html" class="block text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors duration-200">Trips</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+    
+    <script>
+        // Mobile menu toggle
+        document.addEventListener('DOMContentLoaded', () => {
+            const mobileMenuButton = document.getElementById('mobileMenuButton');
+            const mobileMenu = document.getElementById('mobileMenu');
+            const menuIcon = document.getElementById('menuIcon');
+            const closeIcon = document.getElementById('closeIcon');
+            
+            if (mobileMenuButton) {
+                mobileMenuButton.addEventListener('click', () => {
+                    mobileMenu.classList.toggle('hidden');
+                    menuIcon.classList.toggle('hidden');
+                    closeIcon.classList.toggle('hidden');
+                });
+            }
+            
+            // Close mobile menu when clicking a link
+            if (mobileMenu) {
+                mobileMenu.querySelectorAll('a').forEach(link => {
+                    link.addEventListener('click', () => {
+                        mobileMenu.classList.add('hidden');
+                        menuIcon.classList.remove('hidden');
+                        closeIcon.classList.add('hidden');
+                    });
+                });
+            }
+        });
+    </script>
+    
+    <!-- Breadcrumb -->
+    <div class="pt-20 pb-4 px-6 sm:px-8 bg-gray-50">
+        <div class="max-w-4xl mx-auto">
+            <nav class="flex items-center space-x-2 text-sm text-gray-600">
+                <a href="index.html" class="hover:text-gray-900 transition-colors">Home</a>
+                <span>/</span>
+                <a href="blog.html" class="hover:text-gray-900 transition-colors">Blog</a>
+                <span>/</span>
+                <span class="breadcrumb-title text-gray-900">The Ultimate Guide to Après-Ski Dining in Whistler</span>
+            </nav>
+        </div>
+    </div>
+    
+    <!-- Article Header -->
+    <article class="py-12 px-6 sm:px-8">
+        <div class="max-w-4xl mx-auto">
+            <!-- Featured Image -->
+            <div class="featured-image mb-8 aspect-video bg-gradient-to-br from-blue-100 to-cyan-100 rounded-lg overflow-hidden">
+                <div class="w-full h-full flex items-center justify-center">
+                    <svg class="w-32 h-32 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                    </svg>
+                </div>
+            </div>
+            
+            <!-- Article Meta -->
+            <div class="mb-8">
+                <span class="inline-block px-4 py-2 bg-[var(--accent-blue)] text-white rounded-full text-sm font-medium mb-4">
+                    Featured
+                </span>
+                <h1 class="text-4xl sm:text-5xl font-semibold text-gray-900 mb-6 tracking-tight">
+                    The Ultimate Guide to Après-Ski Dining in Whistler
+                </h1>
+                <div class="flex items-center gap-4 text-gray-600 mb-6">
+                    <span>January 15, 2025</span>
+                    <span>•</span>
+                    <span>5 min read</span>
+                    <span>•</span>
+                    <span>By <span class="bg-[var(--accent-blue)] text-white px-1">SNO</span><span class="text-[var(--accent-blue)]">GRUB</span> Editorial</span>
+                </div>
+            </div>
+            
+            <!-- Article Content -->
+            <div class="article-content mx-auto">
+                <p class="text-xl text-gray-600 font-light leading-relaxed">
+                    After a day of carving fresh powder on Whistler Blackcomb's legendary slopes, there's nothing 
+                    quite like unwinding with great food and drinks. The après-ski scene in Whistler is legendary, 
+                    and the dining options are equally impressive.
+                </p>
+                
+                <h2>What Makes Whistler's Dining Scene Special</h2>
+                
+                <p>
+                    Whistler Blackcomb isn't just North America's largest ski resort—it's also home to one of the 
+                    continent's most diverse and exciting dining scenes. From cozy mountain lodges serving hearty 
+                    comfort food to upscale restaurants offering fine dining experiences, Whistler has something 
+                    for every palate and budget.
+                </p>
+                
+                <p>
+                    What sets Whistler apart is the quality and variety. You'll find everything from traditional 
+                    Canadian fare to international cuisine, all prepared with attention to detail and often featuring 
+                    locally-sourced ingredients from British Columbia's rich agricultural region.
+                </p>
+                
+                <h2>Top Après-Ski Spots</h2>
+                
+                <h3>The Lodge Restaurant</h3>
+                <p>
+                    For those seeking an upscale dining experience, The Lodge Restaurant offers panoramic mountain 
+                    views and a menu that celebrates Pacific Northwest flavors. The prime ribeye and fresh salmon 
+                    are standout dishes, and the wine selection is impressive.
+                </p>
+                
+                <h3>Fireplace Lounge</h3>
+                <p>
+                    If you're looking for a more intimate setting, the Fireplace Lounge provides the perfect cozy 
+                    atmosphere. With craft cocktails, small plates, and a warm fireplace, it's ideal for unwinding 
+                    after a day on the slopes.
+                </p>
+                
+                <h2>Tips for Dining in Whistler</h2>
+                
+                <p>
+                    <strong>Make Reservations Early:</strong> Popular restaurants, especially during peak season, 
+                    book up quickly. Reserve your table at least a few days in advance, or even weeks ahead for 
+                    special occasions.
+                </p>
+                
+                <p>
+                    <strong>Explore Beyond the Village:</strong> While Whistler Village has excellent options, 
+                    don't miss the restaurants scattered throughout the resort. Some of the best dining experiences 
+                    are found in the quieter, more intimate settings.
+                </p>
+                
+                <p>
+                    <strong>Try Local Specialties:</strong> British Columbia is known for its seafood, craft beer, 
+                    and wine. Be sure to sample local favorites like fresh salmon, craft IPAs, and BC wines.
+                </p>
+                
+                <h2>Conclusion</h2>
+                
+                <p>
+                    Whether you're celebrating a successful day on the mountain or simply refueling for tomorrow's 
+                    adventures, Whistler's dining scene delivers. From casual après-ski spots to fine dining 
+                    establishments, the resort offers culinary experiences that match the quality of its world-class 
+                    skiing.
+                </p>
+                
+                <p>
+                    Ready to explore? Use SkiEats to discover all the dining options at Whistler Blackcomb and 
+                    plan your perfect après-ski experience.
+                </p>
+            </div>
+            
+            <!-- Related Articles -->
+            <div class="mt-16 pt-12 border-t border-gray-200">
+                <h2 class="text-2xl font-semibold text-gray-900 mb-8">Related Articles</h2>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <a href="blog-post.html" class="group">
+                        <div class="aspect-video bg-gradient-to-br from-amber-50 to-orange-50 rounded-lg mb-4"></div>
+                        <h3 class="font-semibold text-gray-900 mb-2 group-hover:text-[var(--accent-blue)] transition-colors">
+                            Best Fine Dining at Vail Resort
+                        </h3>
+                        <p class="text-sm text-gray-600">4 min read</p>
+                    </a>
+                    <a href="blog-post.html" class="group">
+                        <div class="aspect-video bg-gradient-to-br from-green-50 to-emerald-50 rounded-lg mb-4"></div>
+                        <h3 class="font-semibold text-gray-900 mb-2 group-hover:text-[var(--accent-blue)] transition-colors">
+                            Park City: A Food Lover's Paradise
+                        </h3>
+                        <p class="text-sm text-gray-600">6 min read</p>
+                    </a>
+                    <a href="blog-post.html" class="group">
+                        <div class="aspect-video bg-gradient-to-br from-purple-50 to-pink-50 rounded-lg mb-4"></div>
+                        <h3 class="font-semibold text-gray-900 mb-2 group-hover:text-[var(--accent-blue)] transition-colors">
+                            The Art of Après-Ski Culture
+                        </h3>
+                        <p class="text-sm text-gray-600">7 min read</p>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </article>
+    
+    <!-- Blog Post Data -->
+    <script>
+        const blogPosts = {
+            'whistler-apres-ski': {
+                title: 'The Ultimate Guide to Après-Ski Dining in Whistler',
+                category: 'Featured',
+                date: 'January 15, 2025',
+                readTime: '5 min read',
+                gradient: 'from-blue-100 to-cyan-100',
+                iconColor: 'text-blue-400',
+                content: `
+                    <p class="text-xl text-gray-600 font-light leading-relaxed">
+                        After a day of carving fresh powder on Whistler Blackcomb's legendary slopes, there's nothing 
+                        quite like unwinding with great food and drinks. The après-ski scene in Whistler is legendary, 
+                        and the dining options are equally impressive.
+                    </p>
+                    
+                    <h2>What Makes Whistler's Dining Scene Special</h2>
+                    
+                    <p>
+                        Whistler Blackcomb isn't just North America's largest ski resort—it's also home to one of the 
+                        continent's most diverse and exciting dining scenes. From cozy mountain lodges serving hearty 
+                        comfort food to upscale restaurants offering fine dining experiences, Whistler has something 
+                        for every palate and budget.
+                    </p>
+                    
+                    <p>
+                        What sets Whistler apart is the quality and variety. You'll find everything from traditional 
+                        Canadian fare to international cuisine, all prepared with attention to detail and often featuring 
+                        locally-sourced ingredients from British Columbia's rich agricultural region.
+                    </p>
+                    
+                    <h2>Top Après-Ski Spots</h2>
+                    
+                    <h3>The Lodge Restaurant</h3>
+                    <p>
+                        For those seeking an upscale dining experience, The Lodge Restaurant offers panoramic mountain 
+                        views and a menu that celebrates Pacific Northwest flavors. The prime ribeye and fresh salmon 
+                        are standout dishes, and the wine selection is impressive.
+                    </p>
+                    
+                    <h3>Fireplace Lounge</h3>
+                    <p>
+                        If you're looking for a more intimate setting, the Fireplace Lounge provides the perfect cozy 
+                        atmosphere. With craft cocktails, small plates, and a warm fireplace, it's ideal for unwinding 
+                        after a day on the slopes.
+                    </p>
+                    
+                    <h2>Tips for Dining in Whistler</h2>
+                    
+                    <p>
+                        <strong>Make Reservations Early:</strong> Popular restaurants, especially during peak season, 
+                        book up quickly. Reserve your table at least a few days in advance, or even weeks ahead for 
+                        special occasions.
+                    </p>
+                    
+                    <p>
+                        <strong>Explore Beyond the Village:</strong> While Whistler Village has excellent options, 
+                        don't miss the restaurants scattered throughout the resort. Some of the best dining experiences 
+                        are found in the quieter, more intimate settings.
+                    </p>
+                    
+                    <p>
+                        <strong>Try Local Specialties:</strong> British Columbia is known for its seafood, craft beer, 
+                        and wine. Be sure to sample local favorites like fresh salmon, craft IPAs, and BC wines.
+                    </p>
+                    
+                    <h2>Conclusion</h2>
+                    
+                    <p>
+                        Whether you're celebrating a successful day on the mountain or simply refueling for tomorrow's 
+                        adventures, Whistler's dining scene delivers. From casual après-ski spots to fine dining 
+                        establishments, the resort offers culinary experiences that match the quality of its world-class 
+                        skiing.
+                    </p>
+                    
+                    <p>
+                        Ready to explore? Use <span class="bg-[var(--accent-blue)] text-white px-1">SNO</span><span class="text-[var(--accent-blue)]">GRUB</span> to discover all the dining options at Whistler Blackcomb and 
+                        plan your perfect après-ski experience.
+                    </p>
+                `
+            },
+            'vail-fine-dining': {
+                title: 'Best Fine Dining Restaurants at Vail Resort',
+                category: 'Dining Guide',
+                date: 'January 10, 2025',
+                readTime: '4 min read',
+                gradient: 'from-amber-50 to-orange-50',
+                iconColor: 'text-amber-400',
+                content: `
+                    <p class="text-xl text-gray-600 font-light leading-relaxed">
+                        Vail Resort has earned its reputation as one of North America's premier ski destinations, and 
+                        its fine dining scene is equally impressive. From mountaintop restaurants with breathtaking views 
+                        to elegant establishments in Vail Village, the resort offers exceptional culinary experiences.
+                    </p>
+                    
+                    <h2>Exceptional Fine Dining Options</h2>
+                    
+                    <p>
+                        Vail's fine dining restaurants combine world-class cuisine with stunning mountain settings. 
+                        Many establishments feature award-winning chefs, extensive wine cellars, and menus that showcase 
+                        both international flavors and Colorado's local ingredients.
+                    </p>
+                    
+                    <h3>Game Creek Restaurant</h3>
+                    <p>
+                        Perched high on Vail Mountain, Game Creek Restaurant offers an unforgettable dining experience 
+                        accessible only by snowcat or ski. The restaurant specializes in contemporary American cuisine 
+                        with a focus on seasonal, locally-sourced ingredients. The wine list is extensive, and the 
+                        service is impeccable.
+                    </p>
+                    
+                    <h3>Sweet Basil</h3>
+                    <p>
+                        Located in the heart of Vail Village, Sweet Basil has been a local favorite for decades. The 
+                        restaurant serves innovative American cuisine with Mediterranean influences, featuring dishes like 
+                        Colorado lamb and fresh seafood. The atmosphere is sophisticated yet relaxed, perfect for a 
+                        special evening.
+                    </p>
+                    
+                    <h2>What to Expect</h2>
+                    
+                    <p>
+                        Fine dining in Vail typically means exceptional service, creative cuisine, and attention to 
+                        detail. Most upscale restaurants offer prix fixe menus, extensive wine pairings, and seasonal 
+                        menus that change throughout the year. Reservations are essential, especially during peak season.
+                    </p>
+                    
+                    <h2>Making the Most of Your Experience</h2>
+                    
+                    <p>
+                        <strong>Dress Code:</strong> While Vail is generally casual, fine dining establishments often 
+                        have smart casual dress codes. Check ahead if you're unsure.
+                    </p>
+                    
+                    <p>
+                        <strong>Timing:</strong> Consider dining early or late to avoid the busiest times. Many 
+                        restaurants offer special menus during off-peak hours.
+                    </p>
+                    
+                    <p>
+                        <strong>Special Occasions:</strong> Fine dining restaurants in Vail are perfect for celebrating 
+                        special occasions. Many offer private dining rooms and can accommodate special requests with 
+                        advance notice.
+                    </p>
+                `
+            },
+            'park-city-food': {
+                title: 'Park City: A Food Lover\'s Paradise',
+                category: 'Resort Spotlight',
+                date: 'January 5, 2025',
+                readTime: '6 min read',
+                gradient: 'from-green-50 to-emerald-50',
+                iconColor: 'text-green-400',
+                content: `
+                    <p class="text-xl text-gray-600 font-light leading-relaxed">
+                        Park City has transformed from a historic mining town into one of North America's premier 
+                        culinary destinations. With over 150 restaurants ranging from casual cafés to Michelin-starred 
+                        establishments, the resort offers an exceptional dining scene that rivals major metropolitan areas.
+                    </p>
+                    
+                    <h2>Historic Main Street Dining</h2>
+                    
+                    <p>
+                        Park City's historic Main Street is the heart of the town's dining scene. The charming, 
+                        well-preserved buildings house everything from cozy pubs to upscale restaurants. Many 
+                        establishments feature original architecture and offer a unique blend of history and modern 
+                        cuisine.
+                    </p>
+                    
+                    <h3>Riverhorse on Main</h3>
+                    <p>
+                        This award-winning restaurant occupies a beautifully restored historic building and offers 
+                        innovative American cuisine. The menu changes seasonally, featuring dishes that highlight local 
+                        ingredients and creative presentations. The rooftop patio offers stunning views of the mountains.
+                    </p>
+                    
+                    <h2>Mountain-Top Dining</h2>
+                    
+                    <p>
+                        Park City Mountain and Deer Valley Resort both offer exceptional on-mountain dining experiences. 
+                        These restaurants combine spectacular views with quality cuisine, making them perfect for a 
+                        mid-day break or special occasion dinner.
+                    </p>
+                    
+                    <h3>Stein Eriksen Lodge</h3>
+                    <p>
+                        Located at Deer Valley, the Stein Eriksen Lodge offers multiple fine dining options, including 
+                        the acclaimed Glitretind Restaurant. The restaurant serves contemporary American cuisine with 
+                        Scandinavian influences, reflecting the lodge's Norwegian heritage.
+                    </p>
+                    
+                    <h2>Diverse Culinary Scene</h2>
+                    
+                    <p>
+                        What makes Park City special is the diversity of its dining options. You'll find authentic 
+                        Mexican cuisine, fresh sushi, Italian trattorias, farm-to-table restaurants, and everything 
+                        in between. The town's culinary scene reflects its international appeal and sophisticated 
+                        visitor base.
+                    </p>
+                    
+                    <h2>Local Favorites</h2>
+                    
+                    <p>
+                        <strong>High West Distillery:</strong> The world's only ski-in, ski-out distillery offers 
+                        exceptional whiskey and creative cocktails, along with a menu that pairs perfectly with their 
+                        spirits.
+                    </p>
+                    
+                    <p>
+                        <strong>Handle:</strong> A modern American restaurant known for its creative small plates and 
+                        craft cocktails. The atmosphere is lively and the food is consistently excellent.
+                    </p>
+                    
+                    <h2>Planning Your Visit</h2>
+                    
+                    <p>
+                        With so many options, planning ahead is key. Use SkiEats to explore Park City's restaurants, 
+                        read reviews, and make reservations. Many restaurants offer early bird specials and happy hour 
+                        menus, making fine dining more accessible.
+                    </p>
+                `
+            },
+            'apres-ski-culture': {
+                title: 'The Art of Après-Ski: A Cultural Guide',
+                category: 'Culture',
+                date: 'December 28, 2024',
+                readTime: '7 min read',
+                gradient: 'from-purple-50 to-pink-50',
+                iconColor: 'text-purple-400',
+                content: `
+                    <p class="text-xl text-gray-600 font-light leading-relaxed">
+                        Après-ski—the social tradition of relaxing and socializing after a day on the slopes—is as 
+                        integral to ski culture as the skiing itself. This beloved ritual has evolved into a rich 
+                        cultural experience that varies from resort to resort, but always centers around good food, 
+                        drinks, and camaraderie.
+                    </p>
+                    
+                    <h2>The Origins of Après-Ski</h2>
+                    
+                    <p>
+                        The term "après-ski" comes from French, meaning "after skiing." The tradition began in the 
+                        European Alps, where skiers would gather in mountain huts and lodges after a day on the slopes 
+                        to warm up, share stories, and enjoy local food and drink. This social ritual quickly spread 
+                        to ski resorts worldwide.
+                    </p>
+                    
+                    <h2>Après-Ski Around the World</h2>
+                    
+                    <h3>European Style</h3>
+                    <p>
+                        In Europe, après-ski often starts right on the mountain, with skiers gathering at slope-side 
+                        bars and restaurants. The atmosphere is typically lively and social, with music, dancing, and 
+                        a festive atmosphere that can last well into the evening.
+                    </p>
+                    
+                    <h3>North American Style</h3>
+                    <p>
+                        In North America, après-ski tends to be more varied. You'll find everything from casual 
+                        mountain bars to upscale lounges. The focus is often on craft beer, cocktails, and comfort 
+                        food, with an emphasis on relaxation and socializing.
+                    </p>
+                    
+                    <h2>Essential Après-Ski Elements</h2>
+                    
+                    <p>
+                        <strong>Location:</strong> The best après-ski spots are easily accessible from the slopes, 
+                        whether that means ski-in, ski-out access or a short walk from the lifts.
+                    </p>
+                    
+                    <p>
+                        <strong>Atmosphere:</strong> Après-ski venues should feel welcoming and relaxed. Think warm 
+                        fireplaces, comfortable seating, and a convivial atmosphere that encourages conversation.
+                    </p>
+                    
+                    <p>
+                        <strong>Food & Drink:</strong> Hearty comfort food and warming drinks are essential. Think 
+                        fondue, burgers, craft beer, mulled wine, and hot toddies.
+                    </p>
+                    
+                    <h2>Best Après-Ski Destinations</h2>
+                    
+                    <p>
+                        Some resorts have become legendary for their après-ski scenes. Whistler, Aspen, Park City, 
+                        and St. Anton are just a few destinations known for exceptional après-ski culture. Each offers 
+                        its own unique take on this beloved tradition.
+                    </p>
+                    
+                    <h2>Après-Ski Etiquette</h2>
+                    
+                    <p>
+                        While après-ski is all about having fun, there are some unwritten rules. Be respectful of 
+                        others, tip well, and remember that you're sharing the space with fellow skiers who may have 
+                        different energy levels. Most importantly, enjoy yourself and embrace the social aspect of 
+                        the experience.
+                    </p>
+                    
+                    <h2>Conclusion</h2>
+                    
+                    <p>
+                        Après-ski is more than just a post-skiing activity—it's a cultural tradition that brings 
+                        skiers together and creates lasting memories. Whether you prefer a quiet drink by the fire 
+                        or a lively party atmosphere, there's an après-ski experience for everyone.
+                    </p>
+                `
+            },
+            'reservation-tips': {
+                title: 'How to Make Restaurant Reservations at Ski Resorts',
+                category: 'Tips & Tricks',
+                date: 'December 20, 2024',
+                readTime: '3 min read',
+                gradient: 'from-blue-50 to-cyan-50',
+                iconColor: 'text-blue-400',
+                content: `
+                    <p class="text-xl text-gray-600 font-light leading-relaxed">
+                        Securing a table at popular ski resort restaurants can be challenging, especially during peak 
+                        season. With a little planning and these insider tips, you can ensure you get the dining 
+                        experiences you want during your ski vacation.
+                    </p>
+                    
+                    <h2>Book Early</h2>
+                    
+                    <p>
+                        The most important rule for ski resort dining: book early. Popular restaurants, especially 
+                        fine dining establishments, can book up weeks or even months in advance during peak season 
+                        (typically December through March). For special occasions or highly sought-after restaurants, 
+                        make your reservation as soon as you know your travel dates.
+                    </p>
+                    
+                    <h2>Best Times to Book</h2>
+                    
+                    <p>
+                        <strong>Peak Season:</strong> Book 2-4 weeks in advance for popular restaurants, or even 
+                        earlier for fine dining establishments.
+                    </p>
+                    
+                    <p>
+                        <strong>Holiday Periods:</strong> During Christmas, New Year's, and President's Day weekends, 
+                        book as early as possible—sometimes months in advance.
+                    </p>
+                    
+                    <p>
+                        <strong>Off-Peak:</strong> During shoulder season (November, April), you may be able to book 
+                        a few days in advance, but it's still wise to plan ahead.
+                    </p>
+                    
+                    <h2>Flexibility is Key</h2>
+                    
+                    <p>
+                        If your preferred time isn't available, consider alternative times. Early dinners (5:00-6:00 PM) 
+                        or late dinners (8:30 PM+) often have more availability. Many restaurants also offer lunch 
+                        service, which can be a great way to experience fine dining at a lower price point.
+                    </p>
+                    
+                    <h2>Use Multiple Methods</h2>
+                    
+                    <p>
+                        Don't rely on just one booking method. Try the restaurant's website, OpenTable, Resy, or call 
+                        directly. Sometimes calling can get you a table when online systems show nothing available, 
+                        especially for last-minute cancellations.
+                    </p>
+                    
+                    <h2>Join Waitlists</h2>
+                    
+                    <p>
+                        Many restaurants offer waitlists for fully booked times. Join them—cancellations are common, 
+                        and you may get a call with an available table. Be ready to respond quickly if you get a 
+                        notification.
+                    </p>
+                    
+                    <h2>Consider Alternative Options</h2>
+                    
+                    <p>
+                        If you can't get into your first choice, don't despair. Ski resorts are full of excellent 
+                        restaurants that may not be as well-known but offer equally great experiences. Use SkiEats 
+                        to discover hidden gems and alternative options.
+                    </p>
+                    
+                    <h2>Special Requests</h2>
+                    
+                    <p>
+                        When making your reservation, mention any special occasions (birthdays, anniversaries) or 
+                        dietary restrictions. Many restaurants can accommodate special requests with advance notice, 
+                        and some may even offer complimentary treats for celebrations.
+                    </p>
+                `
+            },
+            'mont-tremblant-dining': {
+                title: 'Mont Tremblant: French-Inspired Dining in Quebec',
+                category: 'Resort Spotlight',
+                date: 'December 15, 2024',
+                readTime: '5 min read',
+                gradient: 'from-indigo-50 to-blue-50',
+                iconColor: 'text-indigo-400',
+                content: `
+                    <p class="text-xl text-gray-600 font-light leading-relaxed">
+                        Mont Tremblant offers a unique blend of European charm and North American hospitality, creating 
+                        a dining scene that's distinctly Québécois. The resort's French-Canadian heritage is evident 
+                        in its exceptional restaurants, which combine classic French techniques with local ingredients 
+                        and international influences.
+                    </p>
+                    
+                    <h2>A Taste of Europe in North America</h2>
+                    
+                    <p>
+                        What sets Mont Tremblant apart is its authentic European atmosphere. The pedestrian village, 
+                        with its colorful buildings and cobblestone streets, feels like a slice of the French Alps 
+                        transported to Quebec. This European ambiance extends to the dining scene, where you'll find 
+                        everything from traditional French bistros to modern Québécois cuisine.
+                    </p>
+                    
+                    <h2>Signature Dining Experiences</h2>
+                    
+                    <h3>La Savate</h3>
+                    <p>
+                        This authentic French bistro offers classic dishes like coq au vin, bouillabaisse, and 
+                        escargot, all prepared with traditional techniques. The extensive wine list focuses on French 
+                        selections, and the atmosphere is warm and inviting.
+                    </p>
+                    
+                    <h3>Restaurant La Forge</h3>
+                    <p>
+                        For fine dining, Restaurant La Forge offers French-Canadian cuisine with a modern twist. The 
+                        restaurant features seasonal menus that highlight Quebec's local ingredients, from fresh 
+                        seafood to artisanal cheeses.
+                    </p>
+                    
+                    <h2>Local Specialties</h2>
+                    
+                    <p>
+                        Don't miss the opportunity to try Québécois specialties. Poutine, tourtière (meat pie), 
+                        maple-glazed dishes, and fresh game are all common on local menus. Many restaurants also 
+                        feature Quebec craft beers and ciders, which pair perfectly with the hearty local cuisine.
+                    </p>
+                    
+                    <h2>Après-Ski Culture</h2>
+                    
+                    <p>
+                        Mont Tremblant's après-ski scene has a distinctly European flavor. You'll find cozy pubs, 
+                        wine bars, and restaurants that stay open late, creating a vibrant evening atmosphere. The 
+                        Microbrasserie La Diable is a popular spot for craft beer and casual dining.
+                    </p>
+                    
+                    <h2>Dining Tips</h2>
+                    
+                    <p>
+                        <strong>Language:</strong> While English is widely spoken, many menus are in French. Don't 
+                        hesitate to ask for translations—staff are happy to help.
+                    </p>
+                    
+                    <p>
+                        <strong>Reservations:</strong> Popular restaurants, especially during peak season, require 
+                        reservations. Book early, particularly for fine dining establishments.
+                    </p>
+                    
+                    <p>
+                        <strong>Timing:</strong> Dinner service in Quebec typically starts later than in the United 
+                        States, with many restaurants opening at 5:30 PM or later.
+                    </p>
+                    
+                    <h2>Conclusion</h2>
+                    
+                    <p>
+                        Mont Tremblant offers a unique dining experience that combines European sophistication with 
+                        North American accessibility. Whether you're craving classic French cuisine or modern 
+                        Québécois dishes, the resort delivers exceptional culinary experiences in a charming, 
+                        European-inspired setting.
+                    </p>
+                `
+            },
+            'lake-tahoe-dining': {
+                title: 'Lake Tahoe: California\'s Alpine Dining Paradise',
+                category: 'Resort Spotlight',
+                date: 'February 1, 2025',
+                readTime: '6 min read',
+                gradient: 'from-sky-50 to-blue-50',
+                iconColor: 'text-sky-400',
+                content: `
+                    <p class="text-xl text-gray-600 font-light leading-relaxed">
+                        Straddling the border between California and Nevada, Lake Tahoe offers one of the most stunning 
+                        alpine dining experiences in North America. With crystal-clear waters, towering peaks, and a 
+                        vibrant resort scene, the area's restaurants combine California's farm-to-table ethos with 
+                        mountain comfort cuisine.
+                    </p>
+                    
+                    <h2>The Lake Tahoe Dining Scene</h2>
+                    
+                    <p>
+                        Lake Tahoe's dining scene reflects the region's unique character—part California sophistication, 
+                        part mountain town charm. The area is home to multiple world-class ski resorts including 
+                        Heavenly, Squaw Valley, and Northstar, each offering exceptional on-mountain and base-area 
+                        dining options.
+                    </p>
+                    
+                    <h2>South Lake Tahoe: Vibrant and Diverse</h2>
+                    
+                    <p>
+                        South Lake Tahoe offers a lively dining scene with everything from casual breweries to upscale 
+                        restaurants. The area benefits from its proximity to both California's wine country and Nevada's 
+                        entertainment scene, creating a unique culinary fusion.
+                    </p>
+                    
+                    <h3>Edgewood Restaurant</h3>
+                    <p>
+                        Perched on the shores of Lake Tahoe, Edgewood Restaurant offers breathtaking lake views and 
+                        exceptional contemporary American cuisine. The restaurant features seasonal menus highlighting 
+                        local ingredients, with an extensive wine list featuring California's finest vintages.
+                    </p>
+                    
+                    <h2>North Lake Tahoe: Mountain Elegance</h2>
+                    
+                    <p>
+                        The North Shore offers a more intimate, mountain-focused dining experience. Restaurants here 
+                        emphasize local ingredients, craft cocktails, and cozy atmospheres perfect for après-ski.
+                    </p>
+                    
+                    <h3>PlumpJack Squaw Valley Inn</h3>
+                    <p>
+                        Located at Squaw Valley, this restaurant offers fine dining with a focus on seasonal, locally 
+                        sourced ingredients. The menu changes frequently to reflect what's fresh and available, and the 
+                        wine program features selections from PlumpJack's own Napa Valley winery.
+                    </p>
+                    
+                    <h2>On-Mountain Dining</h2>
+                    
+                    <p>
+                        Lake Tahoe's ski resorts offer exceptional on-mountain dining experiences. From mountaintop 
+                        restaurants with panoramic views to mid-mountain lodges serving hearty comfort food, you'll 
+                        find quality cuisine at every elevation.
+                    </p>
+                    
+                    <h2>Local Specialties</h2>
+                    
+                    <p>
+                        Lake Tahoe's dining scene benefits from California's agricultural bounty. Look for fresh 
+                        produce, artisanal cheeses, and locally caught fish. Many restaurants also feature craft 
+                        beers from the region's growing brewery scene, and California wines are prominently featured 
+                        on most menus.
+                    </p>
+                    
+                    <h2>Après-Ski Culture</h2>
+                    
+                    <p>
+                        The après-ski scene in Lake Tahoe is vibrant and varied. You'll find everything from casual 
+                        beach bars (yes, even in winter!) to upscale lounges. The California influence means craft 
+                        cocktails and creative small plates are common, while the mountain setting ensures hearty 
+                        comfort food is always available.
+                    </p>
+                    
+                    <h2>Dining Tips</h2>
+                    
+                    <p>
+                        <strong>Reservations:</strong> Popular restaurants, especially those with lake views, book up 
+                        quickly. Make reservations well in advance, particularly for weekend dining.
+                    </p>
+                    
+                    <p>
+                        <strong>Seasonal Variations:</strong> Many restaurants adjust their hours and menus based on 
+                        the season. Check ahead during shoulder seasons (late fall and spring).
+                    </p>
+                    
+                    <p>
+                        <strong>Location Matters:</strong> Lake Tahoe is large, and restaurants can be spread out. 
+                        Consider your location when planning meals, especially if you're staying at a specific resort.
+                    </p>
+                `
+            },
+            'jackson-hole-dining': {
+                title: 'Jackson Hole: Wild West Dining in the Tetons',
+                category: 'Resort Spotlight',
+                date: 'January 25, 2025',
+                readTime: '5 min read',
+                gradient: 'from-amber-50 to-yellow-50',
+                iconColor: 'text-amber-500',
+                content: `
+                    <p class="text-xl text-gray-600 font-light leading-relaxed">
+                        Jackson Hole combines rugged Western charm with world-class skiing and exceptional dining. 
+                        Nestled in the shadow of the Grand Tetons, this Wyoming resort town offers a unique culinary 
+                        scene that celebrates both mountain comfort food and sophisticated fine dining, all with a 
+                        distinctly Western flair.
+                    </p>
+                    
+                    <h2>The Jackson Hole Dining Experience</h2>
+                    
+                    <p>
+                        Jackson Hole's dining scene reflects its unique character—a blend of cowboy culture, mountain 
+                        lifestyle, and sophisticated resort amenities. The town of Jackson and Teton Village offer 
+                        distinct but complementary dining experiences, from rustic Western steakhouses to contemporary 
+                        fine dining establishments.
+                    </p>
+                    
+                    <h2>Jackson Town Square: Western Charm</h2>
+                    
+                    <p>
+                        The historic town of Jackson, with its iconic elk antler arches, offers a charming dining scene 
+                        that blends Western tradition with modern culinary innovation. Here you'll find everything from 
+                        classic steakhouses to contemporary American restaurants.
+                    </p>
+                    
+                    <h3>The Blue Lion</h3>
+                    <p>
+                        A Jackson Hole institution, The Blue Lion has been serving exceptional Continental cuisine for 
+                        over 40 years. The restaurant features dishes like elk medallions, fresh trout, and prime rib, 
+                        all prepared with classic techniques and served in an elegant, intimate setting.
+                    </p>
+                    
+                    <h2>Teton Village: Mountain Sophistication</h2>
+                    
+                    <p>
+                        At the base of Jackson Hole Mountain Resort, Teton Village offers a more resort-focused dining 
+                        scene. Restaurants here combine mountain views with sophisticated cuisine, perfect for both 
+                        casual après-ski and special occasion dining.
+                    </p>
+                    
+                    <h3>Couloir Restaurant</h3>
+                    <p>
+                        Located at the top of the Bridger Gondola, Couloir offers one of the most unique dining 
+                        experiences in North America. Accessible only by gondola, this mountaintop restaurant serves 
+                        contemporary American cuisine with stunning views of the Teton Range. The restaurant is open 
+                        for both lunch and dinner, with après-ski service available.
+                    </p>
+                    
+                    <h2>Local Specialties</h2>
+                    
+                    <p>
+                        Wyoming's ranching heritage is evident in Jackson Hole's dining scene. Look for bison, elk, 
+                        and locally raised beef on many menus. Fresh trout from nearby rivers is also a local favorite, 
+                        and many restaurants feature game dishes that celebrate the region's Western heritage.
+                    </p>
+                    
+                    <h2>Après-Ski Culture</h2>
+                    
+                    <p>
+                        Jackson Hole's après-ski scene is lively and welcoming. You'll find everything from casual 
+                        mountain bars serving craft beer and comfort food to upscale lounges with creative cocktails. 
+                        The Western influence means you'll often find live music and a convivial atmosphere that 
+                        encourages socializing.
+                    </p>
+                    
+                    <h2>Dining Tips</h2>
+                    
+                    <p>
+                        <strong>Reservations Essential:</strong> Jackson Hole's popularity means restaurants book up 
+                        quickly, especially during peak season. Make reservations well in advance, particularly for 
+                        fine dining establishments.
+                    </p>
+                    
+                    <p>
+                        <strong>Dress Code:</strong> While Jackson Hole is generally casual, some fine dining 
+                        establishments have smart casual dress codes. Check ahead if you're unsure.
+                    </p>
+                    
+                    <p>
+                        <strong>Transportation:</strong> Jackson and Teton Village are about 12 miles apart. Plan 
+                        accordingly if you're dining in town but staying at the resort, or vice versa.
+                    </p>
+                `
+            },
+            'stowe-vermont-dining': {
+                title: 'Stowe: New England Charm Meets Mountain Dining',
+                category: 'Resort Spotlight',
+                date: 'January 20, 2025',
+                readTime: '5 min read',
+                gradient: 'from-red-50 to-rose-50',
+                iconColor: 'text-red-400',
+                content: `
+                    <p class="text-xl text-gray-600 font-light leading-relaxed">
+                        Stowe, Vermont, embodies classic New England charm with a world-class ski resort. This 
+                        picturesque mountain town offers a dining scene that celebrates Vermont's agricultural heritage, 
+                        featuring farm-to-table restaurants, craft breweries, and cozy establishments that feel like 
+                        stepping into a Norman Rockwell painting.
+                    </p>
+                    
+                    <h2>The Stowe Dining Scene</h2>
+                    
+                    <p>
+                        Stowe's dining scene reflects Vermont's commitment to local, sustainable food. The area is 
+                        known for its farm-to-table movement, with many restaurants sourcing ingredients directly from 
+                        local farms. This creates a dining experience that's both sophisticated and authentically 
+                        Vermont.
+                    </p>
+                    
+                    <h2>Mountain Road: The Heart of Stowe</h2>
+                    
+                    <p>
+                        Stowe's Mountain Road is lined with restaurants, shops, and inns, creating a charming village 
+                        atmosphere. Here you'll find everything from casual pubs to fine dining establishments, all 
+                        within walking distance of each other.
+                    </p>
+                    
+                    <h3>Plate Restaurant</h3>
+                    <p>
+                        This contemporary American restaurant focuses on locally sourced ingredients and creative 
+                        presentations. The menu changes seasonally to reflect what's available from local farms, and 
+                        the wine list features selections from Vermont's growing wine industry.
+                    </p>
+                    
+                    <h2>Stowe Mountain Resort: On-Mountain Excellence</h2>
+                    
+                    <p>
+                        Stowe Mountain Resort offers exceptional on-mountain dining, from casual cafeterias to 
+                        upscale restaurants. The resort's commitment to quality extends to its dining options, with 
+                        many establishments featuring local ingredients and Vermont specialties.
+                    </p>
+                    
+                    <h3>Solstice Restaurant</h3>
+                    <p>
+                        Located at the base of the resort, Solstice offers fine dining with a focus on New England 
+                        cuisine. The restaurant features dishes like maple-glazed salmon, Vermont-raised beef, and 
+                        seasonal vegetables, all prepared with contemporary techniques.
+                    </p>
+                    
+                    <h2>Local Specialties</h2>
+                    
+                    <p>
+                        Vermont's agricultural heritage is evident throughout Stowe's dining scene. Look for maple 
+                        syrup in both sweet and savory dishes, artisanal cheeses from local creameries, and fresh 
+                        produce from nearby farms. Vermont's craft beer scene is also exceptional, with many 
+                        restaurants featuring local brews.
+                    </p>
+                    
+                    <h2>Après-Ski Culture</h2>
+                    
+                    <p>
+                        Stowe's après-ski scene is cozy and welcoming, reflecting the town's New England character. 
+                        You'll find everything from historic taverns serving comfort food to modern breweries with 
+                        craft beer and creative pub fare. The atmosphere is generally relaxed and social, perfect for 
+                        unwinding after a day on the slopes.
+                    </p>
+                    
+                    <h2>Dining Tips</h2>
+                    
+                    <p>
+                        <strong>Reservations Recommended:</strong> While Stowe is less crowded than some Western 
+                        resorts, popular restaurants still book up, especially on weekends. Make reservations a few 
+                        days in advance.
+                    </p>
+                    
+                    <p>
+                        <strong>Seasonal Hours:</strong> Some restaurants adjust their hours during shoulder seasons. 
+                        Check ahead, especially in late fall and early spring.
+                    </p>
+                    
+                    <p>
+                        <strong>Local Ingredients:</strong> Don't be surprised to see menus that change based on what's 
+                        available locally. This is part of Vermont's farm-to-table culture and ensures the freshest 
+                        possible ingredients.
+                    </p>
+                `
+            },
+            'banff-lake-louise-dining': {
+                title: 'Banff & Lake Louise: Canadian Rockies Culinary Adventure',
+                category: 'Resort Spotlight',
+                date: 'January 18, 2025',
+                readTime: '6 min read',
+                gradient: 'from-teal-50 to-cyan-50',
+                iconColor: 'text-teal-400',
+                content: `
+                    <p class="text-xl text-gray-600 font-light leading-relaxed">
+                        Nestled in the heart of the Canadian Rockies, Banff and Lake Louise offer some of the most 
+                        spectacular alpine dining experiences in North America. This UNESCO World Heritage site 
+                        combines stunning natural beauty with exceptional cuisine, featuring everything from rustic 
+                        mountain lodges to world-class fine dining establishments.
+                    </p>
+                    
+                    <h2>The Banff & Lake Louise Dining Scene</h2>
+                    
+                    <p>
+                        The dining scene in Banff and Lake Louise reflects the area's unique character—a blend of 
+                        Canadian hospitality, mountain culture, and international sophistication. The region is home 
+                        to three major ski resorts—Sunshine Village, Lake Louise Ski Resort, and Mount Norquay—each 
+                        offering distinct dining experiences.
+                    </p>
+                    
+                    <h2>Banff Town: Mountain Town Charm</h2>
+                    
+                    <p>
+                        The town of Banff offers a vibrant dining scene with over 100 restaurants ranging from casual 
+                        pubs to upscale establishments. The town's pedestrian-friendly streets make it easy to explore 
+                        different dining options, and the mountain views are never far away.
+                    </p>
+                    
+                    <h3>The Bison Restaurant</h3>
+                    <p>
+                        This contemporary Canadian restaurant focuses on regional ingredients, including Alberta beef, 
+                        wild game, and fresh produce. The restaurant's commitment to local sourcing is evident in 
+                        every dish, and the wine list features excellent selections from British Columbia's Okanagan 
+                        Valley.
+                    </p>
+                    
+                    <h2>Lake Louise: Iconic Mountain Dining</h2>
+                    
+                    <p>
+                        Lake Louise offers some of the most iconic dining experiences in the Canadian Rockies. The 
+                        area is home to the legendary Fairmont Chateau Lake Louise, which offers multiple dining 
+                        options, from casual cafés to fine dining establishments.
+                    </p>
+                    
+                    <h3>Walliser Stube</h3>
+                    <p>
+                        Located at the Fairmont Chateau Lake Louise, this Swiss-inspired restaurant offers fondue, 
+                        raclette, and other Alpine specialties. The restaurant's authentic European atmosphere and 
+                        stunning lake views create an unforgettable dining experience.
+                    </p>
+                    
+                    <h2>On-Mountain Dining</h2>
+                    
+                    <p>
+                        The ski resorts in the area offer exceptional on-mountain dining. From mountaintop restaurants 
+                        with panoramic views to mid-mountain lodges serving hearty comfort food, you'll find quality 
+                        cuisine at every elevation.
+                    </p>
+                    
+                    <h2>Local Specialties</h2>
+                    
+                    <p>
+                        Alberta's ranching heritage is evident in the region's dining scene. Look for Alberta beef, 
+                        bison, and elk on many menus. The area also features fresh fish from nearby lakes and rivers, 
+                        and many restaurants incorporate wild game and foraged ingredients into their dishes.
+                    </p>
+                    
+                    <h2>Après-Ski Culture</h2>
+                    
+                    <p>
+                        The après-ski scene in Banff and Lake Louise is vibrant and welcoming. You'll find everything 
+                        from casual mountain bars serving craft beer to upscale lounges with creative cocktails. The 
+                        Canadian influence means you'll often find live music, friendly service, and a convivial 
+                        atmosphere.
+                    </p>
+                    
+                    <h2>Dining Tips</h2>
+                    
+                    <p>
+                        <strong>Reservations Essential:</strong> Popular restaurants, especially those with mountain 
+                        or lake views, book up quickly. Make reservations well in advance, particularly during peak 
+                        season.
+                    </p>
+                    
+                    <p>
+                        <strong>Location Considerations:</strong> Banff and Lake Louise are about 40 minutes apart. 
+                        Plan accordingly if you're dining in one location but staying in another.
+                    </p>
+                    
+                    <p>
+                        <strong>Dress Code:</strong> While the area is generally casual, some fine dining 
+                        establishments have smart casual dress codes. Check ahead if you're unsure.
+                    </p>
+                `
+            },
+            'aspen-dining': {
+                title: 'Aspen: Where Luxury Meets Mountain Dining',
+                category: 'Resort Spotlight',
+                date: 'January 12, 2025',
+                readTime: '6 min read',
+                gradient: 'from-emerald-50 to-green-50',
+                iconColor: 'text-emerald-400',
+                content: `
+                    <p class="text-xl text-gray-600 font-light leading-relaxed">
+                        Aspen has long been synonymous with luxury, sophistication, and world-class skiing. The 
+                        resort's dining scene lives up to this reputation, offering an exceptional culinary landscape 
+                        that combines fine dining excellence with mountain town charm. From celebrity chef restaurants 
+                        to cozy mountain bistros, Aspen delivers dining experiences that match its legendary status.
+                    </p>
+                    
+                    <h2>The Aspen Dining Experience</h2>
+                    
+                    <p>
+                        Aspen's dining scene is among the most sophisticated in North America, rivaling major 
+                        metropolitan areas. The town is home to multiple Michelin-recognized restaurants, celebrity 
+                        chef establishments, and world-class fine dining venues, all set against the stunning backdrop 
+                        of the Rocky Mountains.
+                    </p>
+                    
+                    <h2>Downtown Aspen: Culinary Excellence</h2>
+                    
+                    <p>
+                        Downtown Aspen offers a concentration of exceptional restaurants within walking distance. The 
+                        pedestrian-friendly streets make it easy to explore different dining options, and the 
+                        atmosphere is sophisticated yet welcoming.
+                    </p>
+                    
+                    <h3>Element 47</h3>
+                    <p>
+                        Located at The Little Nell, Element 47 offers contemporary American cuisine with a focus on 
+                        seasonal, locally sourced ingredients. The restaurant features an extensive wine cellar with 
+                        over 20,000 bottles, and the service is impeccable. The restaurant has received numerous 
+                        awards and is considered one of Aspen's finest dining establishments.
+                    </p>
+                    
+                    <h3>Cache Cache</h3>
+                    <p>
+                        This French bistro has been an Aspen favorite for decades, offering classic French cuisine in 
+                        a warm, inviting atmosphere. The restaurant features an extensive wine list and is known for 
+                        its exceptional service and consistent quality.
+                    </p>
+                    
+                    <h2>On-Mountain Dining</h2>
+                    
+                    <p>
+                        Aspen's four mountains—Aspen Mountain, Aspen Highlands, Buttermilk, and Snowmass—each offer 
+                        exceptional on-mountain dining. From casual cafeterias to upscale restaurants, you'll find 
+                        quality cuisine at every elevation.
+                    </p>
+                    
+                    <h3>The Sundeck</h3>
+                    <p>
+                        Located at the top of Aspen Mountain, The Sundeck offers casual dining with stunning panoramic 
+                        views. The restaurant serves everything from burgers and sandwiches to more substantial meals, 
+                        all with the spectacular mountain scenery as a backdrop.
+                    </p>
+                    
+                    <h2>Local Specialties</h2>
+                    
+                    <p>
+                        While Aspen's dining scene is international in scope, many restaurants incorporate Colorado's 
+                        local ingredients. Look for Colorado lamb, fresh trout, and locally sourced produce. The 
+                        area's wine scene is also exceptional, with many restaurants featuring extensive selections 
+                        from around the world.
+                    </p>
+                    
+                    <h2>Après-Ski Culture</h2>
+                    
+                    <p>
+                        Aspen's après-ski scene is sophisticated and lively. You'll find everything from upscale 
+                        lounges serving craft cocktails to casual bars with craft beer and comfort food. The 
+                        atmosphere is generally elegant yet relaxed, perfect for socializing after a day on the slopes.
+                    </p>
+                    
+                    <h2>Dining Tips</h2>
+                    
+                    <p>
+                        <strong>Reservations Essential:</strong> Aspen's popularity and the quality of its restaurants 
+                        mean that reservations are essential, especially for fine dining establishments. Book well 
+                        in advance, particularly during peak season and holidays.
+                    </p>
+                    
+                    <p>
+                        <strong>Dress Code:</strong> While Aspen is generally sophisticated, dress codes vary by 
+                        restaurant. Fine dining establishments typically have smart casual or business casual dress 
+                        codes. Check ahead if you're unsure.
+                    </p>
+                    
+                    <p>
+                        <strong>Budget Considerations:</strong> Aspen's dining scene is among the most expensive 
+                        in North America. However, there are excellent options at various price points, from casual 
+                        cafés to fine dining establishments.
+                    </p>
+                `
+            },
+            'sun-peaks-dining': {
+                title: 'Sun Peaks: British Columbia\'s Hidden Culinary Gem',
+                category: 'Resort Spotlight',
+                date: 'January 8, 2025',
+                readTime: '5 min read',
+                gradient: 'from-violet-50 to-purple-50',
+                iconColor: 'text-violet-400',
+                content: `
+                    <p class="text-xl text-gray-600 font-light leading-relaxed">
+                        Sun Peaks Resort, located in British Columbia's interior, offers a charming European-style 
+                        village with exceptional dining that combines Canadian hospitality with international flavors. 
+                        This family-friendly resort may be smaller than Whistler, but its dining scene punches well 
+                        above its weight, offering quality cuisine in an intimate, welcoming atmosphere.
+                    </p>
+                    
+                    <h2>The Sun Peaks Dining Scene</h2>
+                    
+                    <p>
+                        Sun Peaks' pedestrian village creates a cozy, European-inspired atmosphere perfect for exploring 
+                        on foot. The resort's dining scene reflects this intimate character, with restaurants that 
+                        emphasize quality, local ingredients, and warm hospitality. Despite its smaller size, Sun 
+                        Peaks offers a surprising variety of dining options.
+                    </p>
+                    
+                    <h2>Village Dining: Intimate and Welcoming</h2>
+                    
+                    <p>
+                        Sun Peaks' compact village makes it easy to explore different dining options, all within 
+                        walking distance. The atmosphere is relaxed and family-friendly, with restaurants that cater 
+                        to both casual diners and those seeking more refined experiences.
+                    </p>
+                    
+                    <h3>Masa's Bar + Grill</h3>
+                    <p>
+                        This popular restaurant offers contemporary Canadian cuisine with international influences. The 
+                        menu features everything from burgers and comfort food to more sophisticated dishes, all 
+                        prepared with quality ingredients. The atmosphere is casual yet refined, perfect for families 
+                        and groups.
+                    </p>
+                    
+                    <h2>On-Mountain Dining</h2>
+                    
+                    <p>
+                        Sun Peaks offers excellent on-mountain dining options, from casual cafeterias to more 
+                        substantial restaurants. The resort's three mountains—Tod Mountain, Sundance, and Mount 
+                        Morrisey—each have their own character and dining options.
+                    </p>
+                    
+                    <h3>Bento's</h3>
+                    <p>
+                        Located mid-mountain, Bento's offers Japanese-inspired cuisine with a focus on fresh, quality 
+                        ingredients. The restaurant provides a unique dining option that stands out from typical 
+                        mountain fare, and the views are spectacular.
+                    </p>
+                    
+                    <h2>Local Specialties</h2>
+                    
+                    <p>
+                        British Columbia's interior is known for its agricultural bounty, and Sun Peaks' restaurants 
+                        take advantage of this. Look for fresh produce, local meats, and British Columbia wines and 
+                        craft beers. The area's proximity to the Okanagan Valley means excellent wine selections are 
+                        available throughout the resort.
+                    </p>
+                    
+                    <h2>Après-Ski Culture</h2>
+                    
+                    <p>
+                        Sun Peaks' après-ski scene is welcoming and family-friendly. You'll find everything from 
+                        casual pubs serving craft beer to cozy lounges with creative cocktails. The atmosphere is 
+                        generally relaxed and social, perfect for families and groups of all sizes.
+                    </p>
+                    
+                    <h2>Dining Tips</h2>
+                    
+                    <p>
+                        <strong>Reservations Recommended:</strong> While Sun Peaks is less crowded than some larger 
+                        resorts, popular restaurants still book up, especially on weekends and during holidays. Make 
+                        reservations a few days in advance.
+                    </p>
+                    
+                    <p>
+                        <strong>Family-Friendly:</strong> Sun Peaks is known for being family-friendly, and this 
+                        extends to its dining scene. Most restaurants welcome families and offer children's menus.
+                    </p>
+                    
+                    <p>
+                        <strong>Walkability:</strong> The compact village makes it easy to explore different dining 
+                        options. Don't hesitate to walk around and see what catches your eye.
+                    </p>
+                `
+            }
+        };
+        
+        // Get post ID from URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const postId = urlParams.get('id') || 'whistler-apres-ski';
+        const post = blogPosts[postId] || blogPosts['whistler-apres-ski'];
+        
+        // Update page content
+        if (post) {
+            document.title = `${post.title} - SNOGRUB Blog`; // Title doesn't support HTML styling
+            
+            // Update breadcrumb
+            const breadcrumb = document.querySelector('.breadcrumb-title');
+            if (breadcrumb) breadcrumb.textContent = post.title;
+            
+            // Update article header
+            const categorySpan = document.querySelector('.article-category');
+            const titleH1 = document.querySelector('.article-title');
+            const dateSpan = document.querySelector('.article-date');
+            const readTimeSpan = document.querySelector('.article-read-time');
+            const featuredImage = document.querySelector('.featured-image');
+            const articleContent = document.querySelector('.article-content');
+            
+            if (categorySpan) {
+                categorySpan.textContent = post.category;
+                categorySpan.className = `inline-block px-4 py-2 ${
+                    post.category === 'Featured' ? 'bg-[var(--accent-blue)] text-white' : 'bg-gray-100 text-gray-700'
+                } rounded-full text-sm font-medium mb-4`;
+            }
+            if (titleH1) titleH1.textContent = post.title;
+            if (dateSpan) dateSpan.textContent = post.date;
+            if (readTimeSpan) readTimeSpan.textContent = post.readTime;
+            if (featuredImage) {
+                featuredImage.className = `mb-8 aspect-video bg-gradient-to-br ${post.gradient} rounded-lg overflow-hidden`;
+                const svg = featuredImage.querySelector('svg');
+                if (svg) svg.className = `w-32 h-32 ${post.iconColor}`;
+            }
+            if (articleContent) articleContent.innerHTML = post.content;
+        }
+    </script>
+    
+    <!-- Footer -->
+    <footer class="py-12 px-6 sm:px-8 border-t border-gray-200 bg-white">
+        <div class="max-w-7xl mx-auto">
+            <div class="flex flex-col md:flex-row justify-between items-center">
+                <p class="text-sm text-gray-600 mb-4 md:mb-0">
+                    © 2025 <span class="bg-[var(--accent-blue)] text-white px-1">SNO</span><span class="text-[var(--accent-blue)]">GRUB</span>. All rights reserved.
+                </p>
+                <div class="flex space-x-6">
+                    <a href="#" class="text-sm text-gray-600 hover:text-gray-900 transition-colors duration-200">About</a>
+                    <a href="#" class="text-sm text-gray-600 hover:text-gray-900 transition-colors duration-200">Contact</a>
+                    <a href="#" class="text-sm text-gray-600 hover:text-gray-900 transition-colors duration-200">Privacy</a>
+                    <a href="#" class="text-sm text-gray-600 hover:text-gray-900 transition-colors duration-200">Terms</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+    
+    <script>
+        // Mobile menu toggle
+        const mobileMenuButton = document.getElementById('mobileMenuButton');
+        const mobileMenu = document.getElementById('mobileMenu');
+        const menuIcon = document.getElementById('menuIcon');
+        const closeIcon = document.getElementById('closeIcon');
+        
+        if (mobileMenuButton) {
+            mobileMenuButton.addEventListener('click', () => {
+                mobileMenu.classList.toggle('hidden');
+                menuIcon.classList.toggle('hidden');
+                closeIcon.classList.toggle('hidden');
+            });
+        }
+        
+        // Adjust nav positioning for home base bar
+        function adjustNavForHomeBase() {
+            const homebaseBar = document.getElementById('homebase-bar');
+            const nav = document.querySelector('nav');
+            if (homebaseBar && nav) {
+                const barHeight = homebaseBar.offsetHeight;
+                if (homebaseBar.style.display !== 'none') {
+                    nav.style.top = `${barHeight}px`;
+                } else {
+                    nav.style.top = '0';
+                }
+            }
+        }
+        
+        // Watch for home base bar visibility changes
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', () => {
+                setTimeout(() => {
+                    adjustNavForHomeBase();
+                    const observer = new MutationObserver(adjustNavForHomeBase);
+                    const homebaseBar = document.getElementById('homebase-bar');
+                    if (homebaseBar) {
+                        observer.observe(homebaseBar, { attributes: true, attributeFilter: ['style'] });
+                    }
+                }, 500);
+            });
+        } else {
+            setTimeout(() => {
+                adjustNavForHomeBase();
+                const observer = new MutationObserver(adjustNavForHomeBase);
+                const homebaseBar = document.getElementById('homebase-bar');
+                if (homebaseBar) {
+                    observer.observe(homebaseBar, { attributes: true, attributeFilter: ['style'] });
+                }
+            }, 500);
+        }
+    </script>
+    
+    <!-- Home Base Functionality -->
+    <script src="js/homebase.js"></script>
+    <script src="js/homebase-bar.js"></script>
+</body>
+</html>
+

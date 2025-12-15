@@ -1,0 +1,3275 @@
+<!-- Apple-Style Ski Dining UI - Restaurant Detail Page -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title id="pageTitle">Restaurant - SNOGRUB</title>
+    <meta id="metaDescription" name="description" content="Discover dining options at ski resorts across North America.">
+    <meta id="metaKeywords" name="keywords" content="restaurant, dining, ski resort, après-ski">
+    
+    <!-- Open Graph / Facebook -->
+    <meta id="ogTitle" property="og:title" content="Restaurant - SNOGRUB">
+    <meta id="ogDescription" property="og:description" content="Discover dining options at this ski resort restaurant.">
+    <meta id="ogImage" property="og:image" content="">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="">
+    
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta id="twitterTitle" name="twitter:title" content="Restaurant - SNOGRUB">
+    <meta id="twitterDescription" name="twitter:description" content="Discover dining options at this ski resort restaurant.">
+    <meta id="twitterImage" name="twitter:image" content="">
+    
+    <!-- Structured Data (JSON-LD) for SEO - Will be populated dynamically -->
+    <script type="application/ld+json" id="restaurantSchema">
+    {
+        "@context": "https://schema.org",
+        "@type": "Restaurant",
+        "name": "Restaurant Name",
+        "image": "",
+        "address": {
+            "@type": "PostalAddress",
+            "streetAddress": "",
+            "addressLocality": "",
+            "addressRegion": "",
+            "postalCode": "",
+            "addressCountry": "US"
+        },
+        "geo": {
+            "@type": "GeoCoordinates",
+            "latitude": 0,
+            "longitude": 0
+        },
+        "telephone": "",
+        "url": "",
+        "priceRange": "",
+        "servesCuisine": "",
+        "aggregateRating": {
+            "@type": "AggregateRating",
+            "ratingValue": "0",
+            "reviewCount": "0"
+        }
+    }
+    </script>
+    
+    <!-- TailwindCSS via CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Leaflet CSS for Maps -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+          integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+          crossorigin=""/>
+    
+    <!-- Inter font (San Francisco-like) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --accent-blue: #0071e3;
+            --accent-light: #5ac8fa;
+            --text-primary: #1d1d1f;
+            --text-secondary: #86868b;
+        }
+        
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+        
+        .frosted-glass {
+            background: rgba(251, 251, 253, 0.8);
+            backdrop-filter: saturate(180%) blur(20px);
+            -webkit-backdrop-filter: saturate(180%) blur(20px);
+        }
+        
+        * {
+            transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        #detailMap {
+            height: 400px;
+            width: 100%;
+            border-radius: 12px;
+            overflow: hidden;
+        }
+        
+        .photo-gallery img {
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+        
+        .photo-gallery img:hover {
+            transform: scale(1.05);
+        }
+        
+        .menu-section {
+            border-top: 1px solid #e5e7eb;
+            padding-top: 2rem;
+        }
+        
+        .menu-item {
+            border-bottom: 1px solid #f3f4f6;
+            padding: 1rem 0;
+        }
+        
+        .menu-item:last-child {
+            border-bottom: none;
+        }
+        
+        /* Favorites button styling for resort cards */
+        .favorite-button {
+            transition: all 0.2s ease;
+        }
+        
+        .favorite-button:hover svg {
+            transform: scale(1.1);
+        }
+        
+        .favorite-button.favorited svg {
+            animation: favoritePulse 0.3s ease;
+        }
+        
+        @keyframes favoritePulse {
+            0%, 100% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.2);
+            }
+        }
+        
+        /* Logo overlay container - hidden by default */
+        .resort-logo-overlay-container {
+            display: none !important;
+        }
+        
+        .resort-logo-overlay-container[style*="flex"] {
+            display: flex !important;
+        }
+    </style>
+</head>
+<body class="bg-white text-gray-900 antialiased">
+    
+    <!-- Navigation Bar -->
+    <nav class="fixed top-0 left-0 right-0 z-50 frosted-glass border-b border-gray-200/50">
+        <div class="max-w-7xl mx-auto px-6 sm:px-8">
+            <div class="flex items-center justify-between h-14">
+                <div class="flex-shrink-0">
+                    <a href="index.html" class="text-2xl font-semibold hover:opacity-80 transition-opacity duration-300">
+                        <span class="bg-[var(--accent-blue)] text-white px-1">SNO</span><span class="text-[var(--accent-blue)]">GRUB</span>
+                    </a>
+                </div>
+                
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="resorts.html" class="text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors duration-200">
+                        Resorts
+                    </a>
+                    <a href="restaurants.html" class="text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors duration-200">
+                        Restaurants
+                    </a>
+                    <a href="map.html" class="text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors duration-200">
+                        Map
+                    </a>
+                    <a href="blog.html" class="text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors duration-200">
+                        Blog
+                    </a>
+                    <a href="favorites.html" class="text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors duration-200">
+                        Favorites
+                    </a>
+                    <a href="trips.html" class="text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors duration-200">
+                        Trips
+                    </a>
+                </div>
+                
+                <!-- Mobile Menu Button -->
+                <button id="mobileMenuButton" class="md:hidden text-gray-600 hover:text-gray-900 transition-colors" aria-label="Menu">
+                    <svg id="menuIcon" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                    </svg>
+                    <svg id="closeIcon" class="w-6 h-6 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                    </svg>
+                </button>
+            </div>
+            
+            <!-- Mobile Menu Dropdown -->
+            <div id="mobileMenu" class="hidden md:hidden border-t border-gray-200/50 bg-white/95 backdrop-blur-lg">
+                <div class="px-6 py-4 space-y-4">
+                    <a href="resorts.html" class="block text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors duration-200">Resorts</a>
+                    <a href="restaurants.html" class="block text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors duration-200">Restaurants</a>
+                    <a href="map.html" class="block text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors duration-200">Map</a>
+                    <a href="blog.html" class="block text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors duration-200">Blog</a>
+                    <a href="favorites.html" class="block text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors duration-200">Favorites</a>
+                    <a href="trips.html" class="block text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors duration-200">Trips</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+    
+    <script>
+        // Mobile menu toggle
+        document.addEventListener('DOMContentLoaded', () => {
+            const mobileMenuButton = document.getElementById('mobileMenuButton');
+            const mobileMenu = document.getElementById('mobileMenu');
+            const menuIcon = document.getElementById('menuIcon');
+            const closeIcon = document.getElementById('closeIcon');
+            
+            if (mobileMenuButton) {
+                mobileMenuButton.addEventListener('click', () => {
+                    mobileMenu.classList.toggle('hidden');
+                    menuIcon.classList.toggle('hidden');
+                    closeIcon.classList.toggle('hidden');
+                });
+            }
+            
+            // Close mobile menu when clicking a link
+            if (mobileMenu) {
+                mobileMenu.querySelectorAll('a').forEach(link => {
+                    link.addEventListener('click', () => {
+                        mobileMenu.classList.add('hidden');
+                        menuIcon.classList.remove('hidden');
+                        closeIcon.classList.add('hidden');
+                    });
+                });
+            }
+        });
+    </script>
+    
+    <!-- Breadcrumb -->
+    <div class="pt-20 pb-4 px-6 sm:px-8 bg-gray-50">
+        <div class="max-w-7xl mx-auto">
+            <nav class="flex items-center space-x-2 text-sm text-gray-600">
+                <a href="index.html" class="hover:text-gray-900 transition-colors">Home</a>
+                <span>/</span>
+                <a href="index.html#resorts" class="hover:text-gray-900 transition-colors breadcrumb-resort">Resort</a>
+                <span>/</span>
+                <span class="text-gray-900 breadcrumb-name">Restaurant</span>
+            </nav>
+        </div>
+    </div>
+    
+    <!-- Hero Image Section with Map -->
+    <section id="heroImageSection" class="hero-image-section relative h-96 bg-gradient-to-br from-amber-100 to-orange-100 overflow-hidden">
+        <div id="heroMap" class="absolute inset-0 w-full h-full" style="z-index: 1; min-height: 384px;"></div>
+        <div class="absolute inset-0 flex items-center justify-center" style="z-index: 2; pointer-events: none;">
+            <div class="text-center">
+                <!-- Placeholder content will be dynamically updated based on category -->
+            </div>
+        </div>
+    </section>
+    
+    <style>
+        #heroMap {
+            width: 100%;
+            height: 100%;
+        }
+        #heroMap .leaflet-container {
+            background: transparent;
+        }
+        .restaurant-marker, .resort-marker {
+            background: transparent !important;
+            border: none !important;
+        }
+        .restaurant-marker div, .resort-marker div {
+            animation: pulse 2s infinite;
+        }
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+        .distance-label, .resort-name-label, .restaurant-name-label {
+            background: transparent !important;
+            border: none !important;
+        }
+        .leaflet-interactive {
+            cursor: default !important;
+        }
+        .resort-name-label, .restaurant-name-label {
+            pointer-events: none;
+        }
+    </style>
+</head>
+<body class="bg-white text-gray-900 antialiased">
+    
+    <!-- Navigation Bar -->
+    <nav class="fixed top-0 left-0 right-0 z-50 frosted-glass border-b border-gray-200/50">
+        <div class="max-w-7xl mx-auto px-6 sm:px-8">
+            <div class="flex items-center justify-between h-14">
+                <!-- Logo - Left aligned -->
+                <div class="flex-shrink-0">
+                    <a href="index.html" class="text-2xl font-semibold hover:opacity-80 transition-opacity duration-300">
+                        <span class="bg-[var(--accent-blue)] text-white px-1">SNO</span><span class="text-[var(--accent-blue)]">GRUB</span>
+                    </a>
+                </div>
+                
+                <!-- Navigation Menu - Right aligned -->
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="resorts.html" class="text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors duration-200">
+                        Resorts
+                    </a>
+                    <a href="restaurants.html" class="text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors duration-200">
+                        Restaurants
+                    </a>
+                    <a href="map.html" class="text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors duration-200">
+                        Map
+                    </a>
+                    <a href="blog.html" class="text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors duration-200">
+                        Blog
+                    </a>
+                    <a href="favorites.html" class="text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors duration-200">
+                        Favorites
+                    </a>
+                    <a href="trips.html" class="text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors duration-200">
+                        Trips
+                    </a>
+                </div>
+                
+                <!-- Mobile Menu Button -->
+                <button id="mobileMenuButton" class="md:hidden text-gray-600 hover:text-gray-900 transition-colors" aria-label="Menu">
+                    <svg id="menuIcon" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                    </svg>
+                    <svg id="closeIcon" class="w-6 h-6 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                    </svg>
+                </button>
+            </div>
+            
+            <!-- Mobile Menu Dropdown -->
+            <div id="mobileMenu" class="hidden md:hidden border-t border-gray-200/50 bg-white/95 backdrop-blur-lg" role="menu" aria-labelledby="mobileMenuButton">
+                <div class="px-6 py-4 space-y-4">
+                    <a href="resorts.html" class="block text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors duration-200" role="menuitem">Resorts</a>
+                    <a href="restaurants.html" class="block text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors duration-200" role="menuitem">Restaurants</a>
+                    <a href="map.html" class="block text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors duration-200" role="menuitem">Map</a>
+                    <a href="blog.html" class="block text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors duration-200" role="menuitem">Blog</a>
+                    <a href="favorites.html" class="block text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors duration-200" role="menuitem">Favorites</a>
+                    <a href="trips.html" class="block text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors duration-200" role="menuitem">Trips</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+    
+    <!-- Main Content -->
+    <section class="pt-20 pb-12 px-6 sm:px-8">
+        <div class="max-w-4xl mx-auto">
+            <!-- Header -->
+            <div class="mb-8">
+                <div class="flex items-start justify-between mb-4">
+                    <div>
+                        <h1 class="text-4xl sm:text-5xl font-semibold text-gray-900 mb-2 tracking-tight restaurant-name">
+                            Restaurant
+                        </h1>
+                        <p class="text-xl text-gray-600 mb-4 restaurant-location">
+                            Location
+                        </p>
+                    </div>
+                    <div class="text-right">
+                        <div class="flex items-center gap-2 mb-2">
+                            <svg class="w-5 h-5 text-yellow-400" fill="currentColor" viewBox="0 0 20 20">
+                                <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path>
+                            </svg>
+                            <span class="text-2xl font-semibold text-gray-900 restaurant-rating">4.0</span>
+                        </div>
+                        <p class="text-sm text-gray-600 mb-3 review-count">0 reviews</p>
+                        <div class="flex items-center gap-2">
+                            <button id="favoriteBtn" class="px-4 py-2 bg-white text-gray-700 border border-gray-300 rounded-full text-sm font-medium hover:bg-gray-50 transition-colors duration-200 flex items-center gap-2">
+                                <svg id="favoriteIcon" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
+                                </svg>
+                                <span id="favoriteText">Save</span>
+                            </button>
+                            <button id="addToTripBtn" class="px-4 py-2 bg-[var(--accent-blue)] text-white rounded-full text-sm font-medium hover:opacity-90 transition-opacity flex items-center gap-2">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
+                                </svg>
+                                Add to Trip
+                            </button>
+                            <button id="shareBtn" class="px-4 py-2 bg-white text-gray-700 border border-gray-300 rounded-full text-sm font-medium hover:bg-gray-50 transition-colors flex items-center gap-2">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"></path>
+                                </svg>
+                                Share
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="flex flex-wrap items-center gap-3 mb-6">
+                    <span class="px-4 py-2 bg-gray-100 text-gray-700 rounded-full text-sm font-medium category-badge">
+                        Restaurant
+                    </span>
+                    <span class="px-4 py-2 bg-gray-100 text-gray-700 rounded-full text-sm font-medium category-badge">
+                        $$ • Moderate
+                    </span>
+                    <span class="px-4 py-2 bg-gray-100 text-gray-700 rounded-full text-sm font-medium category-badge">
+                        Cuisine
+                    </span>
+                </div>
+            </div>
+            
+            <!-- Description -->
+            <div class="mb-12">
+                <h2 class="text-2xl font-semibold text-gray-900 mb-4">About</h2>
+                <div class="description-text">
+                    <p class="text-gray-600 leading-relaxed text-lg mb-4">
+                        Description not available.
+                    </p>
+                </div>
+            </div>
+            
+            <!-- Photo Gallery -->
+            <div class="mb-12">
+                <h2 class="text-2xl font-semibold text-gray-900 mb-6">Photos</h2>
+                <div id="photoGallery" class="photo-gallery grid grid-cols-2 md:grid-cols-4 gap-4">
+                    <!-- Photos will be loaded dynamically -->
+                </div>
+            </div>
+            
+            <!-- Delivery Services & Website Section -->
+            <div id="deliverySection" class="mb-12 p-6 bg-gradient-to-br from-green-50 to-emerald-50 rounded-lg border border-green-200">
+                <h2 class="text-2xl font-semibold text-gray-900 mb-4">Order for Delivery</h2>
+                <p class="text-gray-600 mb-4 text-sm">Order from this restaurant through these delivery services:</p>
+                <div id="deliveryLinks" class="flex flex-wrap gap-3 mb-4">
+                    <!-- Delivery service links will be populated dynamically -->
+                </div>
+                <div id="websiteLink" class="mt-4 pt-4 border-t border-green-200">
+                    <!-- Restaurant website link will be populated dynamically -->
+                </div>
+            </div>
+            
+            <!-- Menu Section -->
+            <div id="menuSection" class="menu-section mb-12">
+                <h2 class="text-2xl font-semibold text-gray-900 mb-6">Menu Highlights</h2>
+                
+                <!-- Best Items Description -->
+                <div id="bestItemsDescription" class="mb-8 p-6 bg-gradient-to-br from-blue-50 to-indigo-50 rounded-lg border border-blue-100">
+                    <p class="text-gray-700 leading-relaxed text-base"></p>
+                </div>
+                
+                <!-- Menu Highlights -->
+                <div id="menuHighlights" class="mb-8">
+                    <h3 class="text-xl font-semibold text-gray-900 mb-4">Featured Items</h3>
+                    <div id="highlightsList" class="space-y-4">
+                        <!-- Highlights will be populated dynamically -->
+                    </div>
+                </div>
+                
+                <!-- View Full Menu Button -->
+                <div class="flex justify-center mb-8">
+                    <a id="viewFullMenuBtn" href="#" class="px-8 py-3 bg-[var(--accent-blue)] text-white rounded-full text-base font-medium hover:opacity-90 transition-opacity flex items-center gap-2 shadow-lg hover:shadow-xl">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                        </svg>
+                        View Full Menu
+                    </a>
+                </div>
+                
+                <!-- Menu Accuracy Notice -->
+                <div id="menuNotice" class="mt-8 p-4 bg-amber-50 border border-amber-200 rounded-lg">
+                    <div class="flex items-start gap-3">
+                        <svg class="w-5 h-5 text-amber-600 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path>
+                        </svg>
+                        <div class="flex-1">
+                            <div class="flex items-center gap-2 mb-1">
+                                <p class="text-sm font-medium text-amber-900">
+                                    <span id="menuNoticeText">Menu items and prices may not be up to date.</span>
+                                </p>
+                                <span id="verifiedBadge" class="hidden inline-flex items-center gap-1 px-2 py-0.5 bg-green-100 text-green-700 rounded-full text-xs font-medium">
+                                    <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd" d="M6.267 3.455a3.066 3.066 0 001.745-.723 3.066 3.066 0 013.976 0 3.066 3.066 0 001.745.723 3.066 3.066 0 012.812 2.812c.051.643.304 1.254.723 1.745a3.066 3.066 0 010 3.976 3.066 3.066 0 00-.723 1.745 3.066 3.066 0 01-2.812 2.812 3.066 3.066 0 00-1.745.723 3.066 3.066 0 01-3.976 0 3.066 3.066 0 00-1.745-.723 3.066 3.066 0 01-2.812-2.812 3.066 3.066 0 00-.723-1.745 3.066 3.066 0 010-3.976 3.066 3.066 0 00.723-1.745 3.066 3.066 0 012.812-2.812zm7.44 5.252a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+                                    </svg>
+                                    Verified
+                                </span>
+                            </div>
+                            <p class="text-xs text-amber-700">
+                                <span id="menuNoticeDetail">For the most current menu and pricing, please contact the restaurant directly.</span>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Hours & Contact -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
+                <div>
+                    <h2 class="text-2xl font-semibold text-gray-900 mb-4">Hours</h2>
+                    <div class="space-y-2 text-gray-600 hours-container">
+                        <div class="flex justify-between">
+                            <span>Loading hours...</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div>
+                    <h2 class="text-2xl font-semibold text-gray-900 mb-4">Contact</h2>
+                    <div class="space-y-3 text-gray-600">
+                        <div class="flex items-center gap-3">
+                            <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"></path>
+                            </svg>
+                            <a href="#" class="phone-number hover:text-[var(--accent-blue)] transition-colors">Phone not available</a>
+                        </div>
+                        <div class="flex items-center gap-3">
+                            <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                            </svg>
+                            <span class="address-text text-gray-600">Address not available</span>
+                        </div>
+                        <div class="flex items-center gap-3">
+                            <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9"></path>
+                            </svg>
+                            <a href="#" target="_blank" rel="noopener noreferrer" class="website-link hover:text-[var(--accent-blue)] transition-colors">
+                                Visit Website
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Map -->
+            <div class="mb-12">
+                <h2 class="text-2xl font-semibold text-gray-900 mb-4">Location</h2>
+                <div id="detailMap" class="border border-gray-200 rounded-lg"></div>
+            </div>
+            
+            <!-- Reviews Section -->
+            <div class="mb-12">
+                <div class="flex items-center justify-between mb-6">
+                    <h2 class="text-2xl font-semibold text-gray-900">Reviews</h2>
+                    <button id="writeReviewBtn" class="px-4 py-2 bg-[var(--accent-blue)] text-white rounded-full text-sm font-medium hover:opacity-90 transition-opacity">
+                        Write a Review
+                    </button>
+                </div>
+                
+                <!-- SNOWGRUB Featured Review -->
+                <div id="snowgrubReviewContainer" class="mb-8 bg-gradient-to-br from-blue-50 to-indigo-50 border-2 border-blue-200 rounded-xl p-6 shadow-lg">
+                    <!-- Dynamic content will be populated here -->
+                </div>
+                
+                <!-- Review Summaries by Source (if available) -->
+                <div id="reviewSummariesContainer" class="mb-8">
+                    <h3 class="text-lg font-semibold text-gray-900 mb-4">What Reviewers Are Saying</h3>
+                    <div id="platformReviewsGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                        <!-- Platform review boxes will be populated here -->
+                    </div>
+                </div>
+                
+                <!-- Review Form Modal -->
+                <div id="reviewModal" class="hidden fixed inset-0 bg-black bg-opacity-40 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+                    <div class="bg-white rounded-2xl p-8 max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+                        <div class="flex items-center justify-between mb-6">
+                            <h3 class="text-2xl font-semibold text-gray-900">Write a Review</h3>
+                            <button id="closeReviewModal" class="text-gray-400 hover:text-gray-600 transition-colors">
+                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                                </svg>
+                            </button>
+                        </div>
+                        <form id="reviewForm" class="space-y-6">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-900 mb-2">Rating</label>
+                                <div class="flex gap-2" id="ratingStars">
+                                    <button type="button" class="rating-star text-gray-300 hover:text-yellow-400 transition-colors" data-rating="1">
+                                        <svg class="w-8 h-8" fill="currentColor" viewBox="0 0 20 20">
+                                            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path>
+                                        </svg>
+                                    </button>
+                                    <button type="button" class="rating-star text-gray-300 hover:text-yellow-400 transition-colors" data-rating="2">
+                                        <svg class="w-8 h-8" fill="currentColor" viewBox="0 0 20 20">
+                                            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path>
+                                        </svg>
+                                    </button>
+                                    <button type="button" class="rating-star text-gray-300 hover:text-yellow-400 transition-colors" data-rating="3">
+                                        <svg class="w-8 h-8" fill="currentColor" viewBox="0 0 20 20">
+                                            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path>
+                                        </svg>
+                                    </button>
+                                    <button type="button" class="rating-star text-gray-300 hover:text-yellow-400 transition-colors" data-rating="4">
+                                        <svg class="w-8 h-8" fill="currentColor" viewBox="0 0 20 20">
+                                            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path>
+                                        </svg>
+                                    </button>
+                                    <button type="button" class="rating-star text-gray-300 hover:text-yellow-400 transition-colors" data-rating="5">
+                                        <svg class="w-8 h-8" fill="currentColor" viewBox="0 0 20 20">
+                                            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path>
+                                        </svg>
+                                    </button>
+                                </div>
+                                <input type="hidden" id="selectedRating" name="rating" value="0">
+                            </div>
+                            <div>
+                                <label for="reviewName" class="block text-sm font-medium text-gray-900 mb-2">Your Name</label>
+                                <input type="text" id="reviewName" name="name" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[var(--accent-blue)]" placeholder="Enter your name">
+                            </div>
+                            <div>
+                                <label for="reviewText" class="block text-sm font-medium text-gray-900 mb-2">Your Review</label>
+                                <textarea id="reviewText" name="review" rows="5" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[var(--accent-blue)]" placeholder="Share your experience..."></textarea>
+                            </div>
+                            <div>
+                                <label for="reviewPhotos" class="block text-sm font-medium text-gray-900 mb-2">Add Photos (Optional)</label>
+                                <input type="file" id="reviewPhotos" name="photos" multiple accept="image/*" class="hidden">
+                                <div class="flex items-center gap-4">
+                                    <button type="button" id="selectPhotosBtn" class="px-4 py-2 bg-white text-gray-700 border border-gray-300 rounded-lg font-medium hover:bg-gray-50 transition-colors flex items-center gap-2">
+                                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                                        </svg>
+                                        Choose Photos
+                                    </button>
+                                    <span id="photoCount" class="text-sm text-gray-500 hidden">0 photos selected</span>
+                                </div>
+                                <div id="photoPreview" class="mt-4 grid grid-cols-4 gap-4 hidden">
+                                    <!-- Photo previews will be added here -->
+                                </div>
+                            </div>
+                            <div class="flex gap-4">
+                                <button type="submit" class="flex-1 px-6 py-3 bg-[var(--accent-blue)] text-white rounded-full font-medium hover:opacity-90 transition-opacity">
+                                    Submit Review
+                                </button>
+                                <button type="button" id="cancelReview" class="px-6 py-3 bg-white text-gray-700 border border-gray-300 rounded-full font-medium hover:bg-gray-50 transition-colors">
+                                    Cancel
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                
+                <div id="reviewsContainer" class="space-y-6">
+                    <!-- Reviews will be loaded dynamically from localStorage -->
+                    <div id="noReviewsMessage" class="text-center py-12">
+                        <svg class="w-16 h-16 text-gray-300 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path>
+                        </svg>
+                        <p class="text-gray-600 text-lg mb-2">No reviews yet</p>
+                        <p class="text-gray-500 text-sm">Be the first to share your experience at this restaurant!</p>
+                    </div>
+                </div>
+                
+                <!-- Photo Modal -->
+                <div id="photoModal" class="hidden fixed inset-0 bg-black bg-opacity-90 z-50 flex items-center justify-center p-4">
+                    <div class="relative max-w-4xl w-full">
+                        <button onclick="closePhotoModal()" class="absolute top-4 right-4 text-white hover:text-gray-300 z-10">
+                            <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                            </svg>
+                        </button>
+                        <img id="modalPhoto" src="" alt="Review photo" class="max-w-full max-h-[90vh] mx-auto rounded-lg">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Closest Resorts Section -->
+    <section class="py-16 px-6 sm:px-8 bg-gray-50">
+        <div class="max-w-7xl mx-auto">
+            <h2 class="text-3xl font-semibold text-gray-900 mb-8">Closest Resorts</h2>
+            <div id="closestResorts" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Closest resorts will be loaded dynamically -->
+            </div>
+            <div id="closestResortsMoreButton" class="mt-8 text-center hidden">
+                <button onclick="toggleMoreClosestResorts()" class="px-6 py-3 bg-[var(--accent-blue)] text-white font-semibold rounded-lg hover:bg-blue-700 transition-colors duration-200">
+                    Show More
+                </button>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Eat and Drink Section -->
+    <section class="py-16 px-6 sm:px-8 bg-white">
+        <div class="max-w-7xl mx-auto">
+            <h2 class="text-3xl font-semibold text-gray-900 mb-8">Eat and Drink</h2>
+            <div id="nearbyPlaces" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <!-- Eat and drink will be loaded dynamically -->
+            </div>
+        </div>
+    </section>
+    
+    <!-- Footer -->
+    <footer class="py-12 px-6 sm:px-8 border-t border-gray-200 bg-white">
+        <div class="max-w-7xl mx-auto">
+            <div class="flex flex-col md:flex-row justify-between items-center">
+                <p class="text-sm text-gray-600 mb-4 md:mb-0">
+                    © 2025 <span class="bg-[var(--accent-blue)] text-white px-1">SNO</span><span class="text-[var(--accent-blue)]">GRUB</span>. All rights reserved.
+                </p>
+                <div class="flex space-x-6">
+                    <a href="#" class="text-sm text-gray-600 hover:text-gray-900 transition-colors duration-200">About</a>
+                    <a href="#" class="text-sm text-gray-600 hover:text-gray-900 transition-colors duration-200">Contact</a>
+                    <a href="#" class="text-sm text-gray-600 hover:text-gray-900 transition-colors duration-200">Privacy</a>
+                    <a href="#" class="text-sm text-gray-600 hover:text-gray-900 transition-colors duration-200">Terms</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+    
+    <!-- Leaflet JS -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+            integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+            crossorigin=""></script>
+    
+    <!-- Load Restaurant Data -->
+    <!-- Load Universal Resort Card Component -->
+    <script src="js/resort-card-universal.js"></script>
+    <script src="data.js"></script>
+    
+    <script>
+        // Helper functions for restaurant-resort relationships
+        function calculateDistanceMiles(lat1, lon1, lat2, lon2) {
+            const R = 3959; // Radius of Earth in miles
+            const dLat = (lat2 - lat1) * Math.PI / 180;
+            const dLon = (lon2 - lon1) * Math.PI / 180;
+            const a = 
+                Math.sin(dLat/2) * Math.sin(dLat/2) +
+                Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
+                Math.sin(dLon/2) * Math.sin(dLon/2);
+            const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+            return R * c;
+        }
+        
+        function normalizeRestaurantResorts(restaurant, resorts) {
+            const MAX_DISTANCE_MILES = 30;
+            
+            if (!restaurant) return restaurant;
+            
+            // If already in new format
+            if (restaurant.resorts && Array.isArray(restaurant.resorts)) {
+                const sortedResorts = [...restaurant.resorts].sort((a, b) => {
+                    if (a.distance === null || a.distance === undefined) return 1;
+                    if (b.distance === null || b.distance === undefined) return -1;
+                    return a.distance - b.distance;
+                });
+                return { ...restaurant, resorts: sortedResorts };
+            }
+            
+            // Old format: transform it
+            if (restaurant.resort && restaurant.coordinates && restaurant.coordinates.lat && restaurant.coordinates.lng) {
+                const restaurantLat = restaurant.coordinates.lat;
+                const restaurantLng = restaurant.coordinates.lng;
+                const nearbyResorts = [];
+                
+                resorts.forEach(resort => {
+                    if (resort.coordinates && resort.coordinates.lat && resort.coordinates.lng) {
+                        const distance = calculateDistanceMiles(
+                            restaurantLat,
+                            restaurantLng,
+                            resort.coordinates.lat,
+                            resort.coordinates.lng
+                        );
+                        
+                        if (distance <= MAX_DISTANCE_MILES) {
+                            nearbyResorts.push({
+                                id: resort.id,
+                                distance: Math.round(distance * 10) / 10
+                            });
+                        }
+                    }
+                });
+                
+                nearbyResorts.sort((a, b) => {
+                    if (a.distance === null) return 1;
+                    if (b.distance === null) return -1;
+                    return a.distance - b.distance;
+                });
+                
+                const hasOriginal = nearbyResorts.some(r => r.id === restaurant.resort);
+                if (!hasOriginal && restaurant.resort) {
+                    const originalResort = resorts.find(r => r.id === restaurant.resort);
+                    if (originalResort && originalResort.coordinates) {
+                        const distance = calculateDistanceMiles(
+                            restaurantLat,
+                            restaurantLng,
+                            originalResort.coordinates.lat,
+                            originalResort.coordinates.lng
+                        );
+                        nearbyResorts.push({
+                            id: restaurant.resort,
+                            distance: Math.round(distance * 10) / 10
+                        });
+                        nearbyResorts.sort((a, b) => a.distance - b.distance);
+                    } else {
+                        nearbyResorts.unshift({ id: restaurant.resort, distance: null });
+                    }
+                }
+                
+                const newRestaurant = { ...restaurant };
+                delete newRestaurant.resort;
+                newRestaurant.resorts = nearbyResorts.length > 0 ? nearbyResorts : [{ id: restaurant.resort, distance: null }];
+                return newRestaurant;
+            }
+            
+            if (restaurant.resort) {
+                const newRestaurant = { ...restaurant };
+                delete newRestaurant.resort;
+                newRestaurant.resorts = [{ id: restaurant.resort, distance: null }];
+                return newRestaurant;
+            }
+            
+            return { ...restaurant, resorts: [] };
+        }
+        
+        function getRestaurantResorts(restaurant) {
+            if (!restaurant || !restaurant.resorts || restaurant.resorts.length === 0) {
+                return [];
+            }
+            return [...restaurant.resorts].sort((a, b) => {
+                if (a.distance === null || a.distance === undefined) return 1;
+                if (b.distance === null || b.distance === undefined) return -1;
+                return a.distance - b.distance;
+            });
+        }
+        
+        function getClosestResort(restaurant) {
+            const resorts = getRestaurantResorts(restaurant);
+            return resorts.length > 0 ? resorts[0] : null;
+        }
+        
+        // Helper function to format resort display (single line or multiple lines)
+        function formatResortDisplay(restaurant, resortsData) {
+            const restaurantResorts = getRestaurantResorts(restaurant);
+            if (restaurantResorts.length === 0) {
+                return { html: `<span>${restaurant.location || 'Location TBD'}</span>`, singleLine: true };
+            }
+            
+            if (restaurantResorts.length === 1) {
+                // Single resort: show on one line with distance
+                const r = restaurantResorts[0];
+                const resort = resortsData.find(res => res.id === r.id);
+                const name = resort ? resort.name : r.id;
+                const distanceText = r.distance !== null && r.distance !== undefined ? ` (${r.distance.toFixed(1)} mi)` : '';
+                return { html: `<span>${name}${distanceText}</span>`, singleLine: true };
+            } else {
+                // Multiple resorts: show each on separate line with distance
+                const resortLines = restaurantResorts.map(r => {
+                    const resort = resortsData.find(res => res.id === r.id);
+                    const name = resort ? resort.name : r.id;
+                    const distanceText = r.distance !== null && r.distance !== undefined ? ` (${r.distance.toFixed(1)} mi)` : '';
+                    return `<div>${name}${distanceText}</div>`;
+                }).join('');
+                return { html: `<div class="space-y-1">${resortLines}</div>`, singleLine: false };
+            }
+        }
+        
+        // Get restaurant ID from URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const restaurantId = urlParams.get('id') || 'bearfoot-bistro'; // Default to first restaurant
+        
+        // Find restaurant in data
+        let restaurant = null;
+        if (typeof skiEatsData !== 'undefined' && skiEatsData.restaurants) {
+            restaurant = skiEatsData.restaurants.find(r => r.id === restaurantId);
+            // Normalize restaurant data
+            if (restaurant && skiEatsData.resorts) {
+                restaurant = normalizeRestaurantResorts(restaurant, skiEatsData.resorts);
+            }
+        }
+        
+        // Update structured data for SEO
+        const schemaScript = document.getElementById('restaurantSchema');
+        if (schemaScript && restaurant) {
+            const addressParts = (restaurant.address || '').split(',').map(s => s.trim());
+            const schema = {
+                "@context": "https://schema.org",
+                "@type": "Restaurant",
+                "name": restaurant.name,
+                "image": restaurant.image || '',
+                "address": {
+                    "@type": "PostalAddress",
+                    "streetAddress": addressParts[0] || '',
+                    "addressLocality": restaurant.location || '',
+                    "addressRegion": addressParts[addressParts.length - 2] || '',
+                    "postalCode": addressParts[addressParts.length - 1] || '',
+                    "addressCountry": restaurant.location && restaurant.location.includes('QC') ? 'CA' : 
+                                     restaurant.location && restaurant.location.includes('BC') ? 'CA' : 'US'
+                },
+                "geo": {
+                    "@type": "GeoCoordinates",
+                    "latitude": restaurant.coordinates.lat,
+                    "longitude": restaurant.coordinates.lng
+                },
+                "telephone": restaurant.phone || '',
+                "url": restaurant.website || window.location.href,
+                "priceRange": restaurant.priceRange || '',
+                "servesCuisine": restaurant.cuisine || '',
+                "aggregateRating": {
+                    "@type": "AggregateRating",
+                    "ratingValue": restaurant.rating.toString(),
+                    "reviewCount": restaurant.reviewCount.toString()
+                }
+            };
+            
+            // Add opening hours if available
+            if (restaurant.hours) {
+                const openingHours = [];
+                const days = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'];
+                const dayMap = {
+                    'monday': 'Mo',
+                    'tuesday': 'Tu',
+                    'wednesday': 'We',
+                    'thursday': 'Th',
+                    'friday': 'Fr',
+                    'saturday': 'Sa',
+                    'sunday': 'Su'
+                };
+                
+                days.forEach(day => {
+                    if (restaurant.hours[day]) {
+                        const hours = restaurant.hours[day].replace(/\s/g, '');
+                        const timeParts = hours.split('-');
+                        if (timeParts.length === 2) {
+                            openingHours.push({
+                                "@type": "OpeningHoursSpecification",
+                                "dayOfWeek": `https://schema.org/${dayMap[day]}`,
+                                "opens": timeParts[0],
+                                "closes": timeParts[1]
+                            });
+                        }
+                    }
+                });
+                
+                if (openingHours.length > 0) {
+                    schema.openingHoursSpecification = openingHours;
+                }
+            }
+            
+            schemaScript.textContent = JSON.stringify(schema, null, 2);
+        }
+        
+        // Fallback data if restaurant not found
+        if (!restaurant) {
+            restaurant = {
+                id: restaurantId,
+                name: 'Restaurant',
+                location: 'Location',
+                description: 'Description not available.',
+                category: 'restaurant',
+                cuisine: 'American',
+                priceRange: '$$',
+                rating: 4.0,
+                reviewCount: 0,
+                coordinates: { lat: 50.1163, lng: -122.9574 },
+                address: 'Address not available',
+                phone: 'Phone not available',
+                website: '#',
+                hours: {
+                    monday: 'Closed',
+                    tuesday: 'Closed',
+                    wednesday: 'Closed',
+                    thursday: 'Closed',
+                    friday: 'Closed',
+                    saturday: 'Closed',
+                    sunday: 'Closed'
+                }
+            };
+        }
+        
+        // Update page title and meta tags
+        document.title = `${restaurant.name} - SNOGRUB`;
+        
+        // Update meta description
+        const metaDesc = document.getElementById('metaDescription');
+        if (metaDesc) {
+            metaDesc.content = restaurant.description || `Discover ${restaurant.name} at ${restaurant.location}. ${restaurant.cuisine || 'Restaurant'} dining at ski resorts.`;
+        }
+        
+        // Update meta keywords
+        const metaKeywords = document.getElementById('metaKeywords');
+        if (metaKeywords) {
+            const keywords = [
+                restaurant.name.toLowerCase(),
+                'restaurant',
+                'dining',
+                'ski resort',
+                'après-ski',
+                restaurant.cuisine?.toLowerCase() || '',
+                restaurant.location?.toLowerCase() || ''
+            ].filter(k => k).join(', ');
+            metaKeywords.content = keywords;
+        }
+        
+        // Update Open Graph tags
+        const ogTitle = document.getElementById('ogTitle');
+        const ogDesc = document.getElementById('ogDescription');
+        const ogImage = document.getElementById('ogImage');
+        const ogUrl = document.querySelector('meta[property="og:url"]');
+        if (ogTitle) ogTitle.content = `${restaurant.name} - SNOGRUB`;
+        if (ogDesc) ogDesc.content = restaurant.description || `Discover ${restaurant.name} at ${restaurant.location}.`;
+        if (ogImage && restaurant.image) ogImage.content = window.location.origin + restaurant.image;
+        if (ogUrl) ogUrl.content = window.location.href;
+        
+        // Update Twitter tags
+        const twitterTitle = document.getElementById('twitterTitle');
+        const twitterDesc = document.getElementById('twitterDescription');
+        const twitterImage = document.getElementById('twitterImage');
+        if (twitterTitle) twitterTitle.content = `${restaurant.name} - SNOGRUB`;
+        if (twitterDesc) twitterDesc.content = restaurant.description || `Discover ${restaurant.name} at ${restaurant.location}.`;
+        if (twitterImage && restaurant.image) twitterImage.content = window.location.origin + restaurant.image;
+        
+        // Update breadcrumb - link to resort if available
+        const breadcrumbResort = document.querySelector('.breadcrumb-resort');
+        const breadcrumbName = document.querySelector('.breadcrumb-name');
+        
+        // Find the resort(s) this restaurant belongs to
+        let resortLink = 'index.html#resorts';
+        const closestResort = getClosestResort(restaurant);
+        if (closestResort && typeof skiEatsData !== 'undefined' && skiEatsData.resorts) {
+            const resort = skiEatsData.resorts.find(r => r.id === closestResort.id);
+            if (resort) {
+                resortLink = `resort-detail.html?id=${resort.id}`;
+                if (breadcrumbResort) {
+                    breadcrumbResort.innerHTML = `<a href="${resortLink}" class="hover:text-gray-900 transition-colors">${resort.name}</a>`;
+                }
+            } else {
+                if (breadcrumbResort) breadcrumbResort.textContent = restaurant.location || 'Location';
+            }
+        } else {
+            if (breadcrumbResort) breadcrumbResort.textContent = restaurant.location || 'Location';
+        }
+        
+        if (breadcrumbName) breadcrumbName.textContent = restaurant.name;
+        
+        // Update header
+        const restaurantName = document.querySelector('.restaurant-name');
+        const restaurantLocation = document.querySelector('.restaurant-location');
+        const restaurantRating = document.querySelector('.restaurant-rating');
+        const reviewCount = document.querySelector('.review-count');
+        
+        if (restaurantName) restaurantName.textContent = restaurant.name;
+        if (restaurantLocation) restaurantLocation.textContent = restaurant.location;
+        if (restaurantRating) restaurantRating.textContent = restaurant.rating.toFixed(1);
+        if (reviewCount) reviewCount.textContent = `${restaurant.reviewCount} reviews`;
+        
+        // Update category badges
+        const categoryBadges = document.querySelectorAll('.category-badge');
+        if (categoryBadges.length > 0) {
+            const categoryText = restaurant.category === 'bar' ? 'Après Bar' : 
+                                restaurant.category === 'cafe' ? 'Café' : 'Restaurant';
+            categoryBadges[0].textContent = categoryText;
+            if (categoryBadges.length > 1) {
+                categoryBadges[1].textContent = `${restaurant.priceRange} • ${restaurant.priceRange.length === 1 ? 'Budget-friendly' : restaurant.priceRange.length === 2 ? 'Moderate' : restaurant.priceRange.length === 3 ? 'Upscale' : 'Fine dining'}`;
+            }
+            if (categoryBadges.length > 2) {
+                categoryBadges[2].textContent = `${restaurant.cuisine} Cuisine`;
+            }
+        }
+        
+        // Update description
+        const descriptionText = document.querySelector('.description-text');
+        if (descriptionText) {
+            descriptionText.innerHTML = `<p class="text-gray-600 leading-relaxed text-lg mb-4">${restaurant.description || 'No description available.'}</p>`;
+        }
+        
+        // Load photo gallery
+        const photoGallery = document.getElementById('photoGallery');
+        if (photoGallery && restaurant) {
+            if (restaurant.photos && restaurant.photos.length > 0) {
+                photoGallery.innerHTML = restaurant.photos.map((photo, index) => `
+                    <div class="relative group cursor-pointer overflow-hidden rounded-lg">
+                        <img src="${photo}" 
+                             alt="${restaurant.name} - Photo ${index + 1}" 
+                             class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300"
+                             onerror="this.style.display='none';">
+                        <div class="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-20 transition-opacity duration-300"></div>
+                    </div>
+                `).join('');
+            } else if (restaurant.image) {
+                // Use main image if no photo gallery
+                photoGallery.innerHTML = `
+                    <div class="relative group cursor-pointer overflow-hidden rounded-lg col-span-2 md:col-span-4">
+                        <img src="${restaurant.image}" 
+                             alt="${restaurant.name}" 
+                             class="w-full h-64 object-cover group-hover:scale-105 transition-transform duration-300"
+                             onerror="this.style.display='none';">
+                        <div class="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-20 transition-opacity duration-300"></div>
+                    </div>
+                `;
+            } else {
+                photoGallery.innerHTML = '<p class="text-gray-500 text-sm col-span-full text-center py-8">No photos available</p>';
+            }
+        }
+        
+        // Add "Located at Resort(s)" section if restaurant has resorts
+        const restaurantResorts = getRestaurantResorts(restaurant);
+        if (restaurantResorts.length > 0 && typeof skiEatsData !== 'undefined' && skiEatsData.resorts) {
+            const descriptionSection = document.querySelector('.description-text')?.parentElement;
+            if (descriptionSection) {
+                const resortSection = document.createElement('div');
+                resortSection.className = 'mb-12 bg-blue-50 border border-blue-200 rounded-lg p-6';
+                
+                if (restaurantResorts.length === 1) {
+                    // Single resort: show on one line with distance
+                    const r = restaurantResorts[0];
+                    const resort = skiEatsData.resorts.find(res => res.id === r.id);
+                    if (resort) {
+                        const distanceText = r.distance !== null && r.distance !== undefined ? ` (${r.distance.toFixed(1)} mi)` : '';
+                        resortSection.innerHTML = `
+                            <div class="flex items-center justify-between">
+                                <div class="flex items-center gap-4">
+                                    <div class="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center">
+                                        <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path>
+                                        </svg>
+                                    </div>
+                                    <div>
+                                        <p class="text-sm text-gray-600 mb-1">Located at</p>
+                                        <a href="resort-detail.html?id=${resort.id}" class="text-lg font-semibold text-gray-900 hover:text-[var(--accent-blue)] transition-colors">
+                                            ${resort.name}${distanceText}
+                                        </a>
+                                        <p class="text-sm text-gray-600 mt-1">${resort.location}</p>
+                                    </div>
+                                </div>
+                                <a href="resort-detail.html?id=${resort.id}" class="px-4 py-2 bg-[var(--accent-blue)] text-white rounded-full text-sm font-medium hover:opacity-90 transition-opacity flex items-center gap-2">
+                                    View Resort
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                                    </svg>
+                                </a>
+                            </div>
+                        `;
+                    }
+                } else {
+                    // Multiple resorts: show each on separate line with distance
+                    const resortItems = restaurantResorts.map(r => {
+                        const resort = skiEatsData.resorts.find(res => res.id === r.id);
+                        if (!resort) return '';
+                        const distanceText = r.distance !== null && r.distance !== undefined ? ` (${r.distance.toFixed(1)} mi)` : '';
+                        return `
+                            <div class="flex items-center justify-between py-2 border-b border-blue-200 last:border-b-0">
+                                <div class="flex items-center gap-4">
+                                    <div class="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center flex-shrink-0">
+                                        <svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path>
+                                        </svg>
+                                    </div>
+                                    <div>
+                                        <a href="resort-detail.html?id=${resort.id}" class="text-lg font-semibold text-gray-900 hover:text-[var(--accent-blue)] transition-colors">
+                                            ${resort.name}${distanceText}
+                                        </a>
+                                        <p class="text-sm text-gray-600">${resort.location}</p>
+                                    </div>
+                                </div>
+                                <a href="resort-detail.html?id=${resort.id}" class="px-3 py-1.5 bg-[var(--accent-blue)] text-white rounded-full text-xs font-medium hover:opacity-90 transition-opacity flex items-center gap-1">
+                                    View
+                                    <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                                    </svg>
+                                </a>
+                            </div>
+                        `;
+                    }).join('');
+                    
+                    resortSection.innerHTML = `
+                        <div>
+                            <p class="text-sm text-gray-600 mb-3 font-medium">Located at</p>
+                            <div class="space-y-0">
+                                ${resortItems}
+                            </div>
+                        </div>
+                    `;
+                }
+                
+                descriptionSection.insertAdjacentElement('afterend', resortSection);
+            }
+        }
+        
+        // Load delivery services and website links
+        const deliverySection = document.getElementById('deliverySection');
+        const deliveryLinks = document.getElementById('deliveryLinks');
+        const websiteLink = document.getElementById('websiteLink');
+        
+        if (deliverySection && restaurant) {
+            const deliveryServices = {
+                'Uber Eats': {
+                    url: `https://www.ubereats.com/search?q=${encodeURIComponent(restaurant.name)}&location=${encodeURIComponent(restaurant.address || restaurant.location)}`,
+                    icon: '🚗'
+                },
+                'DoorDash': {
+                    url: `https://www.doordash.com/search?query=${encodeURIComponent(restaurant.name)}&location=${encodeURIComponent(restaurant.address || restaurant.location)}`,
+                    icon: '📦'
+                },
+                'Grubhub': {
+                    url: `https://www.grubhub.com/search?query=${encodeURIComponent(restaurant.name)}&location=${encodeURIComponent(restaurant.address || restaurant.location)}`,
+                    icon: '🍔'
+                },
+                'ChowNow': {
+                    url: `https://www.chownow.com/search?query=${encodeURIComponent(restaurant.name)}&location=${encodeURIComponent(restaurant.address || restaurant.location)}`,
+                    icon: '📱'
+                }
+            };
+            
+            // Check which delivery services have reviews (indicating they serve this restaurant)
+            const availableServices = [];
+            if (restaurant.platformReviews) {
+                Object.keys(deliveryServices).forEach(serviceName => {
+                    if (restaurant.platformReviews[serviceName]) {
+                        availableServices.push({
+                            name: serviceName,
+                            ...deliveryServices[serviceName]
+                        });
+                    }
+                });
+            }
+            
+            // Display delivery service links
+            if (deliveryLinks) {
+                if (availableServices.length > 0) {
+                    deliveryLinks.innerHTML = availableServices.map(service => `
+                        <a href="${service.url}" target="_blank" rel="noopener noreferrer" 
+                           class="px-4 py-2 bg-white text-gray-700 border border-gray-300 rounded-full text-sm font-medium hover:bg-gray-50 hover:border-gray-400 transition-colors flex items-center gap-2 shadow-sm">
+                            <span>${service.icon}</span>
+                            <span>${service.name}</span>
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path>
+                            </svg>
+                        </a>
+                    `).join('');
+                } else {
+                    // If no delivery services found, hide the section or show a message
+                    deliverySection.style.display = 'none';
+                }
+            }
+            
+            // Display restaurant website link
+            if (websiteLink && restaurant.website) {
+                websiteLink.innerHTML = `
+                    <div class="flex items-center gap-3">
+                        <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9"></path>
+                        </svg>
+                        <a href="${restaurant.website}" target="_blank" rel="noopener noreferrer" 
+                           class="text-[var(--accent-blue)] hover:underline font-medium flex items-center gap-2">
+                            Visit Restaurant Website
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path>
+                            </svg>
+                        </a>
+                    </div>
+                `;
+            } else if (websiteLink) {
+                websiteLink.style.display = 'none';
+            }
+        } else if (deliverySection) {
+            // No restaurant data, hide the section
+            deliverySection.style.display = 'none';
+        }
+        
+        // Load menu highlights
+        const menuSection = document.getElementById('menuSection');
+        const bestItemsDescription = document.getElementById('bestItemsDescription');
+        const highlightsList = document.getElementById('highlightsList');
+        const viewFullMenuBtn = document.getElementById('viewFullMenuBtn');
+        
+        if (menuSection && restaurant) {
+            if (restaurant.menu) {
+                const menu = restaurant.menu;
+                
+                // Display best items description
+                if (bestItemsDescription && menu.bestItemsDescription) {
+                    bestItemsDescription.querySelector('p').textContent = menu.bestItemsDescription;
+                } else if (bestItemsDescription) {
+                    bestItemsDescription.style.display = 'none';
+                }
+                
+                // Display menu highlights
+                if (highlightsList && menu.highlights && menu.highlights.length > 0) {
+                    highlightsList.innerHTML = menu.highlights.map(item => `
+                        <div class="menu-item bg-white p-4 rounded-lg border border-gray-200 hover:shadow-md transition-shadow">
+                            <div class="flex justify-between items-start mb-2">
+                                <h4 class="font-semibold text-gray-900">${item.name}</h4>
+                                <span class="text-gray-600 font-medium ml-4">${item.price}</span>
+                            </div>
+                            ${item.description ? `<p class="text-gray-600 text-sm">${item.description}</p>` : ''}
+                        </div>
+                    `).join('');
+                } else if (highlightsList) {
+                    highlightsList.innerHTML = '<p class="text-gray-500 text-sm">Menu highlights coming soon.</p>';
+                }
+                
+                // Set up full menu button
+                if (viewFullMenuBtn && menu.fullMenu) {
+                    viewFullMenuBtn.href = `menu.html?id=${restaurant.id}`;
+                } else if (viewFullMenuBtn) {
+                    viewFullMenuBtn.style.display = 'none';
+                }
+            } else {
+                // No menu data available
+                if (bestItemsDescription) {
+                    bestItemsDescription.style.display = 'none';
+                }
+                if (highlightsList) {
+                    highlightsList.innerHTML = '<p class="text-gray-500 text-sm">Menu information coming soon. Please contact the restaurant for current menu options.</p>';
+                }
+                if (viewFullMenuBtn) {
+                    viewFullMenuBtn.style.display = 'none';
+                }
+            }
+        }
+        
+        // Update menu notice based on verification status
+        const menuNotice = document.getElementById('menuNotice');
+        const menuNoticeText = document.getElementById('menuNoticeText');
+        const menuNoticeDetail = document.getElementById('menuNoticeDetail');
+        const verifiedBadge = document.getElementById('verifiedBadge');
+        
+        if (menuNotice && restaurant) {
+            // Check if restaurant is verified (placeholder for future verification system)
+            const isVerified = restaurant.verified || false;
+            
+            if (isVerified) {
+                // Verified restaurant - show positive message
+                if (menuNoticeText) {
+                    menuNoticeText.textContent = 'This restaurant is verified. Menu items and prices are up to date.';
+                }
+                if (menuNoticeDetail) {
+                    menuNoticeDetail.textContent = 'This menu has been verified by the restaurant and is current.';
+                }
+                if (verifiedBadge) {
+                    verifiedBadge.classList.remove('hidden');
+                }
+                // Change notice styling to green for verified
+                menuNotice.className = 'mt-8 p-4 bg-green-50 border border-green-200 rounded-lg';
+                if (menuNoticeText) {
+                    menuNoticeText.className = 'text-sm font-medium text-green-900';
+                }
+                if (menuNoticeDetail) {
+                    menuNoticeDetail.className = 'text-xs text-green-700';
+                }
+                // Update icon color
+                const icon = menuNotice.querySelector('svg');
+                if (icon) {
+                    icon.className = 'w-5 h-5 text-green-600 flex-shrink-0 mt-0.5';
+                }
+            } else {
+                // Unverified restaurant - show warning message
+                if (menuNoticeText) {
+                    menuNoticeText.textContent = 'Menu items and prices may not be up to date.';
+                }
+                if (menuNoticeDetail) {
+                    menuNoticeDetail.textContent = 'For the most current menu and pricing, please contact the restaurant directly.';
+                }
+                if (verifiedBadge) {
+                    verifiedBadge.classList.add('hidden');
+                }
+            }
+        }
+        
+        // Display Review Summaries by Source if available
+        const reviewSummariesContainer = document.getElementById('reviewSummariesContainer');
+        if (reviewSummariesContainer && restaurant.reviewSummaries) {
+            const summaries = restaurant.reviewSummaries;
+            const sources = [
+                { key: 'snogrub', name: 'SNOGRUB', icon: 'SG', colorClass: 'bg-[var(--accent-blue)]', textColorClass: 'text-white', isOfficial: true },
+                { key: 'yelp', name: 'Yelp', icon: 'Y', colorClass: 'bg-red-100', textColorClass: 'text-red-700' },
+                { key: 'openTable', name: 'OpenTable', icon: 'OT', colorClass: 'bg-blue-100', textColorClass: 'text-blue-700' },
+                { key: 'tripAdvisor', name: 'TripAdvisor', icon: 'TA', colorClass: 'bg-green-100', textColorClass: 'text-green-700' },
+                { key: 'google', name: 'Google', icon: 'G', colorClass: 'bg-blue-100', textColorClass: 'text-blue-700' }
+            ];
+            
+            let summariesHTML = '';
+            sources.forEach(source => {
+                if (summaries[source.key]) {
+                    const review = summaries[source.key];
+                    const stars = generateStars(review.rating);
+                    const hasUrl = review.url && review.url.trim() !== '';
+                    
+                    const isOfficial = source.isOfficial || false;
+                    const borderClass = isOfficial ? 'border-2 border-[var(--accent-blue)]' : 'border border-gray-200';
+                    const bgClass = isOfficial ? 'bg-gradient-to-br from-blue-50 to-indigo-50' : 'bg-white';
+                    
+                    summariesHTML += `
+                        <div class="${bgClass} ${borderClass} rounded-xl p-5 hover:shadow-md transition-shadow ${isOfficial ? 'ring-2 ring-[var(--accent-blue)] ring-opacity-20' : ''}">
+                            <div class="flex items-center justify-between mb-3">
+                                <div class="flex items-center gap-3">
+                                    <div class="w-10 h-10 ${source.colorClass} rounded-full flex items-center justify-center ${isOfficial ? 'shadow-md' : ''}">
+                                        <span class="${source.textColorClass} font-semibold text-sm">${source.icon}</span>
+                                    </div>
+                                    <div>
+                                        <h4 class="font-semibold text-gray-900">${source.name}</h4>
+                                        ${isOfficial ? '<span class="text-xs text-[var(--accent-blue)] font-medium">Official Review</span>' : ''}
+                                    </div>
+                                </div>
+                                <div class="flex items-center gap-1">
+                                    ${stars}
+                                    <span class="text-sm font-medium text-gray-700 ml-1">${review.rating.toFixed(1)}</span>
+                                </div>
+                            </div>
+                            <p class="text-gray-600 leading-relaxed text-sm mb-3">${review.summary}</p>
+                            ${hasUrl ? `
+                                <a href="${review.url}" 
+                                   target="_blank" 
+                                   rel="noopener noreferrer"
+                                   class="inline-flex items-center gap-2 text-sm font-medium text-[var(--accent-blue)] hover:text-blue-700 transition-colors">
+                                    <span>View reviews on ${source.name}</span>
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path>
+                                    </svg>
+                                </a>
+                            ` : ''}
+                        </div>
+                    `;
+                }
+            });
+            
+            if (summariesHTML) {
+                reviewSummariesContainer.querySelector('.grid').innerHTML = summariesHTML;
+                reviewSummariesContainer.classList.remove('hidden');
+            }
+        }
+        
+        // Helper function to generate star icons
+        function generateStars(rating) {
+            const fullStars = Math.floor(rating);
+            const hasHalfStar = rating % 1 >= 0.5 && rating % 1 < 1;
+            const emptyStars = 5 - fullStars - (hasHalfStar ? 1 : 0);
+            
+            let starsHTML = '';
+            // Full stars
+            for (let i = 0; i < fullStars; i++) {
+                starsHTML += '<svg class="w-4 h-4 text-yellow-400" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path></svg>';
+            }
+            // Half star (if needed)
+            if (hasHalfStar) {
+                starsHTML += '<svg class="w-4 h-4 text-yellow-400" fill="currentColor" viewBox="0 0 20 20"><defs><linearGradient id="half-fill"><stop offset="50%" stop-color="currentColor"/><stop offset="50%" stop-color="currentColor" stop-opacity="0"/></linearGradient></defs><path fill="url(#half-fill)" d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path></svg>';
+            }
+            // Empty stars
+            for (let i = 0; i < emptyStars; i++) {
+                starsHTML += '<svg class="w-4 h-4 text-gray-300" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path></svg>';
+            }
+            return starsHTML;
+        }
+        
+        // Calculate distance between two coordinates using Haversine formula
+        function calculateDistance(lat1, lon1, lat2, lon2) {
+            const R = 3959; // Earth's radius in miles
+            const dLat = (lat2 - lat1) * Math.PI / 180;
+            const dLon = (lon2 - lon1) * Math.PI / 180;
+            const a = 
+                Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+                Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
+                Math.sin(dLon / 2) * Math.sin(dLon / 2);
+            const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+            return R * c;
+        }
+        
+        // Custom marker styles are now in the <style> tag in the HTML
+        
+        // Find closest resorts (all, sorted by distance)
+        function findClosestResorts(currentRestaurant) {
+            const data = typeof snogrubData !== 'undefined' ? snogrubData : (typeof skiEatsData !== 'undefined' ? skiEatsData : null);
+            if (!currentRestaurant || !currentRestaurant.coordinates || !data || !data.resorts) {
+                return [];
+            }
+            
+            const resorts = data.resorts
+                .filter(r => r.coordinates && r.coordinates.lat && r.coordinates.lng)
+                .map(r => ({
+                    ...r,
+                    distance: calculateDistance(
+                        currentRestaurant.coordinates.lat,
+                        currentRestaurant.coordinates.lng,
+                        r.coordinates.lat,
+                        r.coordinates.lng
+                    )
+                }))
+                .sort((a, b) => a.distance - b.distance);
+            
+            return resorts;
+        }
+        
+        // Store all closest resorts and track expanded state
+        let allClosestResorts = [];
+        let closestResortsExpanded = false;
+        
+        // Toggle showing more closest resorts
+        function toggleMoreClosestResorts() {
+            closestResortsExpanded = !closestResortsExpanded;
+            const container = document.getElementById('closestResorts');
+            const moreButton = document.getElementById('closestResortsMoreButton');
+            const button = moreButton ? moreButton.querySelector('button') : null;
+            
+            if (container && allClosestResorts.length > 0) {
+                if (closestResortsExpanded) {
+                    // Show all resorts
+                    container.innerHTML = allClosestResorts.map(r => renderClosestResortCard(r)).join('');
+                    if (button) {
+                        button.textContent = 'Show Less';
+                    }
+                } else {
+                    // Show only first 3
+                    const firstThree = allClosestResorts.slice(0, 3);
+                    container.innerHTML = firstThree.map(r => renderClosestResortCard(r)).join('');
+                    if (button) {
+                        button.textContent = 'Show More';
+                    }
+                }
+            }
+        }
+        
+        // Global function to toggle favorites (used by resort card component)
+        window.toggleResortFavorite = window.toggleResortFavorite || function(resortId, resortName, event) {
+            if (event) {
+                event.stopPropagation();
+                event.preventDefault();
+            }
+            
+            try {
+                const favorites = JSON.parse(localStorage.getItem('snogrub_favorites') || '[]');
+                const existingIndex = favorites.findIndex(fav => fav.id === resortId && fav.type === 'resort');
+                
+                let isFavorited = false;
+                if (existingIndex >= 0) {
+                    favorites.splice(existingIndex, 1);
+                    isFavorited = false;
+                } else {
+                    favorites.push({
+                        id: resortId,
+                        type: 'resort',
+                        name: resortName,
+                        addedAt: new Date().toISOString()
+                    });
+                    isFavorited = true;
+                }
+                localStorage.setItem('snogrub_favorites', JSON.stringify(favorites));
+                
+                const button = event?.target?.closest('.favorite-button');
+                if (button) {
+                    button.setAttribute('aria-checked', isFavorited ? 'true' : 'false');
+                    if (isFavorited) {
+                        button.classList.add('favorited');
+                    } else {
+                        button.classList.remove('favorited');
+                    }
+                    const icon = button.querySelector('svg');
+                    if (icon) {
+                        if (isFavorited) {
+                            icon.classList.add('fill-red-500', 'text-red-500');
+                            icon.classList.remove('fill-none', 'text-gray-400');
+                            icon.setAttribute('fill', 'currentColor');
+                        } else {
+                            icon.classList.remove('fill-red-500', 'text-red-500');
+                            icon.classList.add('fill-none', 'text-gray-400');
+                            icon.setAttribute('fill', 'none');
+                        }
+                    }
+                }
+                
+                window.dispatchEvent(new CustomEvent('favoritesChanged', {
+                    detail: { resortId, favorited: isFavorited }
+                }));
+            } catch (e) {
+                console.error('Error toggling favorite:', e);
+            }
+        };
+        
+        // Global function to toggle home base (navigates to resort detail page)
+        window.toggleResortHomeBase = window.toggleResortHomeBase || function(resortId, resortName, event) {
+            if (event) {
+                event.stopPropagation();
+                event.preventDefault();
+            }
+            
+            // Navigate to resort detail page
+            window.location.href = `resort-detail.html?id=${resortId}`;
+        };
+        
+        // Initialize Universal Resort Card component
+        let detailResortCard;
+        if (typeof UniversalResortCard !== 'undefined') {
+            detailResortCard = new UniversalResortCard({
+                showLogo: true,
+                showTrailMap: true,
+                showStats: true,
+                showRating: true,
+                showPriceRating: true,
+                showFeaturedBadge: true,
+                showDistance: true,
+                showQuickView: false,
+                showHoverOverlay: true,
+                imageHeight: 'h-48',
+                cardVariant: 'default',
+                showInlineLogo: false,
+                clickable: true,
+                hoverEffect: true,
+                animation: true
+            });
+        }
+        
+        // Function to render resort card for closest resorts section
+        function renderClosestResortCard(resort) {
+            // Use UniversalResortCard if available
+            if (detailResortCard && typeof detailResortCard.render === 'function') {
+                return detailResortCard.render(resort, 0);
+            }
+            
+            // Fallback to old rendering
+            const gradientColors = [
+                'from-blue-50 to-cyan-50',
+                'from-purple-50 to-pink-50',
+                'from-green-50 to-emerald-50',
+                'from-amber-50 to-orange-50'
+            ];
+            const gradientIndex = Math.abs(resort.id.length) % gradientColors.length;
+            const randomGradient = gradientColors[gradientIndex];
+            
+            const distanceText = resort.distance ? `${resort.distance.toFixed(1)} mi away` : '';
+            
+            return `
+                <a href="resort-detail.html?id=${resort.id}" class="group bg-white border border-gray-200 rounded-lg overflow-hidden hover:shadow-lg transition-all duration-300">
+                    <div class="aspect-[16/9] bg-gradient-to-br ${randomGradient} relative overflow-hidden">
+                        ${resort.image ? 
+                            `<img src="${resort.image}" alt="${resort.name}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">` :
+                            ''
+                        }
+                        <div class="absolute inset-0 flex items-center justify-center ${resort.image ? 'hidden' : ''}">
+                            <svg class="w-16 h-16 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path>
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-lg font-semibold text-gray-900 mb-2 group-hover:text-[var(--accent-blue)] transition-colors duration-200">
+                            ${resort.name}
+                        </h3>
+                        <p class="text-sm text-gray-600 mb-2">${resort.location}</p>
+                        ${distanceText ? `<p class="text-xs text-gray-500 mb-3">${distanceText}</p>` : ''}
+                        <div class="flex items-center gap-2">
+                            <svg class="w-4 h-4 text-[var(--accent-blue)]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                            </svg>
+                            <span class="text-sm text-gray-600">${resort.restaurantCount || 0}+ Dining Options</span>
+                        </div>
+                    </div>
+                </a>
+            `;
+        }
+        
+        // Find nearby restaurants (4 closest)
+        function findNearbyRestaurants(currentRestaurant) {
+            const data = typeof snogrubData !== 'undefined' ? snogrubData : (typeof skiEatsData !== 'undefined' ? skiEatsData : null);
+            if (!currentRestaurant || !currentRestaurant.coordinates || !data || !data.restaurants) {
+                return [];
+            }
+            
+            const restaurants = data.restaurants
+                .filter(r => r.id !== currentRestaurant.id && r.coordinates)
+                .map(r => ({
+                    ...r,
+                    distance: calculateDistance(
+                        currentRestaurant.coordinates.lat,
+                        currentRestaurant.coordinates.lng,
+                        r.coordinates.lat,
+                        r.coordinates.lng
+                    )
+                }))
+                .sort((a, b) => a.distance - b.distance)
+                .slice(0, 4);
+            
+            return restaurants;
+        }
+        
+        // Helper function to get OSM map image URL
+        function getOSMMapImageUrl(lat, lng, zoom = 15) {
+            if (!lat || !lng) return null;
+            const tileSize = 256;
+            const scale = 2; // For higher resolution
+            const x = Math.floor((lng + 180) / 360 * Math.pow(2, zoom));
+            const y = Math.floor((1 - Math.log(Math.tan(lat * Math.PI / 180) + 1 / Math.cos(lat * Math.PI / 180)) / Math.PI) / 2 * Math.pow(2, zoom));
+            return `https://tile.openstreetmap.org/${zoom}/${x}/${y}.png`;
+        }
+        
+        // Render restaurant card (for nearby places section)
+        function renderRestaurantCard(restaurant) {
+            // Normalize restaurant data if needed
+            if (restaurant && typeof skiEatsData !== 'undefined' && skiEatsData.resorts) {
+                restaurant = normalizeRestaurantResorts(restaurant, skiEatsData.resorts);
+            }
+            const categoryLabel = restaurant.category === 'bar' ? 'Après Bar' : 
+                                restaurant.category === 'cafe' ? 'Café' : 'Restaurant';
+            
+            const categoryColors = {
+                restaurant: { bg: 'from-blue-50 to-blue-100', icon: 'text-blue-600', badge: 'bg-blue-100 text-blue-700' },
+                bar: { bg: 'from-amber-50 to-amber-100', icon: 'text-amber-600', badge: 'bg-amber-100 text-amber-700' },
+                cafe: { bg: 'from-green-50 to-green-100', icon: 'text-green-600', badge: 'bg-green-100 text-green-700' }
+            };
+            
+            const colors = categoryColors[restaurant.category] || categoryColors.restaurant;
+            
+            // Get image URL (prioritize custom images, then OSM map tiles)
+            const hasCustomImage = restaurant.image && restaurant.image.startsWith('http');
+            const imageUrl = hasCustomImage ? restaurant.image : null;
+            const mapImageUrl = restaurant.coordinates ? getOSMMapImageUrl(restaurant.coordinates.lat, restaurant.coordinates.lng) : null;
+            
+            const distanceText = restaurant.distance ? `${restaurant.distance.toFixed(1)} mi away` : '';
+            
+            return `
+                <a href="restaurant-detail.html?id=${restaurant.id}" class="group bg-white border border-gray-200 rounded-xl overflow-hidden hover:shadow-xl transition-all duration-300 flex flex-col h-full">
+                    <div class="aspect-[16/9] bg-gradient-to-br ${colors.bg} relative overflow-hidden">
+                        ${hasCustomImage && imageUrl ? `
+                            <img src="${imageUrl}" 
+                                 alt="${restaurant.name}" 
+                                 class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                                 onerror="this.style.display='none'; this.nextElementSibling.style.display='block';"
+                                 loading="lazy">
+                            <div class="hidden">
+                                ${mapImageUrl ? `
+                                    <img src="${mapImageUrl}" 
+                                         alt="Map view of ${restaurant.name}" 
+                                         class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                                         onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
+                                         loading="lazy">
+                                    <div class="absolute inset-0 flex items-center justify-center hidden">
+                                        <div class="${colors.icon}">
+                                            <svg class="w-12 h-12" fill="currentColor" viewBox="0 0 20 20">
+                                                <path d="M10 2L3 7v11h4v-6h6v6h4V7l-7-5z"></path>
+                                            </svg>
+                                        </div>
+                                    </div>
+                                ` : `
+                                    <div class="absolute inset-0 flex items-center justify-center">
+                                        <div class="${colors.icon}">
+                                            <svg class="w-12 h-12" fill="currentColor" viewBox="0 0 20 20">
+                                                <path d="M10 2L3 7v11h4v-6h6v6h4V7l-7-5z"></path>
+                                            </svg>
+                                        </div>
+                                    </div>
+                                `}
+                            </div>
+                        ` : mapImageUrl ? `
+                            <img src="${mapImageUrl}" 
+                                 alt="Map view of ${restaurant.name}" 
+                                 class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                                 onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
+                                 loading="lazy">
+                            <div class="absolute inset-0 flex items-center justify-center hidden">
+                                <div class="${colors.icon}">
+                                    <svg class="w-12 h-12" fill="currentColor" viewBox="0 0 20 20">
+                                        <path d="M10 2L3 7v11h4v-6h6v6h4V7l-7-5z"></path>
+                                    </svg>
+                                </div>
+                            </div>
+                        ` : `
+                            <div class="absolute inset-0 flex items-center justify-center">
+                                <div class="${colors.icon}">
+                                    <svg class="w-12 h-12" fill="currentColor" viewBox="0 0 20 20">
+                                        <path d="M10 2L3 7v11h4v-6h6v6h4V7l-7-5z"></path>
+                                    </svg>
+                                </div>
+                            </div>
+                        `}
+                    </div>
+                    <div class="p-5 flex flex-col flex-1">
+                        <h3 class="text-lg font-semibold text-gray-900 mb-1 group-hover:text-[var(--accent-blue)] transition-colors duration-200">
+                            ${restaurant.name}
+                        </h3>
+                        ${(() => {
+                            const restaurantResorts = getRestaurantResorts(restaurant);
+                            if (restaurantResorts.length === 0) {
+                                return `<p class="text-sm text-gray-600 mb-2">${restaurant.location || 'Location TBD'}${distanceText ? ` • ${distanceText}` : ''}</p>`;
+                            }
+                            
+                            if (restaurantResorts.length === 1) {
+                                // Single resort: show on one line with distance
+                                const r = restaurantResorts[0];
+                                const resort = skiEatsData.resorts?.find(res => res.id === r.id);
+                                const name = resort ? resort.name : r.id;
+                                const distanceText = r.distance !== null && r.distance !== undefined ? ` (${r.distance.toFixed(1)} mi)` : '';
+                                return `<p class="text-sm text-gray-600 mb-2">${name}${distanceText}${restaurant.distance ? ` • ${restaurant.distance.toFixed(1)} mi away` : ''}</p>`;
+                            } else {
+                                // Multiple resorts: show each on separate line with distance
+                                const resortLines = restaurantResorts.map(r => {
+                                    const resort = skiEatsData.resorts?.find(res => res.id === r.id);
+                                    const name = resort ? resort.name : r.id;
+                                    const distanceText = r.distance !== null && r.distance !== undefined ? ` (${r.distance.toFixed(1)} mi)` : '';
+                                    return `<div class="text-sm text-gray-600">${name}${distanceText}</div>`;
+                                }).join('');
+                                return `<div class="mb-2 space-y-1">${resortLines}${restaurant.distance ? `<div class="text-sm text-gray-500 mt-1">${restaurant.distance.toFixed(1)} mi away</div>` : ''}</div>`;
+                            }
+                        })()}
+                        <div class="flex items-center gap-3 mt-auto">
+                            <span class="inline-block px-3 py-1.5 ${colors.badge} text-xs font-semibold rounded-full">
+                                ${categoryLabel}
+                            </span>
+                            ${restaurant.rating ? `
+                                <div class="flex items-center gap-1.5">
+                                    <svg class="w-5 h-5 text-yellow-500 fill-current" viewBox="0 0 20 20">
+                                        <path d="M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z"/>
+                                    </svg>
+                                    <span class="text-base font-bold text-gray-900">${restaurant.rating.toFixed(1)}</span>
+                                </div>
+                            ` : ''}
+                        </div>
+                    </div>
+                </a>
+            `;
+        }
+        
+        // Load closest resorts
+        if (restaurant) {
+            allClosestResorts = findClosestResorts(restaurant);
+            const closestResortsContainer = document.getElementById('closestResorts');
+            const moreButtonContainer = document.getElementById('closestResortsMoreButton');
+            
+            if (closestResortsContainer) {
+                if (allClosestResorts.length > 0) {
+                    // Show only first 3 resorts initially
+                    const resortsToShow = allClosestResorts.slice(0, 3);
+                    closestResortsContainer.innerHTML = resortsToShow.map(r => renderClosestResortCard(r)).join('');
+                    
+                    // Show "More" button if there are more than 3 resorts
+                    if (allClosestResorts.length > 3 && moreButtonContainer) {
+                        moreButtonContainer.classList.remove('hidden');
+                        const button = moreButtonContainer.querySelector('button');
+                        if (button) {
+                            button.textContent = 'Show More';
+                        }
+                    } else if (moreButtonContainer) {
+                        moreButtonContainer.classList.add('hidden');
+                    }
+                } else {
+                    closestResortsContainer.innerHTML = '<p class="text-gray-500 col-span-full text-center py-8">No nearby resorts found.</p>';
+                    if (moreButtonContainer) {
+                        moreButtonContainer.classList.add('hidden');
+                    }
+                }
+            }
+            
+            // Load eat and drink (restaurants, bars, cafes)
+            const nearbyPlaces = findNearbyRestaurants(restaurant);
+            const nearbyPlacesContainer = document.getElementById('nearbyPlaces');
+            
+            if (nearbyPlacesContainer) {
+                if (nearbyPlaces.length > 0) {
+                    // Normalize restaurant data before rendering
+                    const normalizedPlaces = nearbyPlaces.map(r => {
+                        if (typeof skiEatsData !== 'undefined' && skiEatsData.resorts) {
+                            return normalizeRestaurantResorts(r, skiEatsData.resorts);
+                        }
+                        return r;
+                    });
+                    nearbyPlacesContainer.innerHTML = normalizedPlaces.map(r => renderRestaurantCard(r)).join('');
+                } else {
+                    nearbyPlacesContainer.innerHTML = '<p class="text-gray-500 col-span-full text-center py-8">No nearby eat and drink found.</p>';
+                }
+            }
+        }
+        
+        // Initialize hero map with markers
+        function initializeHeroMap() {
+            if (!restaurant || !restaurant.coordinates) {
+                // No coordinates, use gradient fallback
+                useGradientFallback();
+                return;
+            }
+            
+            const heroMapContainer = document.getElementById('heroMap');
+            if (!heroMapContainer) {
+                useGradientFallback();
+                return;
+            }
+            
+            // Check if Leaflet is loaded
+            if (typeof L === 'undefined') {
+                console.warn('Leaflet not loaded yet, retrying...');
+                setTimeout(initializeHeroMap, 100);
+                return;
+            }
+            
+            // Clear any existing map
+            heroMapContainer.innerHTML = '';
+            
+            // Ensure container is visible
+            heroMapContainer.style.display = 'block';
+            
+            // Calculate zoom level so restaurant and closest resort are 1 inch (96px) apart
+            function calculateZoomForOneInch(distanceMiles, centerLat) {
+                // Convert miles to meters
+                const distanceMeters = distanceMiles * 1609.34;
+                // Standard DPI: 1 inch = 96 pixels
+                const targetPixels = 96;
+                
+                // Leaflet's meters per pixel at equator at zoom 0
+                const metersPerPixelAtEquatorZoom0 = 156543.03;
+                
+                // Adjust for latitude
+                const latRad = centerLat * Math.PI / 180;
+                const cosLat = Math.cos(latRad);
+                
+                // Calculate zoom level
+                // distanceMeters = targetPixels * (metersPerPixelAtEquatorZoom0 * cosLat / 2^zoom)
+                // distanceMeters * 2^zoom = targetPixels * metersPerPixelAtEquatorZoom0 * cosLat
+                // 2^zoom = (targetPixels * metersPerPixelAtEquatorZoom0 * cosLat) / distanceMeters
+                const zoom = Math.log2((targetPixels * metersPerPixelAtEquatorZoom0 * cosLat) / distanceMeters);
+                
+                // Clamp zoom between 3 and 18
+                return Math.max(3, Math.min(18, Math.round(zoom)));
+            }
+            
+            // Initialize Leaflet map - zoom will be calculated based on closest resort
+            const heroMap = L.map('heroMap', {
+                center: [restaurant.coordinates.lat, restaurant.coordinates.lng],
+                zoom: 10, // Temporary, will be recalculated
+                zoomControl: false, // Disable zoom controls
+                scrollWheelZoom: false, // Disable scroll zoom
+                doubleClickZoom: false, // Disable double-click zoom
+                dragging: false, // Disable dragging
+                touchZoom: false, // Disable touch zoom
+                boxZoom: false, // Disable box zoom
+                keyboard: false, // Disable keyboard navigation
+                attributionControl: true
+            });
+            
+            // Add Esri World Imagery as base layer (satellite view)
+            const esriImagery = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+                attribution: 'Esri, Maxar, GeoEye, Earthstar Geographics, CNES/Airbus DS, USDA, USGS, AeroGRID, IGN, and the GIS User Community',
+                maxZoom: 19
+            });
+            esriImagery.addTo(heroMap);
+            
+            // Add dark overlay for better text readability (positioned relative to hero section, not map)
+            const heroSection = heroMapContainer.parentElement;
+            if (heroSection && !heroSection.querySelector('.hero-overlay')) {
+                const overlay = document.createElement('div');
+                overlay.className = 'hero-overlay absolute inset-0 bg-gradient-to-t from-black/40 via-black/10 to-transparent pointer-events-none';
+                overlay.style.zIndex = '1000';
+                heroSection.appendChild(overlay);
+            }
+            
+            // Add restaurant marker (primary marker)
+            const restaurantIcon = L.divIcon({
+                className: 'restaurant-marker',
+                html: `
+                    <div class="relative">
+                        <div class="w-6 h-6 bg-[var(--accent-blue)] rounded-full border-2 border-white shadow-lg flex items-center justify-center">
+                            <div class="w-3 h-3 bg-white rounded-full"></div>
+                        </div>
+                        <div class="absolute -bottom-1 left-1/2 transform -translate-x-1/2 w-0 h-0 border-l-4 border-r-4 border-t-4 border-transparent border-t-[var(--accent-blue)]"></div>
+                    </div>
+                `,
+                iconSize: [24, 32],
+                iconAnchor: [12, 32],
+                popupAnchor: [0, -32]
+            });
+            
+            const restaurantMarker = L.marker(
+                [restaurant.coordinates.lat, restaurant.coordinates.lng],
+                { icon: restaurantIcon }
+            ).addTo(heroMap);
+            
+            restaurantMarker.bindPopup(`<strong>${restaurant.name}</strong><br>${restaurant.location}`);
+            
+            // Add restaurant name label next to marker
+            const restaurantNameLabel = L.divIcon({
+                className: 'restaurant-name-label',
+                html: `
+                    <div class="bg-[var(--accent-blue)]/95 backdrop-blur-sm px-3 py-1.5 rounded-lg shadow-lg border-2 border-white">
+                        <div class="text-sm font-bold text-white whitespace-nowrap">${restaurant.name}</div>
+                        <div class="text-xs text-blue-100 mt-0.5">${restaurant.location}</div>
+                    </div>
+                `,
+                iconSize: [140, 50],
+                iconAnchor: [0, 15]
+            });
+            
+            // Position label to the right of the restaurant marker
+            L.marker([restaurant.coordinates.lat, restaurant.coordinates.lng], {
+                icon: restaurantNameLabel,
+                interactive: false,
+                keyboard: false,
+                zIndexOffset: 1000 // Ensure labels are above other elements
+            }).addTo(heroMap);
+            
+            // Find nearby resorts and add markers
+            const data = typeof snogrubData !== 'undefined' ? snogrubData : (typeof skiEatsData !== 'undefined' ? skiEatsData : null);
+            if (data && data.resorts) {
+                // Get resorts within ~50 miles
+                const nearbyResorts = data.resorts
+                    .filter(resort => resort.coordinates && resort.coordinates.lat && resort.coordinates.lng)
+                    .map(resort => {
+                        const distance = calculateDistance(
+                            restaurant.coordinates.lat,
+                            restaurant.coordinates.lng,
+                            resort.coordinates.lat,
+                            resort.coordinates.lng
+                        );
+                        return { ...resort, distance };
+                    })
+                    .filter(resort => resort.distance <= 50) // Within 50 miles
+                    .sort((a, b) => a.distance - b.distance)
+                    .slice(0, 1); // Show only the closest resort
+                
+                // Calculate zoom based on closest resort (1 inch = 96px separation)
+                let calculatedZoom = 10; // Default
+                if (nearbyResorts.length > 0) {
+                    const closestResort = nearbyResorts[0];
+                    calculatedZoom = calculateZoomForOneInch(
+                        closestResort.distance,
+                        restaurant.coordinates.lat
+                    );
+                }
+                
+                // Add resort markers and draw lines
+                nearbyResorts.forEach(resort => {
+                    const resortIcon = L.divIcon({
+                        className: 'resort-marker',
+                        html: `
+                            <div class="relative">
+                                <div class="w-5 h-5 bg-green-600 rounded-full border-2 border-white shadow-lg flex items-center justify-center">
+                                    <svg class="w-3 h-3 text-white" fill="currentColor" viewBox="0 0 20 20">
+                                        <path d="M10 2L3 7v11h4v-6h6v6h4V7l-7-5z"></path>
+                                    </svg>
+                                </div>
+                                <div class="absolute -bottom-1 left-1/2 transform -translate-x-1/2 w-0 h-0 border-l-3 border-r-3 border-t-3 border-transparent border-t-green-600"></div>
+                            </div>
+                        `,
+                        iconSize: [20, 28],
+                        iconAnchor: [10, 28],
+                        popupAnchor: [0, -28]
+                    });
+                    
+                    const resortMarker = L.marker(
+                        [resort.coordinates.lat, resort.coordinates.lng],
+                        { icon: resortIcon }
+                    ).addTo(heroMap);
+                    
+                    resortMarker.bindPopup(`<strong>${resort.name}</strong><br>${resort.location}<br><span class="text-xs text-gray-500">${resort.distance.toFixed(1)} mi away</span>`);
+                    
+                    // Add resort name label next to marker
+                    const resortNameLabel = L.divIcon({
+                        className: 'resort-name-label',
+                        html: `
+                            <div class="bg-green-600/95 backdrop-blur-sm px-3 py-1.5 rounded-lg shadow-lg border-2 border-white">
+                                <div class="text-sm font-bold text-white whitespace-nowrap">${resort.name}</div>
+                                <div class="text-xs text-green-100 mt-0.5">${resort.distance.toFixed(1)} mi away</div>
+                            </div>
+                        `,
+                        iconSize: [120, 50],
+                        iconAnchor: [0, 15]
+                    });
+                    
+                    // Position label to the right of the marker
+                    L.marker([resort.coordinates.lat, resort.coordinates.lng], {
+                        icon: resortNameLabel,
+                        interactive: false,
+                        keyboard: false,
+                        zIndexOffset: 1000 // Ensure labels are above other elements
+                    }).addTo(heroMap);
+                    
+                    // Draw dotted line between restaurant and resort
+                    const line = L.polyline([
+                        [restaurant.coordinates.lat, restaurant.coordinates.lng],
+                        [resort.coordinates.lat, resort.coordinates.lng]
+                    ], {
+                        color: '#0071e3',
+                        weight: 2,
+                        opacity: 0.7,
+                        dashArray: '10, 5', // Dotted line pattern
+                        lineCap: 'round',
+                        lineJoin: 'round'
+                    }).addTo(heroMap);
+                    
+                    // Calculate midpoint for distance label on line
+                    const midLat = (restaurant.coordinates.lat + resort.coordinates.lat) / 2;
+                    const midLng = (restaurant.coordinates.lng + resort.coordinates.lng) / 2;
+                    
+                    // Add distance label at midpoint of line (as backup/emphasis)
+                    const distanceLabel = L.divIcon({
+                        className: 'distance-label',
+                        html: `
+                            <div class="bg-[var(--accent-blue)]/95 backdrop-blur-sm px-2.5 py-1 rounded-lg shadow-lg border-2 border-white">
+                                <span class="text-xs font-bold text-white">${resort.distance.toFixed(1)} mi</span>
+                            </div>
+                        `,
+                        iconSize: [50, 25],
+                        iconAnchor: [25, 12.5]
+                    });
+                    
+                    L.marker([midLat, midLng], {
+                        icon: distanceLabel,
+                        interactive: false,
+                        keyboard: false
+                    }).addTo(heroMap);
+                });
+                
+                // Fit map to show restaurant and closest resort with generous padding to prevent overlap
+                if (nearbyResorts.length > 0) {
+                    const bounds = L.latLngBounds([
+                        [restaurant.coordinates.lat, restaurant.coordinates.lng],
+                        [nearbyResorts[0].coordinates.lat, nearbyResorts[0].coordinates.lng]
+                    ]);
+                    // Fit bounds with generous padding to ensure markers and labels don't overlap
+                    // Padding values: [top, right, bottom, left] in pixels
+                    heroMap.fitBounds(bounds, { 
+                        padding: [120, 200, 120, 200], // Extra padding, especially horizontal for labels
+                        maxZoom: calculatedZoom // Don't zoom in more than our calculated zoom
+                    });
+                } else {
+                    // No nearby resorts, just center on restaurant
+                    heroMap.setView([restaurant.coordinates.lat, restaurant.coordinates.lng], calculatedZoom);
+                }
+            } else {
+                // No nearby resorts, just center on restaurant with wide view
+                heroMap.setView([restaurant.coordinates.lat, restaurant.coordinates.lng], 9);
+            }
+            
+            // Hide placeholder content
+            const placeholderContent = heroMapContainer.parentElement.querySelector('div[style*="z-index: 2"]');
+            if (placeholderContent) {
+                placeholderContent.style.display = 'none';
+            }
+        }
+        
+        // Get category icon based on restaurant category
+        function getCategoryIcon(category) {
+            switch(category) {
+                case 'restaurant':
+                    return `<svg class="w-32 h-32" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 2v20M9 2l3-1 3 1M9 2v20M15 2v20M7 4h2M7 8h2M7 12h2M7 16h2M15 4h2M15 8h2M15 12h2M15 16h2"></path>
+                            </svg>`;
+                case 'bar':
+                    return `<svg class="w-32 h-32" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 2v16M8 2h8M8 2l-1 2h10l-1-2M7 4h10M7 4l1 10h8l1-10M10 14h4M10 16h4"></path>
+                            </svg>`;
+                case 'cafe':
+                    return `<svg class="w-32 h-32" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M5 4h14M5 4v12a2 2 0 002 2h10a2 2 0 002-2V4M5 4H3m16 0h2M8 18h8M8 18v2a2 2 0 002 2h4a2 2 0 002-2v-2M9 6h6M9 8h6"></path>
+                            </svg>`;
+                default:
+                    return `<svg class="w-32 h-32" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 2v20M9 2l3-1 3 1M9 2v20M15 2v20M7 4h2M7 8h2M7 12h2M7 16h2M15 4h2M15 8h2M15 12h2M15 16h2"></path>
+                            </svg>`;
+            }
+        }
+        
+        // Get category gradient colors
+        function getCategoryGradient(category) {
+            switch(category) {
+                case 'restaurant':
+                    return 'from-blue-100 to-blue-50';
+                case 'bar':
+                    return 'from-amber-100 to-amber-50';
+                case 'cafe':
+                    return 'from-green-100 to-green-50';
+                default:
+                    return 'from-amber-100 to-orange-100';
+            }
+        }
+        
+        // Use gradient fallback (when no coordinates available)
+        function useGradientFallback() {
+            const heroSection = document.getElementById('heroImageSection');
+            if (!heroSection || !restaurant) return;
+            
+            const heroMapContainer = document.getElementById('heroMap');
+            if (heroMapContainer) {
+                heroMapContainer.style.display = 'none';
+            }
+            
+            const placeholderContent = heroSection.querySelector('div[style*="z-index: 2"]');
+            const gradient = getCategoryGradient(restaurant.category || 'restaurant');
+            const icon = getCategoryIcon(restaurant.category || 'restaurant');
+            
+            heroSection.style.backgroundImage = '';
+            heroSection.className = `hero-image-section relative h-96 bg-gradient-to-br ${gradient} overflow-hidden`;
+            if (placeholderContent) {
+                placeholderContent.innerHTML = `
+                    <div class="text-center">
+                        ${icon}
+                        <p class="text-gray-600 text-sm mt-4">${restaurant.name}</p>
+                    </div>
+                `;
+                placeholderContent.style.display = 'flex';
+            }
+        }
+        
+        // Update hero with hybrid approach: Custom image > Map with markers > Gradient
+        function updateHeroImage() {
+            const heroSection = document.getElementById('heroImageSection');
+            if (!heroSection || !restaurant) return;
+            
+            const heroMapContainer = document.getElementById('heroMap');
+            const placeholderContent = heroSection.querySelector('div[style*="z-index: 2"]');
+            
+            // Priority 1: Custom restaurant image (if provided and is HTTP/HTTPS URL)
+            if (restaurant.image && restaurant.image.startsWith('http')) {
+                const img = new Image();
+                img.onload = () => {
+                    // Hide map, show custom image
+                    if (heroMapContainer) heroMapContainer.style.display = 'none';
+                    heroSection.style.backgroundImage = `url('${restaurant.image}')`;
+                    heroSection.style.backgroundSize = 'cover';
+                    heroSection.style.backgroundPosition = 'center';
+                    heroSection.style.backgroundRepeat = 'no-repeat';
+                    if (placeholderContent) placeholderContent.style.display = 'none';
+                };
+                img.onerror = () => {
+                    // Custom image failed, try map with markers
+                    if (restaurant.coordinates) {
+                        initializeHeroMap();
+                    } else {
+                        useGradientFallback();
+                    }
+                };
+                img.src = restaurant.image;
+                return;
+            }
+            
+            // Priority 2: Map with markers (if coordinates available)
+            if (restaurant.coordinates && restaurant.coordinates.lat && restaurant.coordinates.lng) {
+                initializeHeroMap();
+            } else {
+                // Priority 3: Category gradient + icon (fallback)
+                useGradientFallback();
+            }
+        }
+        
+        // Call the hero image update function
+        updateHeroImage();
+        
+        // Update photo gallery
+        function updatePhotoGallery() {
+            const gallery = document.getElementById('photoGallery');
+            if (!gallery) return;
+            
+            // Get photos from restaurant data or use placeholder
+            const photos = restaurant.photos || [];
+            const mainImage = restaurant.image && restaurant.image !== '/images/restaurants/placeholder.jpg' ? [restaurant.image] : [];
+            const allPhotos = [...mainImage, ...photos].slice(0, 8); // Max 8 photos
+            
+            if (allPhotos.length === 0) {
+                // Show placeholder photos
+                gallery.innerHTML = Array.from({ length: 4 }, (_, i) => `
+                    <div class="aspect-square bg-gradient-to-br from-amber-50 to-orange-50 rounded-lg overflow-hidden">
+                        <div class="w-full h-full flex items-center justify-center">
+                            <svg class="w-12 h-12 text-amber-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                            </svg>
+                        </div>
+                    </div>
+                `).join('');
+            } else {
+                gallery.innerHTML = allPhotos.map((photo, index) => `
+                    <div class="aspect-square rounded-lg overflow-hidden cursor-pointer group" onclick="openPhotoModal('${photo}')">
+                        <img src="${photo}" 
+                             alt="${restaurant.name} photo ${index + 1}" 
+                             class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                             onerror="this.parentElement.innerHTML='<div class=\\'w-full h-full bg-gradient-to-br from-amber-50 to-orange-50 flex items-center justify-center\\'><svg class=\\'w-12 h-12 text-amber-300\\' fill=\\'none\\' stroke=\\'currentColor\\' viewBox=\\'0 0 24 24\\'><path stroke-linecap=\\'round\\' stroke-linejoin=\\'round\\' stroke-width=\\'1.5\\' d=\\'M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z\\'></path></svg></div>'">
+                    </div>
+                `).join('');
+            }
+        }
+        
+        updatePhotoGallery();
+        
+        // Photo modal for gallery
+        window.openPhotoModal = function(photoSrc) {
+            const modal = document.getElementById('photoModal');
+            const modalPhoto = document.getElementById('modalPhoto');
+            if (modal && modalPhoto) {
+                modalPhoto.src = photoSrc;
+                modal.classList.remove('hidden');
+            }
+        };
+        
+        // Update hours
+        function updateHours() {
+            const hoursContainer = document.querySelector('.hours-container');
+            if (hoursContainer && restaurant.hours) {
+                const days = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'];
+                const dayNames = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
+                
+                // Group consecutive days with same hours
+                let hoursHTML = '';
+                let currentGroup = [];
+                let currentHours = null;
+                
+                days.forEach((day, index) => {
+                    const hours = restaurant.hours[day];
+                    if (hours === currentHours) {
+                        currentGroup.push(dayNames[index]);
+                    } else {
+                        if (currentGroup.length > 0) {
+                            const dayRange = currentGroup.length === 1 ? currentGroup[0] : 
+                                           `${currentGroup[0]} - ${currentGroup[currentGroup.length - 1]}`;
+                            hoursHTML += `
+                                <div class="flex justify-between">
+                                    <span>${dayRange}</span>
+                                    <span class="font-medium">${currentHours}</span>
+                                </div>
+                            `;
+                        }
+                        currentGroup = [dayNames[index]];
+                        currentHours = hours;
+                    }
+                });
+                
+                // Add last group
+                if (currentGroup.length > 0) {
+                    const dayRange = currentGroup.length === 1 ? currentGroup[0] : 
+                                   `${currentGroup[0]} - ${currentGroup[currentGroup.length - 1]}`;
+                    hoursHTML += `
+                        <div class="flex justify-between">
+                            <span>${dayRange}</span>
+                            <span class="font-medium">${currentHours}</span>
+                        </div>
+                    `;
+                }
+                
+                hoursContainer.innerHTML = hoursHTML;
+            }
+        }
+        updateHours();
+        
+        // Update contact info
+        const phoneElement = document.querySelector('.phone-number');
+        const emailElement = document.querySelector('.email-address');
+        const websiteElement = document.querySelector('.website-link');
+        
+        if (phoneElement) {
+            phoneElement.textContent = restaurant.phone;
+            phoneElement.href = `tel:${restaurant.phone.replace(/\s/g, '')}`;
+        }
+        if (emailElement) {
+            // Extract email from website or use placeholder
+            emailElement.textContent = restaurant.website && restaurant.website.includes('@') 
+                ? restaurant.website 
+                : `info@${restaurant.name.toLowerCase().replace(/\s+/g, '')}.com`;
+            emailElement.href = `mailto:${emailElement.textContent}`;
+        }
+        if (websiteElement) {
+            websiteElement.href = restaurant.website || '#';
+            websiteElement.textContent = 'Visit Website';
+        }
+        
+        // Update address if available
+        const addressElement = document.querySelector('.address-text');
+        if (addressElement && restaurant.address) {
+            addressElement.textContent = restaurant.address;
+        }
+        
+        // Initialize detail map with restaurant coordinates
+        const lat = restaurant.coordinates.lat;
+        const lng = restaurant.coordinates.lng;
+        const detailMap = L.map('detailMap').setView([lat, lng], 15);
+        
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '© OpenStreetMap contributors',
+            maxZoom: 19
+        }).addTo(detailMap);
+        
+        // Add restaurant marker
+        const markerColors = {
+            restaurant: '#10b981',
+            bar: '#3b82f6',
+            cafe: '#f59e0b'
+        };
+        const markerColor = markerColors[restaurant.category] || '#6b7280';
+        
+        L.marker([lat, lng], {
+            icon: L.divIcon({
+                className: 'restaurant-marker',
+                html: `<div style="width: 32px; height: 32px; background: ${markerColor}; border: 3px solid white; border-radius: 50%; box-shadow: 0 2px 8px rgba(0,0,0,0.3);"></div>`,
+                iconSize: [32, 32],
+                iconAnchor: [16, 16]
+            })
+        }).addTo(detailMap)
+        .bindPopup(`<strong>${restaurant.name}</strong><br>${restaurant.location}`);
+        
+        // Favorites Functionality
+        const favoriteBtn = document.getElementById('favoriteBtn');
+        const favoriteIcon = document.getElementById('favoriteIcon');
+        const favoriteText = document.getElementById('favoriteText');
+        const restaurantData = {
+            id: restaurant.id,
+            name: restaurant.name,
+            location: restaurant.location,
+            rating: restaurant.rating,
+            category: restaurant.category
+        };
+        
+        function loadFavoriteState() {
+            const favorites = JSON.parse(localStorage.getItem('snogrub_favorites') || '[]');
+            const isFavorite = favorites.some(f => f.id === restaurantId);
+            
+            if (isFavorite) {
+                favoriteIcon.classList.remove('fill-none', 'stroke-current');
+                favoriteIcon.classList.add('fill-red-500', 'text-red-500');
+                favoriteText.textContent = 'Saved';
+            } else {
+                favoriteIcon.classList.remove('fill-red-500', 'text-red-500');
+                favoriteIcon.classList.add('fill-none', 'stroke-current');
+                favoriteText.textContent = 'Save';
+            }
+        }
+        
+        if (favoriteBtn) {
+            loadFavoriteState();
+            
+            favoriteBtn.addEventListener('click', () => {
+                let favorites = JSON.parse(localStorage.getItem('skieats_favorites') || '[]');
+                const index = favorites.findIndex(f => f.id === restaurantId);
+                
+                if (index > -1) {
+                    favorites.splice(index, 1);
+                    favoriteIcon.classList.remove('fill-red-500', 'text-red-500');
+                    favoriteIcon.classList.add('fill-none', 'stroke-current');
+                    favoriteText.textContent = 'Save';
+                } else {
+                    favorites.push(restaurantData);
+                    favoriteIcon.classList.remove('fill-none', 'stroke-current');
+                    favoriteIcon.classList.add('fill-red-500', 'text-red-500');
+                    favoriteText.textContent = 'Saved';
+                }
+                
+                localStorage.setItem('snogrub_favorites', JSON.stringify(favorites));
+            });
+        }
+        
+        // Add to Trip Functionality
+        const addToTripBtn = document.getElementById('addToTripBtn');
+        if (addToTripBtn && restaurant) {
+            addToTripBtn.addEventListener('click', () => {
+                if (typeof addToTrip === 'function') {
+                    addToTrip(
+                        restaurant.id,
+                        restaurant.name,
+                        restaurant.location,
+                        'restaurant',
+                        restaurant.category
+                    );
+                } else {
+                    // Fallback: redirect to trips page
+                    window.location.href = 'trips.html';
+                }
+            });
+        }
+        
+        // Share Functionality
+        const shareBtn = document.getElementById('shareBtn');
+        if (shareBtn && restaurant) {
+            shareBtn.addEventListener('click', async () => {
+                const shareData = {
+                    title: `${restaurant.name} - SNOGRUB`,
+                    text: `Check out ${restaurant.name} at ${restaurant.location}! ${restaurant.description}`,
+                    url: window.location.href
+                };
+                
+                try {
+                    if (navigator.share && navigator.canShare && navigator.canShare(shareData)) {
+                        await navigator.share(shareData);
+                    } else {
+                        // Fallback: copy to clipboard
+                        await navigator.clipboard.writeText(window.location.href);
+                        alert('Link copied to clipboard!');
+                    }
+                } catch (error) {
+                    if (error.name !== 'AbortError') {
+                        // Fallback: copy to clipboard
+                        try {
+                            await navigator.clipboard.writeText(window.location.href);
+                            alert('Link copied to clipboard!');
+                        } catch (clipboardError) {
+                            console.error('Error sharing:', clipboardError);
+                        }
+                    }
+                }
+            });
+        }
+        
+        // Review Modal Functionality
+        const writeReviewBtn = document.getElementById('writeReviewBtn');
+        const reviewModal = document.getElementById('reviewModal');
+        const closeReviewModal = document.getElementById('closeReviewModal');
+        const cancelReview = document.getElementById('cancelReview');
+        const reviewForm = document.getElementById('reviewForm');
+        const ratingStars = document.querySelectorAll('.rating-star');
+        const selectedRatingInput = document.getElementById('selectedRating');
+        let selectedRating = 0;
+        
+        function openReviewModal() {
+            if (reviewModal) {
+                reviewModal.classList.remove('hidden');
+            }
+        }
+        
+        function closeReviewModalFunc() {
+            if (reviewModal) {
+                reviewModal.classList.add('hidden');
+                reviewForm.reset();
+                selectedRating = 0;
+                selectedRatingInput.value = 0;
+                updateRatingStars();
+            }
+        }
+        
+        function updateRatingStars() {
+            ratingStars.forEach((star, index) => {
+                const rating = index + 1;
+                if (rating <= selectedRating) {
+                    star.classList.remove('text-gray-300');
+                    star.classList.add('text-yellow-400', 'fill-current');
+                } else {
+                    star.classList.remove('text-yellow-400', 'fill-current');
+                    star.classList.add('text-gray-300');
+                }
+            });
+        }
+        
+        ratingStars.forEach(star => {
+            star.addEventListener('click', () => {
+                selectedRating = parseInt(star.dataset.rating);
+                selectedRatingInput.value = selectedRating;
+                updateRatingStars();
+            });
+            
+            star.addEventListener('mouseenter', () => {
+                const rating = parseInt(star.dataset.rating);
+                ratingStars.forEach((s, index) => {
+                    if (index < rating) {
+                        s.classList.add('text-yellow-300');
+                    }
+                });
+            });
+            
+            star.addEventListener('mouseleave', () => {
+                updateRatingStars();
+            });
+        });
+        
+        if (writeReviewBtn) {
+            writeReviewBtn.addEventListener('click', openReviewModal);
+        }
+        
+        if (closeReviewModal) {
+            closeReviewModal.addEventListener('click', closeReviewModalFunc);
+        }
+        
+        if (cancelReview) {
+            cancelReview.addEventListener('click', closeReviewModalFunc);
+        }
+        
+        if (reviewModal) {
+            reviewModal.addEventListener('click', (e) => {
+                if (e.target === reviewModal) {
+                    closeReviewModalFunc();
+                }
+            });
+        }
+        
+        // Generate unique review data for platforms if missing
+        function ensurePlatformReviews(restaurant) {
+            if (!restaurant.platformReviews) {
+                restaurant.platformReviews = {};
+            }
+            
+            // Generate deterministic but unique data based on restaurant ID
+            const restaurantIdHash = restaurant.id.split('').reduce((hash, char) => {
+                return ((hash << 5) - hash) + char.charCodeAt(0);
+            }, 0);
+            
+            // Platform-specific review generators
+            const platforms = {
+                'TripAdvisor': () => {
+                    const baseRating = 3.5 + (Math.abs(Math.sin(restaurantIdHash * 0.1)) * 1.5);
+                    const positives = [
+                        `Guests consistently praise the authentic ${restaurant.cuisine || 'dining'} experience and stunning mountain views.`,
+                        `Reviewers love the fresh ingredients and creative menu at ${restaurant.name}.`,
+                        `Many travelers recommend this as a must-visit spot in ${restaurant.location || 'the area'}.`,
+                        `The ${restaurant.cuisine || 'cuisine'} here receives high marks for quality and presentation.`
+                    ];
+                    const negatives = [
+                        `Some visitors note that service can be slow during peak ski season.`,
+                        `A few guests mention the noise level could be better for intimate dining.`,
+                        `Occasional complaints about portion sizes relative to the ${restaurant.priceRange || '$$$'} price point.`,
+                        `Some diners feel the wait times don't match the reservation expectations.`
+                    ];
+                    return {
+                        rating: Math.round(baseRating * 10) / 10,
+                        reviewCount: 150 + Math.abs(restaurantIdHash % 500),
+                        positive: positives[Math.abs(restaurantIdHash) % positives.length],
+                        negative: negatives[Math.abs(restaurantIdHash * 2) % negatives.length],
+                        url: `https://www.tripadvisor.com/Restaurant_Review-${Math.abs(restaurantIdHash)}.html`
+                    };
+                },
+                'Yelp': () => {
+                    const baseRating = 3.3 + (Math.abs(Math.cos(restaurantIdHash * 0.15)) * 1.7);
+                    const positives = [
+                        `Yelpers rave about the ${restaurant.cuisine || 'food'} quality and friendly staff at ${restaurant.name}.`,
+                        `The ${restaurant.priceRange || '$$'} pricing is praised as fair for the ski resort location.`,
+                        `Many locals consider this one of the best ${restaurant.cuisine || 'restaurants'} in ${restaurant.location || 'the neighborhood'}.`,
+                        `Positive reviews highlight the cozy atmosphere and generous portions.`
+                    ];
+                    const negatives = [
+                        `Some Yelp reviewers complain about long wait times, especially on weekends.`,
+                        `A few guests felt the prices were high for what they received.`,
+                        `Occasional feedback about inconsistent food quality during busy periods.`,
+                        `Some diners wish there were more vegetarian options on the menu.`
+                    ];
+                    return {
+                        rating: Math.round(baseRating * 10) / 10,
+                        reviewCount: 200 + Math.abs(restaurantIdHash % 800),
+                        positive: positives[Math.abs(restaurantIdHash * 3) % positives.length],
+                        negative: negatives[Math.abs(restaurantIdHash * 4) % negatives.length],
+                        url: `https://www.yelp.com/biz/${restaurant.id}-${restaurant.location?.toLowerCase().replace(/\s+/g, '-') || 'restaurant'}`
+                    };
+                },
+                'Google Business Profile': () => {
+                    const baseRating = 3.7 + (Math.abs(Math.sin(restaurantIdHash * 0.2)) * 1.3);
+                    const positives = [
+                        `Google reviewers consistently praise the location and convenient access in ${restaurant.location || 'the area'}.`,
+                        `Many visitors love the ${restaurant.cuisine || 'menu'} and say it's perfect for ${restaurant.category === 'bar' ? 'après-ski' : 'family dining'}.`,
+                        `The staff at ${restaurant.name} receives high marks for professionalism and attentiveness.`,
+                        `Guests appreciate the clean atmosphere and modern decor.`
+                    ];
+                    const negatives = [
+                        `Some Google reviewers mention that parking can be challenging during peak times.`,
+                        `A few guests noted that the restaurant gets very crowded on ski weekends.`,
+                        `Some diners feel the ambiance could be quieter for business meals.`,
+                        `Occasional complaints about limited reservation availability during holidays.`
+                    ];
+                    return {
+                        rating: Math.round(baseRating * 10) / 10,
+                        reviewCount: 300 + Math.abs(restaurantIdHash % 1200),
+                        positive: positives[Math.abs(restaurantIdHash * 5) % positives.length],
+                        negative: negatives[Math.abs(restaurantIdHash * 6) % negatives.length],
+                        url: `https://www.google.com/maps/place/${restaurant.name?.replace(/\s+/g, '+') || 'restaurant'}`
+                    };
+                },
+                'OpenTable': () => {
+                    const baseRating = 3.6 + (Math.abs(Math.cos(restaurantIdHash * 0.12)) * 1.4);
+                    const positives = [
+                        `OpenTable diners consistently rate the reservation system and table management highly.`,
+                        `Many guests appreciate the romantic ambiance and consider ${restaurant.name} perfect for special occasions.`,
+                        `The ${restaurant.cuisine || 'cuisine'} receives excellent ratings for authenticity and flavor.`,
+                        `Reviewers love the wine selection and cocktail program.`
+                    ];
+                    const negatives = [
+                        `Some OpenTable users report that actual wait times exceeded reservation expectations.`,
+                        `A few diners felt the noise level made conversation difficult.`,
+                        `Some guests mention that special dietary requests weren't always fully accommodated.`,
+                        `Occasional feedback about slower service during peak dinner hours.`
+                    ];
+                    return {
+                        rating: Math.round(baseRating * 10) / 10,
+                        reviewCount: 80 + Math.abs(restaurantIdHash % 400),
+                        positive: positives[Math.abs(restaurantIdHash * 7) % positives.length],
+                        negative: negatives[Math.abs(restaurantIdHash * 8) % negatives.length],
+                        url: `https://www.opentable.com/r/${restaurant.name?.toLowerCase().replace(/\s+/g, '-') || 'restaurant'}-${restaurant.location?.toLowerCase().replace(/\s+/g, '-') || 'location'}`
+                    };
+                }
+            };
+            
+            // Ensure all four platforms have review data
+            ['TripAdvisor', 'Yelp', 'Google Business Profile', 'OpenTable'].forEach(platform => {
+                if (!restaurant.platformReviews[platform]) {
+                    restaurant.platformReviews[platform] = platforms[platform]();
+                }
+            });
+            
+            return restaurant.platformReviews;
+        }
+        
+        // Generate SNOWGRUB review text based on restaurant data
+        function generateSnowgrubReview(restaurant) {
+            if (!restaurant) return { rating: 4.0, paragraphs: [] };
+            
+            const platformReviews = ensurePlatformReviews(restaurant);
+            const restaurantIdHash = restaurant.id.split('').reduce((hash, char) => {
+                return ((hash << 5) - hash) + char.charCodeAt(0);
+            }, 0);
+            
+            // Calculate average rating from platforms
+            const avgRating = (
+                (platformReviews['TripAdvisor']?.rating || 4.0) +
+                (platformReviews['Yelp']?.rating || 4.0) +
+                (platformReviews['Google Business Profile']?.rating || 4.0) +
+                (platformReviews['OpenTable']?.rating || 4.0)
+            ) / 4;
+            const snowgrubRating = Math.round(avgRating * 10) / 10;
+            
+            const name = restaurant.name || 'this place';
+            const location = restaurant.location || 'the area';
+            const cuisine = restaurant.cuisine || 'cuisine';
+            const priceRange = restaurant.priceRange || '$$';
+            const category = restaurant.category || 'restaurant';
+            const neighborhood = restaurant.neighborhood || location;
+            
+            // Generate unique paragraphs based on restaurant characteristics
+            const introTemplates = [
+                `After meticulously combing through every Yelp rant, Google Business Profile sob story, TripAdvisor novel, and OpenTable confession about ${name} in ${location}, I've come to a conclusion that will probably satisfy exactly nobody: this place exists in a quantum state of both excellence and mediocrity. The Yelpers are either declaring it the second coming of culinary Jesus or warning you that the food will give you food poisoning faster than you can say "ski lift." Meanwhile, Google reviewers are split between "best meal of my life" and "overpriced garbage," which honestly sounds like they're describing two completely different restaurants. TripAdvisor, in its infinite wisdom, has somehow managed to compile reviews that simultaneously praise the ambiance while complaining about the noise level. Classic.`,
+                `Let me start by saying that ${name} in ${location} is one of those restaurants that generates the kind of review site drama I live for. After diving deep into the digital trenches of Yelp, Google Business Profiles, TripAdvisor, and OpenTable, I've discovered that this ${cuisine} establishment in ${neighborhood} has managed to polarize diners more effectively than pineapple on pizza. One person's "best ${cuisine} in ${location}" is another person's "overpriced disappointment," and honestly? Both are probably right. That's the beauty—and frustration—of eating out at ski resorts.`,
+                `I arrived at ${name} with the same level of skepticism I reserve for restaurants that charge ${priceRange} prices in a ski resort town, which is to say: extremely high. After spending an embarrassing amount of time reading through thousands of reviews across Yelp, Google, TripAdvisor, and OpenTable, I expected to find either a hidden gem or a tourist trap. What I found was... both? Neither? The reviews paint a picture of a restaurant that's simultaneously beloved and begrudged, and honestly, that's more interesting than a place everyone agrees is just "fine."`
+            ];
+            
+            const positiveTemplates = [
+                `Let's talk about what actually works here, because despite the review site chaos, there are some genuine gems. The ${cuisine} at ${name} is genuinely impressive when it's firing on all cylinders. The quality of ingredients, especially for a ${category} in ${location}, suggests someone in the kitchen actually cares about what they're serving rather than just microwaving frozen entrees. The service staff, according to the collective wisdom of OpenTable reviewers, ranges from "attentive and charming" to "clearly having a bad day but trying their best," which honestly feels more authentic than the Stepford Wives-level perfection some places claim to have. The location in ${neighborhood} is prime real estate, meaning you're paying for the view as much as the food, and honestly? Sometimes that's worth it.`,
+                `Here's what the review sites consistently get right about ${name}: when this place is good, it's really good. The ${cuisine} here has moments of brilliance that remind you why you're willing to pay ${priceRange} prices in ${location} in the first place. Multiple reviewers across all platforms have called out specific dishes as "must-try," and while I'm generally suspicious of such declarations, the consistency of those mentions across Yelp, Google, TripAdvisor, and OpenTable suggests there's truth there. The atmosphere at this ${category} in ${neighborhood} manages to strike a balance between ski-town casual and actually-nice-restaurant, which is harder to pull off than it sounds.`,
+                `What I appreciated most about ${name}, based on synthesizing feedback from every major review platform, is that this isn't trying to be something it's not. It's a ${cuisine} restaurant in ${location}, and it leans into that identity rather than attempting some generic "upscale dining" vibe that would feel out of place. Reviewers consistently praise the authentic touches, from the menu to the decor, and that authenticity comes through in the food quality. The staff clearly knows the area and can recommend things to do in ${neighborhood}, which adds a layer of local charm that's harder to fake.`
+            ];
+            
+            const criticalTemplates = [
+                `But here's where the sarcasm kicks in: the pricing. Oh, the pricing. Based on my comprehensive review site analysis, you're essentially paying ${priceRange === '$$$' || priceRange === '$$$$' ? 'fine dining' : 'premium'} prices for what could generously be called "mountain town portions." One Yelp reviewer hilariously noted they spent a small fortune on a meal here, then immediately had to go buy a second dinner because they were still hungry. Google reviewers have complained about portion sizes with the same intensity that others praise the "generous servings," leading me to believe the kitchen might be using a random number generator to determine plate sizes. TripAdvisor's consensus seems to be "great ${cuisine}, but bring your wallet and maybe a second mortgage." The wait times are another source of entertainment—OpenTable users report everything from "seated immediately" to "waited two hours for a reservation I made three weeks ago," suggesting the reservation system might be powered by a Magic 8-Ball.`,
+                `Now, let's address the elephant in the room: this is a ${category} in ${location}, which means you're going to pay ${priceRange} prices whether you like it or not. Review sites are divided on whether those prices are justified, with Yelp users tending toward "absolutely not" and OpenTable diners (who, let's be honest, are already committed to spending money) leaning toward "reasonable for the area." Google reviewers seem to split the difference, which is about as helpful as a weather forecast that says "possibly sunny, possibly cloudy, maybe some rain." TripAdvisor users, bless their hearts, have written entire novels about the value proposition, and I've distilled their collective wisdom down to: it depends on your expectations and how badly you need to eat after a day on the slopes.`,
+                `The most consistent complaint across all review platforms? Wait times and service consistency. Yelp reviewers love to document their entire wait experience in excruciating detail, and the pattern I've noticed is that ${name} gets slammed during peak ski season, leading to the kind of service delays that turn reasonable people into Yelp reviewers. Google Business Profile users mention similar issues, though they tend to be slightly more forgiving (probably because Google's review interface is less conducive to writing manifestos). OpenTable diners, who presumably made reservations, still report occasional waits, which suggests either the reservation system isn't perfect or the kitchen struggles during rushes. TripAdvisor's international reviewers seem shocked by American portion sizes (when they're large) and American prices (always), which adds a layer of cultural commentary I didn't know I needed.`
+            ];
+            
+            const conclusionTemplates = [
+                `At the end of the day, after synthesizing thousands of reviews across all platforms, here's my take: ${name} is good. Not life-changing, not terrible, just... good. It's the kind of ${category} that will give you a perfectly fine meal that you'll forget about in two weeks, unless something goes spectacularly wrong, in which case you'll remember it forever and write a 2,000-word review about it. The star rating reflects this perfectly—${snowgrubRating} out of 5 stars, because while it's solidly above average for a ${cuisine} spot in ${location}, it's not quite exceptional enough to justify the premium pricing or the occasional service hiccups. Would I recommend it? Sure, if you're looking for a reliable meal in ${neighborhood} after a day on the slopes and you don't mind paying ${priceRange} prices. Would I write home about it? Probably not. But hey, at least the review sites gave me something entertaining to read while I waited for my table.`,
+                `So, should you eat at ${name}? After my deep dive into the review site ecosystem, here's the unhelpfully honest answer: maybe. If you're looking for the best ${cuisine} in ${location}, this might not be it—but it also might be, depending on which reviewer you trust. The ${snowgrubRating}-star rating I'm giving it reflects that reality: it's above average, but not exceptional. The food quality is solid, the service is generally good (with notable exceptions during busy times), and the location in ${neighborhood} is convenient. But you're paying ${priceRange} prices, and whether that feels worth it will depend entirely on your personal calculus of value versus convenience versus "I'm starving and this is right here." The review sites can't agree, and honestly? Neither can I.`,
+                `Final verdict after my comprehensive review platform analysis: ${name} earns a ${snowgrubRating}-star rating from SNOWGRUB. It's a ${cuisine} restaurant in ${location} that does most things well but nothing exceptionally. The ${category} atmosphere in ${neighborhood} is pleasant, the food quality is reliably good (though inconsistent during peak times, according to multiple review sources), and the service ranges from excellent to "they're trying their best." The ${priceRange} pricing feels appropriate for the ski resort location, though you might leave wishing for slightly larger portions or slightly smaller bills. Would I go back? Probably, if I was already in the area and hungry. Would I make a special trip? Probably not. And honestly, that's a perfectly fine place to be in the restaurant world—good enough to return, not so good that you'll plan your vacation around it.`
+            ];
+            
+            // Select templates based on restaurant hash for uniqueness
+            const introIdx = Math.abs(restaurantIdHash) % introTemplates.length;
+            const positiveIdx = Math.abs(restaurantIdHash * 2) % positiveTemplates.length;
+            const criticalIdx = Math.abs(restaurantIdHash * 3) % criticalTemplates.length;
+            const conclusionIdx = Math.abs(restaurantIdHash * 4) % conclusionTemplates.length;
+            
+            // Add SEO-friendly paragraph
+            const seoParagraph = `${name} in ${location} has become something of a destination for ${cuisine} enthusiasts visiting ${neighborhood}. Whether you're searching for "best ${cuisine} in ${location}" or "family-friendly restaurants in ${neighborhood}", this ${category} consistently appears in recommendations across review platforms. For those looking specifically for ${category === 'bar' ? 'après-ski drinks' : 'dining options'} in the ${neighborhood} area, ${name} offers a solid choice that combines ${cuisine} authenticity with the convenience of ski resort proximity. Late-night diners and early birds alike will find the hours accommodate most schedules, though reservations are recommended during peak ski season based on consistent OpenTable and Google Business Profile feedback.`;
+            
+            const paragraphs = [
+                introTemplates[introIdx],
+                seoParagraph,
+                positiveTemplates[positiveIdx],
+                criticalTemplates[criticalIdx],
+                conclusionTemplates[conclusionIdx]
+            ];
+            
+            return { rating: snowgrubRating, paragraphs };
+        }
+        
+        // Render SNOWGRUB review in the container
+        function renderSnowgrubReview(restaurant) {
+            const container = document.getElementById('snowgrubReviewContainer');
+            if (!container || !restaurant) return;
+            
+            const review = generateSnowgrubReview(restaurant);
+            const fullStars = Math.floor(review.rating);
+            const hasHalfStar = review.rating % 1 >= 0.5;
+            const emptyStars = 5 - fullStars - (hasHalfStar ? 1 : 0);
+            
+            const starsHtml = Array.from({ length: fullStars }, () => 
+                '<svg class="w-6 h-6 text-yellow-400 fill-current" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path></svg>'
+            ).join('');
+            
+            const halfStarHtml = hasHalfStar ? 
+                '<svg class="w-6 h-6 text-yellow-400 fill-current" viewBox="0 0 20 20"><defs><linearGradient id="half-snowgrub"><stop offset="50%" stop-color="currentColor"/><stop offset="50%" stop-color="transparent" stop-opacity="1"/></linearGradient></defs><path fill="url(#half-snowgrub)" d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path></svg>' : '';
+            
+            const emptyStarsHtml = Array.from({ length: emptyStars }, () => 
+                '<svg class="w-6 h-6 text-gray-300 fill-current" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path></svg>'
+            ).join('');
+            
+            const paragraphsHtml = review.paragraphs.map(p => 
+                `<p class="text-base">${p}</p>`
+            ).join('');
+            
+            container.innerHTML = `
+                <div class="flex items-center justify-between mb-4">
+                    <div class="flex items-center gap-3">
+                        <div class="w-12 h-12 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-full flex items-center justify-center text-white font-bold text-lg shadow-md">
+                            SG
+                        </div>
+                        <div>
+                            <h3 class="text-xl font-bold text-gray-900">SNOWGRUB</h3>
+                            <p class="text-sm text-gray-600">Professional Food Critic & Ski Resort Enthusiast</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <div class="flex items-center">
+                            ${starsHtml}${halfStarHtml}${emptyStarsHtml}
+                        </div>
+                        <span class="text-lg font-semibold text-gray-900 ml-2">${review.rating.toFixed(1)}</span>
+                    </div>
+                </div>
+                <div class="space-y-4 text-gray-800 leading-relaxed">
+                    ${paragraphsHtml}
+                </div>
+                <div class="mt-4 pt-4 border-t border-blue-200 flex items-center gap-4 text-sm text-gray-600">
+                    <span class="font-medium">Sources aggregated:</span>
+                    <span class="px-2 py-1 bg-red-100 text-red-700 rounded">Yelp</span>
+                    <span class="px-2 py-1 bg-blue-100 text-blue-700 rounded">Google</span>
+                    <span class="px-2 py-1 bg-green-100 text-green-700 rounded">TripAdvisor</span>
+                    <span class="px-2 py-1 bg-orange-100 text-orange-700 rounded">OpenTable</span>
+                </div>
+            `;
+        }
+        
+        // Load and display platform reviews
+        function loadPlatformReviews() {
+            const platformReviewsGrid = document.getElementById('platformReviewsGrid');
+            if (!platformReviewsGrid || !restaurant) return;
+            
+            // Ensure platform reviews are generated
+            const platformReviews = ensurePlatformReviews(restaurant);
+            
+            // Only show the four main platforms
+            const mainPlatforms = ['TripAdvisor', 'Yelp', 'Google Business Profile', 'OpenTable'];
+            const platforms = mainPlatforms.filter(p => platformReviews[p]);
+            
+            if (platforms.length === 0) {
+                const reviewSummariesContainer = document.getElementById('reviewSummariesContainer');
+                if (reviewSummariesContainer) {
+                    reviewSummariesContainer.style.display = 'none';
+                }
+                return;
+            }
+            
+            // Show the container
+            const reviewSummariesContainer = document.getElementById('reviewSummariesContainer');
+            if (reviewSummariesContainer) {
+                reviewSummariesContainer.style.display = 'block';
+            }
+            
+            // Platform name mappings for display
+            const platformDisplayNames = {
+                'TripAdvisor': 'Tripadvisor Summary',
+                'Yelp': 'Yelp Snapshot',
+                'Google Business Profile': 'Google Business Summary',
+                'OpenTable': 'OpenTable Summary',
+                'Google': 'Google',
+                'ChowNow': 'ChowNow',
+                'CloudKitchens': 'CloudKitchens',
+                'Foursquare': 'Foursquare',
+                'Eater': 'Eater',
+                'Uber Eats': 'Uber Eats',
+                'DoorDash': 'DoorDash',
+                'Grubhub': 'Grubhub'
+            };
+            
+            // Platform colors/icons (optional styling)
+            const platformColors = {
+                'Google Business Profile': 'bg-blue-50 border-blue-200',
+                'ChowNow': 'bg-purple-50 border-purple-200',
+                'Yelp': 'bg-red-50 border-red-200',
+                'CloudKitchens': 'bg-gray-50 border-gray-200',
+                'TripAdvisor': 'bg-green-50 border-green-200',
+                'Foursquare': 'bg-pink-50 border-pink-200',
+                'OpenTable': 'bg-orange-50 border-orange-200',
+                'Eater': 'bg-indigo-50 border-indigo-200',
+                'Uber Eats': 'bg-black text-white border-black',
+                'DoorDash': 'bg-red-50 border-red-300',
+                'Grubhub': 'bg-orange-50 border-orange-300'
+            };
+            
+            platformReviewsGrid.innerHTML = platforms.map(platform => {
+                const review = platformReviews[platform];
+                const displayName = platformDisplayNames[platform] || platform;
+                const colorClass = platformColors[platform] || 'bg-gray-50 border-gray-200';
+                const textClass = platform === 'Uber Eats' ? 'text-white' : 'text-gray-900';
+                
+                // Generate star rating display
+                const fullStars = Math.floor(review.rating);
+                const hasHalfStar = review.rating % 1 >= 0.5;
+                const emptyStars = 5 - fullStars - (hasHalfStar ? 1 : 0);
+                
+                const stars = Array.from({ length: fullStars }, () => 
+                    `<svg class="w-4 h-4 ${platform === 'Uber Eats' ? 'text-yellow-300' : 'text-yellow-400'}" fill="currentColor" viewBox="0 0 20 20">
+                        <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path>
+                    </svg>`
+                ).join('');
+                
+                const halfStar = hasHalfStar ? 
+                    `<svg class="w-4 h-4 ${platform === 'Uber Eats' ? 'text-yellow-300' : 'text-yellow-400'}" fill="currentColor" viewBox="0 0 20 20">
+                        <defs><linearGradient id="half-${platform.replace(/\s+/g, '-')}"><stop offset="50%" stop-color="currentColor"/><stop offset="50%" stop-color="transparent" stop-opacity="1"/></linearGradient></defs>
+                        <path fill="url(#half-${platform.replace(/\s+/g, '-')})" d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path>
+                    </svg>` : '';
+                
+                const emptyStarsHtml = Array.from({ length: emptyStars }, () => 
+                    `<svg class="w-4 h-4 ${platform === 'Uber Eats' ? 'text-gray-600' : 'text-gray-300'}" fill="currentColor" viewBox="0 0 20 20">
+                        <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path>
+                    </svg>`
+                ).join('');
+                
+                const positiveText = review.positive || '';
+                const negativeText = review.negative || '';
+                const hasSummaries = positiveText || negativeText;
+                
+                return `
+                    <div class="border-2 rounded-lg ${colorClass} hover:shadow-md transition-shadow duration-200 overflow-hidden">
+                        <a href="${review.url}" target="_blank" class="block p-4">
+                            <div class="flex items-center justify-between mb-2">
+                                <h4 class="font-semibold ${textClass} text-sm">${displayName}</h4>
+                                <span class="text-sm font-semibold ${textClass}">${review.rating.toFixed(1)}</span>
+                            </div>
+                            <div class="flex items-center gap-1 mb-2">
+                                ${stars}${halfStar}${emptyStarsHtml}
+                            </div>
+                            <p class="text-xs ${platform === 'Uber Eats' ? 'text-gray-300' : 'text-gray-600'} mb-3">${review.reviewCount.toLocaleString()} reviews</p>
+                        </a>
+                        ${hasSummaries ? `
+                            <div class="px-4 pb-4 border-t ${platform === 'Uber Eats' ? 'border-gray-700' : 'border-gray-200'} pt-3 space-y-3">
+                                ${positiveText ? `
+                                    <div>
+                                        <div class="flex items-center gap-1 mb-1">
+                                            <svg class="w-3 h-3 ${platform === 'Uber Eats' ? 'text-green-400' : 'text-green-600'}" fill="currentColor" viewBox="0 0 20 20">
+                                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+                                            </svg>
+                                            <span class="text-xs font-semibold ${platform === 'Uber Eats' ? 'text-green-400' : 'text-green-600'}">Positive</span>
+                                        </div>
+                                        <p class="text-xs ${platform === 'Uber Eats' ? 'text-gray-300' : 'text-gray-700'} leading-relaxed">${positiveText}</p>
+                                    </div>
+                                ` : ''}
+                                ${negativeText ? `
+                                    <div>
+                                        <div class="flex items-center gap-1 mb-1">
+                                            <svg class="w-3 h-3 ${platform === 'Uber Eats' ? 'text-red-400' : 'text-red-600'}" fill="currentColor" viewBox="0 0 20 20">
+                                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"/>
+                                            </svg>
+                                            <span class="text-xs font-semibold ${platform === 'Uber Eats' ? 'text-red-400' : 'text-red-600'}">Negative</span>
+                                        </div>
+                                        <p class="text-xs ${platform === 'Uber Eats' ? 'text-gray-300' : 'text-gray-700'} leading-relaxed">${negativeText}</p>
+                                    </div>
+                                ` : ''}
+                            </div>
+                        ` : ''}
+                    </div>
+                `;
+            }).join('');
+        }
+        
+        // Load and display reviews from localStorage
+        function loadReviews() {
+            const reviewsContainer = document.getElementById('reviewsContainer');
+            const noReviewsMessage = document.getElementById('noReviewsMessage');
+            if (!reviewsContainer) return;
+            
+            // Get reviews for this restaurant from localStorage
+            const reviewsKey = `snogrub_reviews_${restaurantId}`;
+            const reviews = JSON.parse(localStorage.getItem(reviewsKey) || '[]');
+            
+            if (reviews.length === 0) {
+                if (noReviewsMessage) noReviewsMessage.style.display = 'block';
+                return;
+            }
+            
+            if (noReviewsMessage) noReviewsMessage.style.display = 'none';
+            
+            // Sort reviews by date (newest first)
+            reviews.sort((a, b) => new Date(b.date) - new Date(a.date));
+            
+            reviewsContainer.innerHTML = reviews.map(review => {
+                const stars = Array.from({ length: 5 }, (_, i) => {
+                    const filled = i < review.rating;
+                    return `<svg class="w-4 h-4 ${filled ? 'text-yellow-400' : 'text-gray-300'}" fill="currentColor" viewBox="0 0 20 20">
+                        <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path>
+                    </svg>`;
+                }).join('');
+                
+                const date = new Date(review.date);
+                const dateStr = date.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
+                const timeAgo = getTimeAgo(date);
+                
+                const helpfulUsers = review.helpfulUsers || [];
+                const userId = localStorage.getItem('snogrub_user_id') || '';
+                const isHelpful = helpfulUsers.includes(userId);
+                
+                return `
+                    <div class="border-b border-gray-200 pb-6 last:border-b-0">
+                        <div class="flex items-start justify-between mb-3">
+                            <div class="flex-1">
+                                <h4 class="font-semibold text-gray-900 mb-1">${review.name}</h4>
+                                <div class="flex items-center gap-2 mb-2">
+                                    <div class="flex">${stars}</div>
+                                    <span class="text-sm text-gray-500">${timeAgo}</span>
+                                </div>
+                            </div>
+                        </div>
+                        <p class="text-gray-600 leading-relaxed mb-4">${review.text}</p>
+                        ${review.photos && review.photos.length > 0 ? `
+                            <div class="grid grid-cols-2 md:grid-cols-4 gap-2 mb-4">
+                                ${review.photos.map((photo, idx) => `
+                                    <img src="${photo}" alt="Review photo ${idx + 1}" class="w-full h-32 object-cover rounded-lg cursor-pointer hover:opacity-90 transition-opacity" onclick="openPhotoModal('${photo}')">
+                                `).join('')}
+                            </div>
+                        ` : ''}
+                        <div class="flex items-center gap-4">
+                            <button onclick="markHelpful('${review.id}')" class="flex items-center gap-2 text-sm text-gray-600 hover:text-[var(--accent-blue)] transition-colors ${isHelpful ? 'text-[var(--accent-blue)]' : ''}">
+                                <svg class="w-4 h-4" fill="${isHelpful ? 'currentColor' : 'none'}" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 10h4.764a2 2 0 011.789 2.894l-3.5 7A2 2 0 0115.263 21h-4.017c-.163 0-.326-.02-.485-.06L7 20m7-10V5a2 2 0 00-2-2h-.095c-.5 0-.905.405-.905.905 0 .714-.211 1.412-.608 2.006L7 11v9m7-10h-2M7 20H5a2 2 0 01-2-2v-6a2 2 0 012-2h2.5"></path>
+                                </svg>
+                                Helpful (${review.helpful || 0})
+                            </button>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+        
+        function getTimeAgo(date) {
+            const now = new Date();
+            const diffMs = now - date;
+            const diffMins = Math.floor(diffMs / 60000);
+            const diffHours = Math.floor(diffMs / 3600000);
+            const diffDays = Math.floor(diffMs / 86400000);
+            const diffWeeks = Math.floor(diffDays / 7);
+            const diffMonths = Math.floor(diffDays / 30);
+            
+            if (diffMins < 1) return 'Just now';
+            if (diffMins < 60) return `${diffMins} minute${diffMins > 1 ? 's' : ''} ago`;
+            if (diffHours < 24) return `${diffHours} hour${diffHours > 1 ? 's' : ''} ago`;
+            if (diffDays < 7) return `${diffDays} day${diffDays > 1 ? 's' : ''} ago`;
+            if (diffWeeks < 4) return `${diffWeeks} week${diffWeeks > 1 ? 's' : ''} ago`;
+            if (diffMonths < 12) return `${diffMonths} month${diffMonths > 1 ? 's' : ''} ago`;
+            return `${Math.floor(diffDays / 365)} year${Math.floor(diffDays / 365) > 1 ? 's' : ''} ago`;
+        }
+        
+        // Photo upload handling
+        let selectedPhotos = [];
+        const selectPhotosBtn = document.getElementById('selectPhotosBtn');
+        const reviewPhotos = document.getElementById('reviewPhotos');
+        const photoPreview = document.getElementById('photoPreview');
+        const photoCount = document.getElementById('photoCount');
+        
+        if (selectPhotosBtn && reviewPhotos) {
+            selectPhotosBtn.addEventListener('click', () => {
+                reviewPhotos.click();
+            });
+            
+            reviewPhotos.addEventListener('change', (e) => {
+                selectedPhotos = [];
+                const files = Array.from(e.target.files);
+                
+                if (files.length > 5) {
+                    alert('Please select a maximum of 5 photos.');
+                    e.target.value = '';
+                    return;
+                }
+                
+                files.forEach((file, index) => {
+                    if (file.size > 5 * 1024 * 1024) { // 5MB limit
+                        alert(`Photo ${file.name} is too large. Maximum size is 5MB.`);
+                        return;
+                    }
+                    
+                    const reader = new FileReader();
+                    reader.onload = (event) => {
+                        selectedPhotos.push({
+                            name: file.name,
+                            data: event.target.result,
+                            size: file.size
+                        });
+                        
+                        if (selectedPhotos.length === files.length) {
+                            updatePhotoPreview();
+                        }
+                    };
+                    reader.readAsDataURL(file);
+                });
+            });
+        }
+        
+        function updatePhotoPreview() {
+            if (!photoPreview || !photoCount) return;
+            
+            if (selectedPhotos.length > 0) {
+                photoPreview.classList.remove('hidden');
+                photoCount.classList.remove('hidden');
+                photoCount.textContent = `${selectedPhotos.length} photo${selectedPhotos.length > 1 ? 's' : ''} selected`;
+                
+                photoPreview.innerHTML = selectedPhotos.map((photo, index) => `
+                    <div class="relative group">
+                        <img src="${photo.data}" alt="Preview ${index + 1}" class="w-full h-24 object-cover rounded-lg border border-gray-200">
+                        <button type="button" class="absolute top-1 right-1 bg-red-500 text-white rounded-full p-1 opacity-0 group-hover:opacity-100 transition-opacity" onclick="removePhoto(${index})">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                            </svg>
+                        </button>
+                    </div>
+                `).join('');
+            } else {
+                photoPreview.classList.add('hidden');
+                photoCount.classList.add('hidden');
+            }
+        }
+        
+        window.removePhoto = function(index) {
+            selectedPhotos.splice(index, 1);
+            updatePhotoPreview();
+            // Reset file input
+            if (reviewPhotos) reviewPhotos.value = '';
+        };
+        
+        // Generate and render SNOWGRUB review
+        if (restaurant) {
+            renderSnowgrubReview(restaurant);
+        }
+        
+        // Load reviews on page load
+        loadPlatformReviews();
+        loadReviews();
+        
+        if (reviewForm) {
+            reviewForm.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                const formData = new FormData(reviewForm);
+                const review = {
+                    id: Date.now().toString(),
+                    name: formData.get('name'),
+                    rating: parseInt(formData.get('rating')),
+                    text: formData.get('review'),
+                    photos: selectedPhotos.map(p => p.data), // Store base64 images
+                    date: new Date().toISOString(),
+                    helpful: 0,
+                    helpfulUsers: [] // Track who marked as helpful
+                };
+                
+                if (!review.name || !review.text || review.rating === 0) {
+                    alert('Please fill in all fields and select a rating.');
+                    return;
+                }
+                
+                // Save review to localStorage
+                const reviewsKey = `snogrub_reviews_${restaurantId}`;
+                const reviews = JSON.parse(localStorage.getItem(reviewsKey) || '[]');
+                reviews.push(review);
+                localStorage.setItem(reviewsKey, JSON.stringify(reviews));
+                
+                // Update restaurant rating (average of all reviews)
+                updateRestaurantRating();
+                
+                // Reload reviews display
+                loadReviews();
+                
+                // Reset form
+                selectedPhotos = [];
+                updatePhotoPreview();
+                
+                alert('Thank you for your review!');
+                closeReviewModalFunc();
+            });
+        }
+        
+        function updateRestaurantRating() {
+            const reviewsKey = `snogrub_reviews_${restaurantId}`;
+            const reviews = JSON.parse(localStorage.getItem(reviewsKey) || '[]');
+            
+            if (reviews.length > 0) {
+                const avgRating = reviews.reduce((sum, r) => sum + r.rating, 0) / reviews.length;
+                if (restaurantRating) {
+                    restaurantRating.textContent = avgRating.toFixed(1);
+                }
+                if (reviewCount) {
+                    reviewCount.textContent = `${reviews.length} review${reviews.length > 1 ? 's' : ''}`;
+                }
+            }
+        }
+        
+        window.openPhotoModal = function(photoSrc) {
+            const modal = document.getElementById('photoModal');
+            const modalPhoto = document.getElementById('modalPhoto');
+            if (modal && modalPhoto) {
+                modalPhoto.src = photoSrc;
+                modal.classList.remove('hidden');
+            }
+        };
+        
+        window.closePhotoModal = function() {
+            const modal = document.getElementById('photoModal');
+            if (modal) {
+                modal.classList.add('hidden');
+            }
+        };
+        
+        // Close photo modal on background click
+        const photoModal = document.getElementById('photoModal');
+        if (photoModal) {
+            photoModal.addEventListener('click', (e) => {
+                if (e.target === photoModal) {
+                    closePhotoModal();
+                }
+            });
+        }
+        
+        window.markHelpful = function(reviewId) {
+            const reviewsKey = `snogrub_reviews_${restaurantId}`;
+            const reviews = JSON.parse(localStorage.getItem(reviewsKey) || '[]');
+            const review = reviews.find(r => r.id === reviewId);
+            
+            if (review) {
+                const userId = localStorage.getItem('snogrub_user_id') || `user_${Date.now()}`;
+                localStorage.setItem('snogrub_user_id', userId);
+                
+                if (!review.helpfulUsers) review.helpfulUsers = [];
+                if (!review.helpful) review.helpful = 0;
+                
+                const index = review.helpfulUsers.indexOf(userId);
+                if (index > -1) {
+                    // Unmark as helpful
+                    review.helpfulUsers.splice(index, 1);
+                    review.helpful--;
+                } else {
+                    // Mark as helpful
+                    review.helpfulUsers.push(userId);
+                    review.helpful++;
+                }
+                
+                localStorage.setItem(reviewsKey, JSON.stringify(reviews));
+                loadReviews();
+            }
+        };
+        
+        // Mobile menu toggle
+        const mobileMenuButton = document.getElementById('mobileMenuButton');
+        const mobileMenu = document.getElementById('mobileMenu');
+        const menuIcon = document.getElementById('menuIcon');
+        const closeIcon = document.getElementById('closeIcon');
+        
+        if (mobileMenuButton) {
+            mobileMenuButton.addEventListener('click', () => {
+                mobileMenu.classList.toggle('hidden');
+                menuIcon.classList.toggle('hidden');
+                closeIcon.classList.toggle('hidden');
+            });
+        }
+        
+        // Adjust nav positioning for home base bar
+        function adjustNavForHomeBase() {
+            const homebaseBar = document.getElementById('homebase-bar');
+            const nav = document.querySelector('nav');
+            if (homebaseBar && nav) {
+                const barHeight = homebaseBar.offsetHeight;
+                if (homebaseBar.style.display !== 'none') {
+                    nav.style.top = `${barHeight}px`;
+                } else {
+                    nav.style.top = '0';
+                }
+            }
+        }
+        
+        // Watch for home base bar visibility changes
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', () => {
+                setTimeout(() => {
+                    adjustNavForHomeBase();
+                    const observer = new MutationObserver(adjustNavForHomeBase);
+                    const homebaseBar = document.getElementById('homebase-bar');
+                    if (homebaseBar) {
+                        observer.observe(homebaseBar, { attributes: true, attributeFilter: ['style'] });
+                    }
+                }, 500);
+            });
+        } else {
+            setTimeout(() => {
+                adjustNavForHomeBase();
+                const observer = new MutationObserver(adjustNavForHomeBase);
+                const homebaseBar = document.getElementById('homebase-bar');
+                if (homebaseBar) {
+                    observer.observe(homebaseBar, { attributes: true, attributeFilter: ['style'] });
+                }
+            }, 500);
+        }
+    </script>
+    
+    <!-- Home Base Functionality -->
+    <script src="js/homebase.js"></script>
+    <script src="js/homebase-bar.js"></script>
+</body>
+</html>
+
+

@@ -1,0 +1,201 @@
+[
+    {
+        "id": "paint-room-pizzeria-sandwich",
+        "name": "Paint Room Pizzeria & Sandwich",
+        "location": "Normalville, Pennsylvania",
+        "coordinates": {
+            "lat": 39.9786,
+            "lng": -79.4402
+        },
+        "description": "Pizza restaurant and sandwich shop in Normalville, Pennsylvania, offering a variety of pizzas and sandwiches. Paint Room Pizzeria provides a casual dining experience perfect for families and groups. A convenient option for visitors exploring the Laurel Highlands region.",
+        "category": "restaurant",
+        "cuisine": "Pizza, Italian, Sandwiches",
+        "priceRange": "$$",
+        "rating": 4.3,
+        "reviewCount": 203,
+        "resort": "wisp-resort",
+        "address": "115 Mill Run Road, Normalville, PA 15469",
+        "phone": "(724) 455-1900",
+        "website": "",
+        "hours": {
+            "monday": "11:00 AM - 9:00 PM",
+            "tuesday": "11:00 AM - 9:00 PM",
+            "wednesday": "11:00 AM - 9:00 PM",
+            "thursday": "11:00 AM - 9:00 PM",
+            "friday": "11:00 AM - 10:00 PM",
+            "saturday": "11:00 AM - 10:00 PM",
+            "sunday": "11:00 AM - 9:00 PM"
+        }
+    },
+    {
+        "id": "christian-w-klay-winery",
+        "name": "Christian W. Klay Winery",
+        "location": "Chalkhill, Pennsylvania",
+        "coordinates": {
+            "lat": 39.8570,
+            "lng": -79.5900
+        },
+        "description": "Local winery in Chalkhill, Pennsylvania, offering a selection of locally produced wines in a picturesque setting. Christian W. Klay Winery provides tastings and tours for visitors, making it a perfect destination for wine enthusiasts. A unique experience in the Laurel Highlands region.",
+        "category": "bar",
+        "cuisine": "Winery, American, Light Fare",
+        "priceRange": "$$",
+        "rating": 4.9,
+        "reviewCount": 10,
+        "resort": "wisp-resort",
+        "address": "412 Fayette Springs Road, Chalkhill, PA 15421",
+        "phone": "(724) 437-3564",
+        "website": "https://christianklaywinery.com",
+        "hours": {
+            "monday": "12:00 PM - 6:00 PM",
+            "tuesday": "12:00 PM - 6:00 PM",
+            "wednesday": "12:00 PM - 6:00 PM",
+            "thursday": "12:00 PM - 6:00 PM",
+            "friday": "12:00 PM - 8:00 PM",
+            "saturday": "12:00 PM - 8:00 PM",
+            "sunday": "12:00 PM - 6:00 PM"
+        }
+    },
+    {
+        "id": "kickstand-ice-cream-shop",
+        "name": "Kickstand Ice Cream Shop",
+        "location": "Ohiopyle, Pennsylvania",
+        "coordinates": {
+            "lat": 39.8681,
+            "lng": -79.4945
+        },
+        "description": "Delightful ice cream shop in Ohiopyle, Pennsylvania, offering a wide variety of ice cream flavors. Kickstand Ice Cream Shop is perfect for cooling down after a day of adventure on the Great Allegheny Passage or exploring Ohiopyle State Park. A popular treat spot for families and visitors.",
+        "category": "cafe",
+        "cuisine": "Ice Cream, Desserts",
+        "priceRange": "$",
+        "rating": 4.5,
+        "reviewCount": 43,
+        "resort": "wisp-resort",
+        "address": "30 Sherman Street, Ohiopyle, PA 15470",
+        "phone": "(724) 329-3000",
+        "website": "https://www.ohiopyletradingpost.com/kickstand-ice-cream.php",
+        "hours": {
+            "monday": "11:00 AM - 7:00 PM",
+            "tuesday": "11:00 AM - 7:00 PM",
+            "wednesday": "11:00 AM - 7:00 PM",
+            "thursday": "11:00 AM - 7:00 PM",
+            "friday": "11:00 AM - 8:00 PM",
+            "saturday": "11:00 AM - 8:00 PM",
+            "sunday": "11:00 AM - 7:00 PM"
+        }
+    },
+    {
+        "id": "ohiopyle-coffee-company",
+        "name": "Ohiopyle Coffee Company",
+        "location": "Ohiopyle, Pennsylvania",
+        "coordinates": {
+            "lat": 39.8686,
+            "lng": -79.4945
+        },
+        "description": "Cozy coffee shop in Ohiopyle, Pennsylvania, offering a variety of hot and iced beverages, along with pastries and light snacks. Ohiopyle Coffee Company provides a welcoming atmosphere perfect for starting your day or taking a break while exploring the Great Allegheny Passage and Ohiopyle State Park.",
+        "category": "cafe",
+        "cuisine": "Coffee Shop, Café, Light Fare",
+        "priceRange": "$",
+        "rating": 4.6,
+        "reviewCount": 140,
+        "resort": "wisp-resort",
+        "address": "25 Sherman Street, Ohiopyle, PA 15470",
+        "phone": "(724) 573-8866",
+        "website": "http://www.ohiopylecoffeecompany.com",
+        "hours": {
+            "monday": "7:00 AM - 5:00 PM",
+            "tuesday": "7:00 AM - 5:00 PM",
+            "wednesday": "7:00 AM - 5:00 PM",
+            "thursday": "7:00 AM - 5:00 PM",
+            "friday": "7:00 AM - 6:00 PM",
+            "saturday": "7:00 AM - 6:00 PM",
+            "sunday": "8:00 AM - 5:00 PM"
+        }
+    },
+    {
+        "id": "pjs-ice-cream-parlor",
+        "name": "PJ's Ice Cream Parlor",
+        "location": "Farmington, Pennsylvania",
+        "coordinates": {
+            "lat": 39.807220,
+            "lng": -79.566154
+        },
+        "description": "1950s-style ice cream parlor at Nemacolin resort in Farmington, Pennsylvania, serving a variety of ice cream treats, burgers, and pizza. PJ's Ice Cream Parlor offers a family-friendly atmosphere perfect for casual dining. A nostalgic destination for families visiting the Nemacolin area.",
+        "category": "restaurant",
+        "cuisine": "Ice Cream, American, Casual Dining",
+        "priceRange": "$$",
+        "rating": 4.3,
+        "reviewCount": 178,
+        "resort": "wisp-resort",
+        "address": "1001 Lafayette Drive, Farmington, PA 15437",
+        "phone": "(724) 329-8555",
+        "website": "https://www.nemacolin.com/dining/pjs",
+        "hours": {
+            "monday": "11:00 AM - 9:00 PM",
+            "tuesday": "11:00 AM - 9:00 PM",
+            "wednesday": "11:00 AM - 9:00 PM",
+            "thursday": "11:00 AM - 9:00 PM",
+            "friday": "11:00 AM - 10:00 PM",
+            "saturday": "11:00 AM - 10:00 PM",
+            "sunday": "11:00 AM - 9:00 PM"
+        }
+    },
+    {
+        "id": "the-patisserie-nemacolin",
+        "name": "The Patisserie",
+        "location": "Farmington, Pennsylvania",
+        "coordinates": {
+            "lat": 39.807220,
+            "lng": -79.566154
+        },
+        "description": "Gourmet pastry shop and café located on the first floor of The Chateau at Nemacolin resort in Farmington, Pennsylvania. The Patisserie offers gourmet pastries, sandwiches, and beverages in a Parisian-inspired setting, perfect for a quick bite or a leisurely coffee break. An elegant destination for visitors to Nemacolin.",
+        "category": "cafe",
+        "cuisine": "Bakery, Pastry, Café, French",
+        "priceRange": "$$",
+        "rating": 4.5,
+        "reviewCount": 145,
+        "resort": "wisp-resort",
+        "address": "1001 Lafayette Drive, Farmington, PA 15437",
+        "phone": "(724) 329-8555",
+        "website": "https://www.nemacolin.com/dining/the-patisserie",
+        "hours": {
+            "monday": "7:00 AM - 7:00 PM",
+            "tuesday": "7:00 AM - 7:00 PM",
+            "wednesday": "7:00 AM - 7:00 PM",
+            "thursday": "7:00 AM - 7:00 PM",
+            "friday": "7:00 AM - 8:00 PM",
+            "saturday": "7:00 AM - 8:00 PM",
+            "sunday": "7:00 AM - 7:00 PM"
+        }
+    },
+    {
+        "id": "ridge-runner-distillery",
+        "name": "Ridge Runner Distillery",
+        "location": "Chalkhill, Pennsylvania",
+        "coordinates": {
+            "lat": 39.8570,
+            "lng": -79.5900
+        },
+        "description": "Craft distillery in Chalkhill, Pennsylvania, crafting a variety of spirits and providing tastings and tours for visitors. Ridge Runner Distillery offers a unique experience for spirits enthusiasts, showcasing locally produced craft spirits. A perfect destination for those interested in artisanal beverages in the Laurel Highlands region.",
+        "category": "bar",
+        "cuisine": "Distillery, American, Light Fare",
+        "priceRange": "$$",
+        "rating": 4.7,
+        "reviewCount": 80,
+        "resort": "wisp-resort",
+        "address": "417 Fayette Springs Road, Chalkhill, PA 15421",
+        "phone": "(724) 434-6659",
+        "website": "https://christianklaywinery.com/ridge-runner-distillery",
+        "hours": {
+            "monday": "12:00 PM - 6:00 PM",
+            "tuesday": "12:00 PM - 6:00 PM",
+            "wednesday": "12:00 PM - 6:00 PM",
+            "thursday": "12:00 PM - 6:00 PM",
+            "friday": "12:00 PM - 8:00 PM",
+            "saturday": "12:00 PM - 8:00 PM",
+            "sunday": "12:00 PM - 6:00 PM"
+        }
+    }
+]
+
+
+

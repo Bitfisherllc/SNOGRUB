@@ -1,0 +1,731 @@
+<!-- Apple-Style Ski Dining UI - Blog Page -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blog - SNOGRUB</title>
+    
+    <!-- TailwindCSS via CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Inter font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --accent-blue: #0071e3;
+        }
+        
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+        
+        .frosted-glass {
+            background: rgba(251, 251, 253, 0.8);
+            backdrop-filter: saturate(180%) blur(20px);
+            -webkit-backdrop-filter: saturate(180%) blur(20px);
+        }
+        
+        * {
+            transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+        }
+    </style>
+</head>
+<body class="bg-white text-gray-900 antialiased">
+    
+    <!-- Navigation Bar -->
+    <nav class="fixed top-0 left-0 right-0 z-50 frosted-glass border-b border-gray-200/50">
+        <div class="max-w-7xl mx-auto px-6 sm:px-8">
+            <div class="flex items-center justify-between h-14">
+                <div class="flex-shrink-0">
+                    <a href="index.html" class="text-2xl font-semibold hover:opacity-80 transition-opacity duration-300">
+                        <span class="bg-[var(--accent-blue)] text-white px-1">SNO</span><span class="text-[var(--accent-blue)]">GRUB</span>
+                    </a>
+                </div>
+                
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="resorts.html" class="text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors duration-200">
+                        Resorts
+                    </a>
+                    <a href="restaurants.html" class="text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors duration-200">
+                        Restaurants
+                    </a>
+                    <a href="map.html" class="text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors duration-200">
+                        Map
+                    </a>
+                    <a href="blog.html" class="text-sm font-medium text-gray-900 border-b-2 border-[var(--accent-blue)] pb-1">
+                        Blog
+                    </a>
+                    <a href="favorites.html" class="text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors duration-200">
+                        Favorites
+                    </a>
+                    <a href="trips.html" class="text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors duration-200">
+                        Trips
+                    </a>
+                </div>
+                
+                <!-- Mobile Menu Button -->
+                <button id="mobileMenuButton" class="md:hidden text-gray-600 hover:text-gray-900 transition-colors" aria-label="Menu">
+                    <svg id="menuIcon" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                    </svg>
+                    <svg id="closeIcon" class="w-6 h-6 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                    </svg>
+                </button>
+            </div>
+            
+            <!-- Mobile Menu Dropdown -->
+            <div id="mobileMenu" class="hidden md:hidden border-t border-gray-200/50 bg-white/95 backdrop-blur-lg">
+                <div class="px-6 py-4 space-y-4">
+                    <a href="resorts.html" class="block text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors duration-200">Resorts</a>
+                    <a href="restaurants.html" class="block text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors duration-200">Restaurants</a>
+                    <a href="map.html" class="block text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors duration-200">Map</a>
+                    <a href="blog.html" class="block text-sm font-medium text-[var(--accent-blue)] transition-colors duration-200">Blog</a>
+                    <a href="favorites.html" class="block text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors duration-200">Favorites</a>
+                    <a href="trips.html" class="block text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors duration-200">Trips</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+    
+    <script>
+        // Mobile menu toggle
+        document.addEventListener('DOMContentLoaded', () => {
+            const mobileMenuButton = document.getElementById('mobileMenuButton');
+            const mobileMenu = document.getElementById('mobileMenu');
+            const menuIcon = document.getElementById('menuIcon');
+            const closeIcon = document.getElementById('closeIcon');
+            
+            if (mobileMenuButton) {
+                mobileMenuButton.addEventListener('click', () => {
+                    mobileMenu.classList.toggle('hidden');
+                    menuIcon.classList.toggle('hidden');
+                    closeIcon.classList.toggle('hidden');
+                });
+            }
+            
+            // Close mobile menu when clicking a link
+            if (mobileMenu) {
+                mobileMenu.querySelectorAll('a').forEach(link => {
+                    link.addEventListener('click', () => {
+                        mobileMenu.classList.add('hidden');
+                        menuIcon.classList.remove('hidden');
+                        closeIcon.classList.add('hidden');
+                    });
+                });
+            }
+            
+            // Prioritize blog posts related to home base
+            if (typeof HomeBase !== 'undefined' && HomeBase.isActive()) {
+                prioritizeHomeBaseBlogPosts();
+            } else {
+                restoreDefaultBlogLayout();
+            }
+            
+            // Listen for home base changes
+            window.addEventListener('homebaseChanged', () => {
+                if (typeof HomeBase !== 'undefined' && HomeBase.isActive()) {
+                    prioritizeHomeBaseBlogPosts();
+                } else {
+                    restoreDefaultBlogLayout();
+                }
+            });
+        });
+        
+        // Function to prioritize blog posts related to home base
+        function prioritizeHomeBaseBlogPosts() {
+            const blogGrid = document.querySelector('.grid.grid-cols-1.md\\:grid-cols-2.lg\\:grid-cols-3');
+            const featuredPostContainer = document.querySelector('.mb-16');
+            const featuredPost = document.querySelector('.mb-16 > a');
+            
+            if (!blogGrid || !HomeBase || !HomeBase.isActive()) return;
+            
+            // Hide the featured post section when homebase is active
+            if (featuredPostContainer) {
+                featuredPostContainer.style.display = 'none';
+            }
+            
+            // Get all blog post links from grid
+            const allPosts = Array.from(blogGrid.querySelectorAll('a'));
+            
+            // If featured post exists, convert it to standard size and add to collection
+            let featuredPostElement = null;
+            if (featuredPost) {
+                // Extract data from featured post
+                const featuredTitle = featuredPost.querySelector('h2')?.textContent || '';
+                const featuredDesc = featuredPost.querySelector('p')?.textContent || '';
+                const featuredBadge = featuredPost.querySelector('span.inline-block.px-3.py-1');
+                const badgeText = featuredBadge ? featuredBadge.textContent.trim() : 'Featured';
+                
+                // Get the image div from featured post (it's inside a grid)
+                const featuredImageDiv = featuredPost.querySelector('.grid .aspect-video');
+                let imageHTML = '';
+                if (featuredImageDiv) {
+                    // Extract the gradient classes and SVG
+                    const bgClasses = featuredImageDiv.className.match(/bg-gradient-to-br from-[\w-]+ to-[\w-]+/)?.[0] || 'bg-gradient-to-br from-blue-100 to-cyan-100';
+                    const svgElement = featuredImageDiv.querySelector('svg');
+                    const svgHTML = svgElement ? svgElement.outerHTML.replace('w-24 h-24', 'w-16 h-16').replace('text-blue-400', 'text-blue-400') : '';
+                    imageHTML = `<div class="aspect-video ${bgClasses} relative overflow-hidden"><div class="absolute inset-0 flex items-center justify-center">${svgHTML}</div></div>`;
+                } else {
+                    imageHTML = '<div class="aspect-video bg-gradient-to-br from-blue-100 to-cyan-100 relative overflow-hidden"><div class="absolute inset-0 flex items-center justify-center"><svg class="w-16 h-16 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg></div></div>';
+                }
+                
+                // Get date/time info
+                const dateTimeDiv = featuredPost.querySelector('.flex.items-center');
+                let dateTimeHTML = '<span>January 15, 2025</span><span>•</span><span>5 min read</span>';
+                if (dateTimeDiv) {
+                    dateTimeHTML = dateTimeDiv.innerHTML.replace('text-sm', 'text-xs').replace('gap-4', 'gap-3');
+                }
+                
+                // Create new standard-sized card
+                const newCard = document.createElement('a');
+                newCard.href = featuredPost.href;
+                newCard.className = 'group bg-white border border-gray-200 rounded-lg overflow-hidden hover:shadow-lg transition-all duration-300';
+                newCard.setAttribute('data-converted-featured', 'true');
+                
+                // Convert badge from blue (Featured) to gray (category style)
+                const badgeClass = badgeText === 'Featured' ? 'bg-gray-100 text-gray-700' : 'bg-gray-100 text-gray-700';
+                
+                newCard.innerHTML = `
+                    ${imageHTML}
+                    <div class="p-6">
+                        <span class="inline-block px-3 py-1 ${badgeClass} rounded-full text-xs font-medium mb-3">
+                            ${badgeText}
+                        </span>
+                        <h3 class="text-xl font-semibold text-gray-900 mb-3 group-hover:text-[var(--accent-blue)] transition-colors duration-200">
+                            ${featuredTitle}
+                        </h3>
+                        <p class="text-gray-600 text-sm leading-relaxed mb-4">
+                            ${featuredDesc}
+                        </p>
+                        <div class="flex items-center gap-3 text-xs text-gray-500">
+                            ${dateTimeHTML}
+                        </div>
+                    </div>
+                `;
+                
+                featuredPostElement = newCard;
+            }
+            
+            // Create array of all posts with relevance data
+            const allPostsArray = featuredPostElement ? [featuredPostElement, ...allPosts] : allPosts;
+            
+            const postsWithRelevance = allPostsArray.map(post => {
+                const titleElement = post.querySelector('h3') || post.querySelector('h2');
+                const title = titleElement?.textContent || '';
+                const description = post.querySelector('p')?.textContent || '';
+                const content = { title, description, body: '', tags: [] };
+                
+                const isRelated = HomeBase.isRelatedToHomeBase(content);
+                
+                return {
+                    element: post,
+                    isRelated: isRelated,
+                    title: title
+                };
+            });
+            
+            // Separate related and unrelated posts
+            const relatedPosts = postsWithRelevance.filter(p => p.isRelated);
+            const unrelatedPosts = postsWithRelevance.filter(p => !p.isRelated);
+            
+            // Add HOMEBASE badge to related posts
+            relatedPosts.forEach(({ element }) => {
+                // Check if badge already exists
+                const existingBadges = element.querySelectorAll('.p-6 > span.inline-block, .p-6 > div:first-child > span.inline-block');
+                let badgeContainer = element.querySelector('.p-6');
+                
+                if (!badgeContainer) {
+                    // Find where to add the badge
+                    const contentDiv = element.querySelector('div:last-child');
+                    if (contentDiv) {
+                        badgeContainer = contentDiv;
+                    }
+                }
+                
+                if (badgeContainer) {
+                    // Check if HOMEBASE badge already exists
+                    const hasHomebaseBadge = Array.from(badgeContainer.querySelectorAll('span')).some(
+                        span => span.textContent.trim() === 'HOMEBASE'
+                    );
+                    
+                    if (!hasHomebaseBadge) {
+                        // Create HOMEBASE badge
+                        const homebaseBadge = document.createElement('span');
+                        homebaseBadge.className = 'inline-block px-3 py-1 bg-[var(--accent-blue)] text-white rounded-full text-xs font-medium mb-3 mr-2';
+                        homebaseBadge.textContent = 'HOMEBASE';
+                        
+                        // Insert at the beginning of badge container, before any existing badges
+                        const firstChild = badgeContainer.firstElementChild;
+                        badgeContainer.insertBefore(homebaseBadge, firstChild);
+                    }
+                }
+            });
+            
+            // Clear the grid
+            blogGrid.innerHTML = '';
+            
+            // Add related posts first
+            relatedPosts.forEach(({ element }) => {
+                blogGrid.appendChild(element);
+            });
+            
+            // Then add unrelated posts
+            unrelatedPosts.forEach(({ element }) => {
+                blogGrid.appendChild(element);
+            });
+        }
+        
+        // Function to restore default layout when homebase is cleared
+        function restoreDefaultBlogLayout() {
+            const blogGrid = document.querySelector('.grid.grid-cols-1.md\\:grid-cols-2.lg\\:grid-cols-3');
+            const featuredPostContainer = document.querySelector('.mb-16');
+            
+            if (featuredPostContainer) {
+                featuredPostContainer.style.display = '';
+            }
+            
+            if (blogGrid) {
+                // Remove HOMEBASE badges
+                blogGrid.querySelectorAll('a').forEach(post => {
+                    const badges = post.querySelectorAll('span');
+                    badges.forEach(badge => {
+                        if (badge.textContent.trim() === 'HOMEBASE') {
+                            badge.remove();
+                        }
+                    });
+                });
+                
+                // Remove any converted featured posts from the grid
+                // (The original is still in the hidden container)
+                const convertedPosts = blogGrid.querySelectorAll('a[data-converted-featured="true"]');
+                convertedPosts.forEach(post => {
+                    post.remove();
+                });
+            }
+        }
+    </script>
+    
+    <!-- Hero Section -->
+            </div>
+        </div>
+    </nav>
+    
+    <!-- Hero Section -->
+    <section class="pt-32 pb-16 px-6 sm:px-8 bg-gradient-to-b from-gray-50 to-white">
+        <div class="max-w-4xl mx-auto text-center">
+            <h1 class="text-5xl sm:text-6xl font-semibold text-gray-900 mb-6 tracking-tight">
+                SNOGRUB Blog
+            </h1>
+            <p class="text-xl text-gray-600 font-light max-w-2xl mx-auto leading-relaxed">
+                Discover dining guides, resort spotlights, and après-ski culture across North America's premier ski destinations.
+            </p>
+        </div>
+    </section>
+    
+    <!-- Blog Posts -->
+    <section class="py-16 px-6 sm:px-8">
+        <div class="max-w-7xl mx-auto">
+            <!-- Featured Post -->
+            <div class="mb-16">
+                <a href="blog-post.html?id=whistler-apres-ski" class="group block bg-white border border-gray-200 rounded-lg overflow-hidden hover:shadow-xl transition-all duration-300">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-0">
+                        <div class="aspect-video md:aspect-auto relative overflow-hidden">
+                            <img src="https://images.unsplash.com/photo-1551698618-1dfe5d97d256?w=800&h=600&fit=crop&q=80" alt="Vibrant après-ski bar scene at Whistler with people celebrating after skiing in mountain lodge" class="w-full h-full object-cover" style="filter: brightness(1.05) contrast(1.1) saturate(1.15);">
+                            <div class="absolute inset-0 bg-gradient-to-t from-blue-900/10 via-transparent to-transparent"></div>
+                        </div>
+                        <div class="p-8 md:p-12">
+                            <span class="inline-block px-3 py-1 bg-[var(--accent-blue)] text-white rounded-full text-xs font-medium mb-4">
+                                Featured
+                            </span>
+                            <h2 class="text-3xl font-semibold text-gray-900 mb-4 group-hover:text-[var(--accent-blue)] transition-colors duration-200">
+                                The Ultimate Guide to Après-Ski Dining in Whistler
+                            </h2>
+                            <p class="text-gray-600 leading-relaxed mb-4">
+                                From cozy mountain lodges to vibrant après-ski bars, discover where to refuel and celebrate 
+                                after a day on the slopes in Whistler Blackcomb.
+                            </p>
+                            <div class="flex items-center gap-4 text-sm text-gray-500">
+                                <span>January 15, 2025</span>
+                                <span>•</span>
+                                <span>5 min read</span>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            
+            <!-- Blog Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Blog Post 1 -->
+                <a href="blog-post.html?id=vail-fine-dining" class="group bg-white border border-gray-200 rounded-lg overflow-hidden hover:shadow-lg transition-all duration-300">
+                    <div class="aspect-video relative overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=600&h=400&fit=crop&q=80" alt="Elegant fine dining restaurant interior at Vail with upscale table setting and exceptional cuisine" class="w-full h-full object-cover" style="filter: brightness(1.08) contrast(1.12) saturate(1.2);">
+                        <div class="absolute inset-0 bg-gradient-to-t from-amber-900/8 via-transparent to-transparent"></div>
+                    </div>
+                    <div class="p-6">
+                        <span class="inline-block px-3 py-1 bg-gray-100 text-gray-700 rounded-full text-xs font-medium mb-3">
+                            Dining Guide
+                        </span>
+                        <h3 class="text-xl font-semibold text-gray-900 mb-3 group-hover:text-[var(--accent-blue)] transition-colors duration-200">
+                            Best Fine Dining Restaurants at Vail Resort
+                        </h3>
+                        <p class="text-gray-600 text-sm leading-relaxed mb-4">
+                            Explore Vail's upscale dining scene with our curated guide to the finest restaurants 
+                            offering exceptional cuisine and mountain views.
+                        </p>
+                        <div class="flex items-center gap-3 text-xs text-gray-500">
+                            <span>January 10, 2025</span>
+                            <span>•</span>
+                            <span>4 min read</span>
+                        </div>
+                    </div>
+                </a>
+                
+                <!-- Blog Post 2 -->
+                <a href="blog-post.html?id=park-city-food" class="group bg-white border border-gray-200 rounded-lg overflow-hidden hover:shadow-lg transition-all duration-300">
+                    <div class="aspect-video relative overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1449824913935-59a10b8d2000?w=600&h=400&fit=crop&q=80" alt="Historic Park City Main Street ski town with restaurants and mountain backdrop" class="w-full h-full object-cover" style="filter: brightness(1.06) contrast(1.1) saturate(1.18);">
+                        <div class="absolute inset-0 bg-gradient-to-t from-green-900/8 via-transparent to-transparent"></div>
+                    </div>
+                    <div class="p-6">
+                        <span class="inline-block px-3 py-1 bg-gray-100 text-gray-700 rounded-full text-xs font-medium mb-3">
+                            Resort Spotlight
+                        </span>
+                        <h3 class="text-xl font-semibold text-gray-900 mb-3 group-hover:text-[var(--accent-blue)] transition-colors duration-200">
+                            Park City: A Food Lover's Paradise
+                        </h3>
+                        <p class="text-gray-600 text-sm leading-relaxed mb-4">
+                            Discover why Park City has become one of North America's premier culinary destinations, 
+                            from historic Main Street to mountain-top dining.
+                        </p>
+                        <div class="flex items-center gap-3 text-xs text-gray-500">
+                            <span>January 5, 2025</span>
+                            <span>•</span>
+                            <span>6 min read</span>
+                        </div>
+                    </div>
+                </a>
+                
+                <!-- Blog Post 3 -->
+                <a href="blog-post.html?id=apres-ski-culture" class="group bg-white border border-gray-200 rounded-lg overflow-hidden hover:shadow-lg transition-all duration-300">
+                    <div class="aspect-video relative overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1556910096-6f5e72db6803?w=600&h=400&fit=crop&q=80" alt="Après-ski culture scene with people unwinding at mountain bar after hitting the slopes" class="w-full h-full object-cover" style="filter: brightness(1.07) contrast(1.11) saturate(1.22);">
+                        <div class="absolute inset-0 bg-gradient-to-t from-purple-900/8 via-transparent to-transparent"></div>
+                    </div>
+                    <div class="p-6">
+                        <span class="inline-block px-3 py-1 bg-gray-100 text-gray-700 rounded-full text-xs font-medium mb-3">
+                            Culture
+                        </span>
+                        <h3 class="text-xl font-semibold text-gray-900 mb-3 group-hover:text-[var(--accent-blue)] transition-colors duration-200">
+                            The Art of Après-Ski: A Cultural Guide
+                        </h3>
+                        <p class="text-gray-600 text-sm leading-relaxed mb-4">
+                            Explore the rich tradition of après-ski culture and discover the best spots to unwind 
+                            after hitting the slopes across North American resorts.
+                        </p>
+                        <div class="flex items-center gap-3 text-xs text-gray-500">
+                            <span>December 28, 2024</span>
+                            <span>•</span>
+                            <span>7 min read</span>
+                        </div>
+                    </div>
+                </a>
+                
+                <!-- Blog Post 4 -->
+                <a href="blog-post.html?id=reservation-tips" class="group bg-white border border-gray-200 rounded-lg overflow-hidden hover:shadow-lg transition-all duration-300">
+                    <div class="aspect-video relative overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=600&h=400&fit=crop&q=80" alt="Ski resort restaurant interior showing reservation table setting and booking process" class="w-full h-full object-cover" style="filter: brightness(1.05) contrast(1.09) saturate(1.16);">
+                        <div class="absolute inset-0 bg-gradient-to-t from-blue-900/8 via-transparent to-transparent"></div>
+                    </div>
+                    <div class="p-6">
+                        <span class="inline-block px-3 py-1 bg-gray-100 text-gray-700 rounded-full text-xs font-medium mb-3">
+                            Tips & Tricks
+                        </span>
+                        <h3 class="text-xl font-semibold text-gray-900 mb-3 group-hover:text-[var(--accent-blue)] transition-colors duration-200">
+                            How to Make Restaurant Reservations at Ski Resorts
+                        </h3>
+                        <p class="text-gray-600 text-sm leading-relaxed mb-4">
+                            Essential tips for securing reservations at popular ski resort restaurants, including 
+                            best times to book and insider secrets.
+                        </p>
+                        <div class="flex items-center gap-3 text-xs text-gray-500">
+                            <span>December 20, 2024</span>
+                            <span>•</span>
+                            <span>3 min read</span>
+                        </div>
+                    </div>
+                </a>
+                
+                <!-- Blog Post 5 -->
+                <a href="blog-post.html?id=mont-tremblant-dining" class="group bg-white border border-gray-200 rounded-lg overflow-hidden hover:shadow-lg transition-all duration-300">
+                    <div class="aspect-video relative overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1559339352-11d035aa65de?w=600&h=400&fit=crop&q=80" alt="French-inspired restaurant at Mont Tremblant Quebec with European charm and French cuisine in mountain setting" class="w-full h-full object-cover" style="filter: brightness(1.06) contrast(1.1) saturate(1.19);">
+                        <div class="absolute inset-0 bg-gradient-to-t from-indigo-900/8 via-transparent to-transparent"></div>
+                    </div>
+                    <div class="p-6">
+                        <span class="inline-block px-3 py-1 bg-gray-100 text-gray-700 rounded-full text-xs font-medium mb-3">
+                            Resort Spotlight
+                        </span>
+                        <h3 class="text-xl font-semibold text-gray-900 mb-3 group-hover:text-[var(--accent-blue)] transition-colors duration-200">
+                            Mont Tremblant: French-Inspired Dining in Quebec
+                        </h3>
+                        <p class="text-gray-600 text-sm leading-relaxed mb-4">
+                            Experience European charm and exceptional French cuisine at Mont Tremblant, where 
+                            après-ski culture meets world-class dining.
+                        </p>
+                        <div class="flex items-center gap-3 text-xs text-gray-500">
+                            <span>December 15, 2024</span>
+                            <span>•</span>
+                            <span>5 min read</span>
+                        </div>
+                    </div>
+                </a>
+                
+                <!-- Blog Post 6 -->
+                <a href="blog-post.html?id=budget-dining" class="group bg-white border border-gray-200 rounded-lg overflow-hidden hover:shadow-lg transition-all duration-300">
+                    <div class="aspect-video relative overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1555396273-367ea4eb4db5?w=600&h=400&fit=crop&q=80" alt="Casual affordable restaurant at ski resort offering budget-friendly quality dining" class="w-full h-full object-cover" style="filter: brightness(1.04) contrast(1.08) saturate(1.14);">
+                        <div class="absolute inset-0 bg-gradient-to-t from-red-900/8 via-transparent to-transparent"></div>
+                    </div>
+                    <div class="p-6">
+                        <span class="inline-block px-3 py-1 bg-gray-100 text-gray-700 rounded-full text-xs font-medium mb-3">
+                            Dining Guide
+                        </span>
+                        <h3 class="text-xl font-semibold text-gray-900 mb-3 group-hover:text-[var(--accent-blue)] transition-colors duration-200">
+                            Budget-Friendly Dining Options at Ski Resorts
+                        </h3>
+                        <p class="text-gray-600 text-sm leading-relaxed mb-4">
+                            Great food doesn't have to break the bank. Discover affordable dining options that 
+                            deliver quality and flavor at ski resorts across North America.
+                        </p>
+                        <div class="flex items-center gap-3 text-xs text-gray-500">
+                            <span>December 10, 2024</span>
+                            <span>•</span>
+                            <span>4 min read</span>
+                        </div>
+                    </div>
+                </a>
+                
+                <!-- Blog Post 7 - Lake Tahoe -->
+                <a href="blog-post.html?id=lake-tahoe-dining" class="group bg-white border border-gray-200 rounded-lg overflow-hidden hover:shadow-lg transition-all duration-300">
+                    <div class="aspect-video relative overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=600&h=400&fit=crop&q=80" alt="Lake Tahoe alpine dining with farm-to-table restaurant and stunning mountain lake scenery" class="w-full h-full object-cover" style="filter: brightness(1.06) contrast(1.1) saturate(1.18);">
+                        <div class="absolute inset-0 bg-gradient-to-t from-sky-900/8 via-transparent to-transparent"></div>
+                    </div>
+                    <div class="p-6">
+                        <span class="inline-block px-3 py-1 bg-gray-100 text-gray-700 rounded-full text-xs font-medium mb-3">
+                            Resort Spotlight
+                        </span>
+                        <h3 class="text-xl font-semibold text-gray-900 mb-3 group-hover:text-[var(--accent-blue)] transition-colors duration-200">
+                            Lake Tahoe: California's Alpine Dining Paradise
+                        </h3>
+                        <p class="text-gray-600 text-sm leading-relaxed mb-4">
+                            Discover the stunning alpine dining scene at Lake Tahoe, where California's farm-to-table 
+                            ethos meets mountain comfort cuisine in one of North America's most beautiful settings.
+                        </p>
+                        <div class="flex items-center gap-3 text-xs text-gray-500">
+                            <span>February 1, 2025</span>
+                            <span>•</span>
+                            <span>6 min read</span>
+                        </div>
+                    </div>
+                </a>
+                
+                <!-- Blog Post 8 - Jackson Hole -->
+                <a href="blog-post.html?id=jackson-hole-dining" class="group bg-white border border-gray-200 rounded-lg overflow-hidden hover:shadow-lg transition-all duration-300">
+                    <div class="aspect-video relative overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1556911220-e15b29be8c8f?w=600&h=400&fit=crop&q=80" alt="Western-style restaurant in Jackson Hole with rugged cowboy charm and sophisticated cuisine" class="w-full h-full object-cover" style="filter: brightness(1.07) contrast(1.11) saturate(1.21);">
+                        <div class="absolute inset-0 bg-gradient-to-t from-amber-900/8 via-transparent to-transparent"></div>
+                    </div>
+                    <div class="p-6">
+                        <span class="inline-block px-3 py-1 bg-gray-100 text-gray-700 rounded-full text-xs font-medium mb-3">
+                            Resort Spotlight
+                        </span>
+                        <h3 class="text-xl font-semibold text-gray-900 mb-3 group-hover:text-[var(--accent-blue)] transition-colors duration-200">
+                            Jackson Hole: Wild West Dining in the Tetons
+                        </h3>
+                        <p class="text-gray-600 text-sm leading-relaxed mb-4">
+                            Experience the unique blend of rugged Western charm and world-class dining in Jackson Hole, 
+                            where cowboy culture meets sophisticated cuisine in the shadow of the Grand Tetons.
+                        </p>
+                        <div class="flex items-center gap-3 text-xs text-gray-500">
+                            <span>January 25, 2025</span>
+                            <span>•</span>
+                            <span>5 min read</span>
+                        </div>
+                    </div>
+                </a>
+                
+                <!-- Blog Post 9 - Stowe -->
+                <a href="blog-post.html?id=stowe-vermont-dining" class="group bg-white border border-gray-200 rounded-lg overflow-hidden hover:shadow-lg transition-all duration-300">
+                    <div class="aspect-video relative overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=600&h=400&fit=crop&q=80" alt="Farm-to-table dining in Stowe Vermont with fresh local ingredients and New England mountain setting" class="w-full h-full object-cover" style="filter: brightness(1.05) contrast(1.09) saturate(1.17);">
+                        <div class="absolute inset-0 bg-gradient-to-t from-red-900/8 via-transparent to-transparent"></div>
+                    </div>
+                    <div class="p-6">
+                        <span class="inline-block px-3 py-1 bg-gray-100 text-gray-700 rounded-full text-xs font-medium mb-3">
+                            Resort Spotlight
+                        </span>
+                        <h3 class="text-xl font-semibold text-gray-900 mb-3 group-hover:text-[var(--accent-blue)] transition-colors duration-200">
+                            Stowe: New England Charm Meets Mountain Dining
+                        </h3>
+                        <p class="text-gray-600 text-sm leading-relaxed mb-4">
+                            Discover Stowe's farm-to-table dining scene, where Vermont's agricultural heritage meets 
+                            world-class mountain cuisine in a picturesque New England setting.
+                        </p>
+                        <div class="flex items-center gap-3 text-xs text-gray-500">
+                            <span>January 20, 2025</span>
+                            <span>•</span>
+                            <span>5 min read</span>
+                        </div>
+                    </div>
+                </a>
+                
+                <!-- Blog Post 10 - Banff & Lake Louise -->
+                <a href="blog-post.html?id=banff-lake-louise-dining" class="group bg-white border border-gray-200 rounded-lg overflow-hidden hover:shadow-lg transition-all duration-300">
+                    <div class="aspect-video relative overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1551524164-6cf77f7e7e8c?w=600&h=400&fit=crop&q=80" alt="Alpine restaurant dining at Banff and Lake Louise with Canadian Rockies mountain backdrop" class="w-full h-full object-cover" style="filter: brightness(1.06) contrast(1.1) saturate(1.19);">
+                        <div class="absolute inset-0 bg-gradient-to-t from-teal-900/8 via-transparent to-transparent"></div>
+                    </div>
+                    <div class="p-6">
+                        <span class="inline-block px-3 py-1 bg-gray-100 text-gray-700 rounded-full text-xs font-medium mb-3">
+                            Resort Spotlight
+                        </span>
+                        <h3 class="text-xl font-semibold text-gray-900 mb-3 group-hover:text-[var(--accent-blue)] transition-colors duration-200">
+                            Banff & Lake Louise: Canadian Rockies Culinary Adventure
+                        </h3>
+                        <p class="text-gray-600 text-sm leading-relaxed mb-4">
+                            Explore the spectacular alpine dining scene in Banff and Lake Louise, where stunning 
+                            natural beauty meets exceptional cuisine in Canada's premier mountain destination.
+                        </p>
+                        <div class="flex items-center gap-3 text-xs text-gray-500">
+                            <span>January 18, 2025</span>
+                            <span>•</span>
+                            <span>6 min read</span>
+                        </div>
+                    </div>
+                </a>
+                
+                <!-- Blog Post 11 - Aspen -->
+                <a href="blog-post.html?id=aspen-dining" class="group bg-white border border-gray-200 rounded-lg overflow-hidden hover:shadow-lg transition-all duration-300">
+                    <div class="aspect-video relative overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1514933651103-005eec06c04b?w=600&h=400&fit=crop&q=80" alt="Luxury fine dining restaurant in Aspen with sophisticated atmosphere and world-class cuisine" class="w-full h-full object-cover" style="filter: brightness(1.08) contrast(1.12) saturate(1.2);">
+                        <div class="absolute inset-0 bg-gradient-to-t from-emerald-900/8 via-transparent to-transparent"></div>
+                    </div>
+                    <div class="p-6">
+                        <span class="inline-block px-3 py-1 bg-gray-100 text-gray-700 rounded-full text-xs font-medium mb-3">
+                            Resort Spotlight
+                        </span>
+                        <h3 class="text-xl font-semibold text-gray-900 mb-3 group-hover:text-[var(--accent-blue)] transition-colors duration-200">
+                            Aspen: Where Luxury Meets Mountain Dining
+                        </h3>
+                        <p class="text-gray-600 text-sm leading-relaxed mb-4">
+                            Discover Aspen's sophisticated dining scene, where celebrity chefs, Michelin-recognized 
+                            restaurants, and world-class cuisine meet the stunning Rocky Mountains.
+                        </p>
+                        <div class="flex items-center gap-3 text-xs text-gray-500">
+                            <span>January 12, 2025</span>
+                            <span>•</span>
+                            <span>6 min read</span>
+                        </div>
+                    </div>
+                </a>
+                
+                <!-- Blog Post 12 - Sun Peaks -->
+                <a href="blog-post.html?id=sun-peaks-dining" class="group bg-white border border-gray-200 rounded-lg overflow-hidden hover:shadow-lg transition-all duration-300">
+                    <div class="aspect-video relative overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1556911220-bff31c812dba?w=600&h=400&fit=crop&q=80" alt="European-style village restaurant at Sun Peaks British Columbia with intimate mountain dining" class="w-full h-full object-cover" style="filter: brightness(1.05) contrast(1.09) saturate(1.16);">
+                        <div class="absolute inset-0 bg-gradient-to-t from-violet-900/8 via-transparent to-transparent"></div>
+                    </div>
+                    <div class="p-6">
+                        <span class="inline-block px-3 py-1 bg-gray-100 text-gray-700 rounded-full text-xs font-medium mb-3">
+                            Resort Spotlight
+                        </span>
+                        <h3 class="text-xl font-semibold text-gray-900 mb-3 group-hover:text-[var(--accent-blue)] transition-colors duration-200">
+                            Sun Peaks: British Columbia's Hidden Culinary Gem
+                        </h3>
+                        <p class="text-gray-600 text-sm leading-relaxed mb-4">
+                            Explore Sun Peaks' charming European-style village and discover exceptional dining that 
+                            combines Canadian hospitality with international flavors in an intimate mountain setting.
+                        </p>
+                        <div class="flex items-center gap-3 text-xs text-gray-500">
+                            <span>January 8, 2025</span>
+                            <span>•</span>
+                            <span>5 min read</span>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Footer -->
+    <footer class="py-12 px-6 sm:px-8 border-t border-gray-200 bg-white">
+        <div class="max-w-7xl mx-auto">
+            <div class="flex flex-col md:flex-row justify-between items-center">
+                <p class="text-sm text-gray-600 mb-4 md:mb-0">
+                    © 2025 <span class="bg-[var(--accent-blue)] text-white px-1">SNO</span><span class="text-[var(--accent-blue)]">GRUB</span>. All rights reserved.
+                </p>
+                <div class="flex space-x-6">
+                    <a href="#" class="text-sm text-gray-600 hover:text-gray-900 transition-colors duration-200">About</a>
+                    <a href="#" class="text-sm text-gray-600 hover:text-gray-900 transition-colors duration-200">Contact</a>
+                    <a href="#" class="text-sm text-gray-600 hover:text-gray-900 transition-colors duration-200">Privacy</a>
+                    <a href="#" class="text-sm text-gray-600 hover:text-gray-900 transition-colors duration-200">Terms</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+    
+    <!-- Home Base Functionality -->
+    <script src="data.js"></script>
+    <script src="js/homebase.js"></script>
+    <script src="js/homebase-bar.js"></script>
+    
+    <script>
+        // Adjust nav positioning for home base bar
+        function adjustNavForHomeBase() {
+            const homebaseBar = document.getElementById('homebase-bar');
+            const nav = document.querySelector('nav');
+            if (homebaseBar && nav) {
+                const barHeight = homebaseBar.offsetHeight;
+                if (homebaseBar.style.display !== 'none') {
+                    nav.style.top = `${barHeight}px`;
+                } else {
+                    nav.style.top = '0';
+                }
+            }
+        }
+        
+        // Watch for home base bar visibility changes
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', () => {
+                setTimeout(() => {
+                    adjustNavForHomeBase();
+                    const observer = new MutationObserver(adjustNavForHomeBase);
+                    const homebaseBar = document.getElementById('homebase-bar');
+                    if (homebaseBar) {
+                        observer.observe(homebaseBar, { attributes: true, attributeFilter: ['style'] });
+                    }
+                }, 500);
+            });
+        } else {
+            setTimeout(() => {
+                adjustNavForHomeBase();
+                const observer = new MutationObserver(adjustNavForHomeBase);
+                const homebaseBar = document.getElementById('homebase-bar');
+                if (homebaseBar) {
+                    observer.observe(homebaseBar, { attributes: true, attributeFilter: ['style'] });
+                }
+            }, 500);
+        }
+    </script>
+</body>
+</html>
+

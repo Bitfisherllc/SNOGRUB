@@ -1,0 +1,201 @@
+[
+    {
+        "id": "curts-family-restaurant",
+        "name": "Curt's Family Restaurant",
+        "location": "Markleysburg, Pennsylvania",
+        "coordinates": {
+            "lat": 39.7225,
+            "lng": -79.4667
+        },
+        "description": "Family restaurant in Markleysburg, Pennsylvania, serving American cuisine with dishes like roast beef dinner and coconut cream pie. Curt's is known for its pies and homestyle meals, offering a comfortable dining experience perfect for families. A popular local spot for traditional American fare.",
+        "category": "restaurant",
+        "cuisine": "American, Family Restaurant",
+        "priceRange": "$$",
+        "rating": 4.2,
+        "reviewCount": 1116,
+        "resort": "wisp-resort",
+        "address": "4906 National Pike, Markleysburg, PA 15459",
+        "phone": "(724) 329-4828",
+        "website": "",
+        "hours": {
+            "monday": "7:00 AM - 8:00 PM",
+            "tuesday": "7:00 AM - 8:00 PM",
+            "wednesday": "7:00 AM - 8:00 PM",
+            "thursday": "7:00 AM - 8:00 PM",
+            "friday": "7:00 AM - 9:00 PM",
+            "saturday": "7:00 AM - 9:00 PM",
+            "sunday": "7:00 AM - 8:00 PM"
+        }
+    },
+    {
+        "id": "rustic-joes-coffee-house",
+        "name": "Rustic Joe's Coffee House",
+        "location": "Markleysburg, Pennsylvania",
+        "coordinates": {
+            "lat": 39.7212,
+            "lng": -79.5470
+        },
+        "description": "Cozy coffee shop in Markleysburg, Pennsylvania, known for its friendly service and homemade pastries. Rustic Joe's offers popular items like the Hot Chocolate Freeze and Vanilla Crème, making it a perfect stop for coffee lovers. A welcoming atmosphere ideal for starting your day or taking a break while exploring the Laurel Highlands.",
+        "category": "cafe",
+        "cuisine": "Coffee Shop, Bakery, Café",
+        "priceRange": "$",
+        "rating": 4.9,
+        "reviewCount": 120,
+        "resort": "wisp-resort",
+        "address": "4983 National Pike, Markleysburg, PA 15459",
+        "phone": "(724) 329-5005",
+        "website": "",
+        "hours": {
+            "monday": "6:00 AM - 3:00 PM",
+            "tuesday": "6:00 AM - 3:00 PM",
+            "wednesday": "6:00 AM - 3:00 PM",
+            "thursday": "6:00 AM - 3:00 PM",
+            "friday": "6:00 AM - 5:00 PM",
+            "saturday": "7:00 AM - 5:00 PM",
+            "sunday": "8:00 AM - 5:00 PM"
+        }
+    },
+    {
+        "id": "rock-city-express",
+        "name": "Rock City Express",
+        "location": "Rockwood, Pennsylvania",
+        "coordinates": {
+            "lat": 39.9112,
+            "lng": -79.1556
+        },
+        "description": "Convenience store and restaurant in Rockwood, Pennsylvania, offering a diverse menu from hearty breakfasts to satisfying dinners. Rock City Express is known for home-cooked meals and friendly service, making it a convenient stop for travelers and locals. Perfect for a quick meal while exploring the Great Allegheny Passage area.",
+        "category": "restaurant",
+        "cuisine": "American, Casual Dining",
+        "priceRange": "$",
+        "rating": 4.0,
+        "reviewCount": 38,
+        "resort": "wisp-resort",
+        "address": "1211 Bridge Street, Rockwood, PA 15557",
+        "phone": "(814) 926-1009",
+        "website": "",
+        "hours": {
+            "monday": "6:00 AM - 9:00 PM",
+            "tuesday": "6:00 AM - 9:00 PM",
+            "wednesday": "6:00 AM - 9:00 PM",
+            "thursday": "6:00 AM - 9:00 PM",
+            "friday": "6:00 AM - 10:00 PM",
+            "saturday": "6:00 AM - 10:00 PM",
+            "sunday": "7:00 AM - 9:00 PM"
+        }
+    },
+    {
+        "id": "rockwood-mill-shoppes-opera-house",
+        "name": "Rockwood Mill Shoppes & Opera House",
+        "location": "Rockwood, Pennsylvania",
+        "coordinates": {
+            "lat": 39.9156,
+            "lng": -79.1523
+        },
+        "description": "Historic venue in Rockwood, Pennsylvania, housed in the 1898 Penrose Wolf Building. The Rockwood Mill Shoppes & Opera House combines shopping, dining, and live entertainment in a beautifully restored historic setting. A unique destination offering a blend of retail, dining, and cultural experiences in the Laurel Highlands.",
+        "category": "restaurant",
+        "cuisine": "American, Event Venue",
+        "priceRange": "$$",
+        "rating": 4.4,
+        "reviewCount": 127,
+        "resort": "wisp-resort",
+        "address": "450 Main Street, Rockwood, PA 15557",
+        "phone": "(814) 926-1009",
+        "website": "http://www.rockwoodmillshoppes.com",
+        "hours": {
+            "monday": "10:00 AM - 6:00 PM",
+            "tuesday": "10:00 AM - 6:00 PM",
+            "wednesday": "10:00 AM - 6:00 PM",
+            "thursday": "10:00 AM - 6:00 PM",
+            "friday": "10:00 AM - 8:00 PM",
+            "saturday": "10:00 AM - 8:00 PM",
+            "sunday": "12:00 PM - 6:00 PM"
+        }
+    },
+    {
+        "id": "hillbillys-grub-n-pub",
+        "name": "Hillbilly's Grub N Pub",
+        "location": "Donegal, Pennsylvania",
+        "coordinates": {
+            "lat": 40.1106,
+            "lng": -79.3792
+        },
+        "description": "Local favorite in Donegal, Pennsylvania, offering a diverse menu in a casual setting. Hillbilly's Grub N Pub is known for its generous portions and friendly service, making it a popular spot for locals and visitors. Perfect for enjoying classic American pub fare while exploring the Laurel Highlands region.",
+        "category": "bar",
+        "cuisine": "American, Pub Food",
+        "priceRange": "$$",
+        "rating": 4.3,
+        "reviewCount": 198,
+        "resort": "wisp-resort",
+        "address": "3531 State Route 31, Donegal, PA 15628",
+        "phone": "(724) 623-3585",
+        "website": "https://www.hillbillysgrubnpub.com",
+        "hours": {
+            "monday": "11:00 AM - 10:00 PM",
+            "tuesday": "11:00 AM - 10:00 PM",
+            "wednesday": "11:00 AM - 10:00 PM",
+            "thursday": "11:00 AM - 10:00 PM",
+            "friday": "11:00 AM - 11:00 PM",
+            "saturday": "11:00 AM - 11:00 PM",
+            "sunday": "11:00 AM - 9:00 PM"
+        }
+    },
+    {
+        "id": "country-pie-shoppe",
+        "name": "Country Pie Shoppe",
+        "location": "Donegal, Pennsylvania",
+        "coordinates": {
+            "lat": 40.1105,
+            "lng": -79.3792
+        },
+        "description": "Bakery and café in Donegal, Pennsylvania, known for its delicious baked goods and hearty subs. Country Pie Shoppe is ideal for a quick and satisfying meal, offering fresh pastries, pies, and sandwiches. A perfect stop for travelers and visitors exploring the Laurel Highlands region.",
+        "category": "cafe",
+        "cuisine": "Bakery, Café, Sandwiches",
+        "priceRange": "$",
+        "rating": 4.4,
+        "reviewCount": 327,
+        "resort": "wisp-resort",
+        "address": "3822 Route 31, Donegal, PA 15628",
+        "phone": "(724) 593-3663",
+        "website": "https://www.countrypieshoppe.com",
+        "hours": {
+            "monday": "6:00 AM - 6:00 PM",
+            "tuesday": "6:00 AM - 6:00 PM",
+            "wednesday": "6:00 AM - 6:00 PM",
+            "thursday": "6:00 AM - 6:00 PM",
+            "friday": "6:00 AM - 7:00 PM",
+            "saturday": "6:00 AM - 7:00 PM",
+            "sunday": "7:00 AM - 5:00 PM"
+        }
+    },
+    {
+        "id": "see-mors-all-star-grill",
+        "name": "See-Mor's All-Star Grill",
+        "location": "Normalville, Pennsylvania",
+        "coordinates": {
+            "lat": 39.9786,
+            "lng": -79.4402
+        },
+        "description": "Family restaurant in Normalville, Pennsylvania, offering a variety of American classics in a casual setting. See-Mor's All-Star Grill provides a welcoming atmosphere perfect for families and groups. A convenient dining option for visitors exploring the Laurel Highlands and nearby Seven Springs area.",
+        "category": "restaurant",
+        "cuisine": "American, Family Restaurant",
+        "priceRange": "$$",
+        "rating": 4.2,
+        "reviewCount": 189,
+        "resort": "wisp-resort",
+        "address": "107 Mill Run Road, Normalville, PA 15469",
+        "phone": "(724) 455-2500",
+        "website": "",
+        "hours": {
+            "monday": "7:00 AM - 8:00 PM",
+            "tuesday": "7:00 AM - 8:00 PM",
+            "wednesday": "7:00 AM - 8:00 PM",
+            "thursday": "7:00 AM - 8:00 PM",
+            "friday": "7:00 AM - 9:00 PM",
+            "saturday": "7:00 AM - 9:00 PM",
+            "sunday": "7:00 AM - 8:00 PM"
+        }
+    }
+]
+
+
+
