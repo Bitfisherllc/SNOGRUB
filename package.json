@@ -18,7 +18,8 @@
   "devDependencies": {
     "prettier": "^3.1.1",
     "turbo": "^2.0.0",
-    "typescript": "^5.3.3"
+    "typescript": "^5.3.3",
+    "vercel": "^50.0.1"
   },
   "dependencies": {
     "cheerio": "^1.0.0-rc.12",

@@ -14,9 +14,11 @@
     <meta property="og:description" content="Find the best restaurants, bars, and cafés at ski resorts across North America.">
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://snogrub.com">
+    <meta property="og:image" content="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1200&q=80">
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="SNOGRUB - Discover the Best Eats in North American Ski Resorts">
     <meta name="twitter:description" content="Find the best restaurants, bars, and cafés at ski resorts across North America.">
+    <meta name="twitter:image" content="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1200&q=80">
     <link rel="canonical" href="https://snogrub.com">
     
     <!-- Structured Data (JSON-LD) for SEO -->
@@ -82,7 +84,7 @@
         
         /* Frosted glass effect for navigation - Apple's signature translucent nav */
         .frosted-glass {
-            background: rgba(251, 251, 253, 0.8);
+            background: rgba(0, 113, 227, 0.9); /* Blue background */
             backdrop-filter: saturate(180%) blur(20px);
             -webkit-backdrop-filter: saturate(180%) blur(20px);
         }
@@ -837,41 +839,41 @@
     
     <!-- 1. Top Navigation Bar -->
     <!-- Design Decision: Sticky, frosted glass effect for premium Apple aesthetic -->
-    <nav class="fixed top-0 left-0 right-0 z-50 frosted-glass border-b border-gray-200/50">
+    <nav class="fixed top-0 left-0 right-0 z-50 frosted-glass border-b border-blue-300/50">
         <div class="max-w-7xl mx-auto px-6 sm:px-8">
             <div class="flex items-center justify-between h-14">
                 <!-- Logo - Left aligned -->
                 <div class="flex-shrink-0">
                     <a href="index.html" class="text-2xl font-semibold hover:opacity-80 transition-opacity duration-300">
-                        <span class="bg-[var(--accent-blue)] text-white px-1">SNO</span><span class="text-[var(--accent-blue)]">GRUB</span>
+                        <span class="bg-white text-[var(--accent-blue)] px-1">SNO</span><span class="text-white">GRUB</span>
                     </a>
                 </div>
                 
                 <!-- Navigation Menu - Right aligned -->
                 <!-- Design Decision: Minimal spacing, subtle hover states with opacity fade -->
                 <div class="hidden md:flex items-center space-x-8">
-                    <a href="resorts.html" class="text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors duration-200">
+                    <a href="resorts.html" class="text-sm font-medium text-white hover:text-blue-100 transition-colors duration-200">
                         Resorts
                     </a>
-                    <a href="restaurants.html" class="text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors duration-200">
+                    <a href="restaurants.html" class="text-sm font-medium text-white hover:text-blue-100 transition-colors duration-200">
                         Restaurants
                     </a>
-                    <a href="map.html" class="text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors duration-200">
+                    <a href="map.html" class="text-sm font-medium text-white hover:text-blue-100 transition-colors duration-200">
                         Map
                     </a>
-                    <a href="blog.html" class="text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors duration-200">
+                    <a href="blog.html" class="text-sm font-medium text-white hover:text-blue-100 transition-colors duration-200">
                         Blog
                     </a>
-                    <a href="favorites.html" class="text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors duration-200">
+                    <a href="favorites.html" class="text-sm font-medium text-white hover:text-blue-100 transition-colors duration-200">
                         Favorites
                     </a>
-                    <a href="trips.html" class="text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors duration-200">
+                    <a href="trips.html" class="text-sm font-medium text-white hover:text-blue-100 transition-colors duration-200">
                         Trips
                     </a>
                 </div>
                 
                 <!-- Mobile Menu Button -->
-                <button id="mobileMenuButton" class="md:hidden text-gray-600 hover:text-gray-900 transition-colors" aria-label="Menu">
+                <button id="mobileMenuButton" class="md:hidden text-white hover:text-blue-100 transition-colors" aria-label="Menu">
                     <svg id="menuIcon" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
                     </svg>
@@ -882,14 +884,14 @@
             </div>
             
             <!-- Mobile Menu Dropdown -->
-            <div id="mobileMenu" class="hidden md:hidden border-t border-gray-200/50 bg-white/95 backdrop-blur-lg" role="menu" aria-labelledby="mobileMenuButton">
+            <div id="mobileMenu" class="hidden md:hidden border-t border-blue-300/50 bg-blue-600/95 backdrop-blur-lg" role="menu" aria-labelledby="mobileMenuButton">
                 <div class="px-6 py-4 space-y-4">
-                    <a href="resorts.html" class="block text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors duration-200" role="menuitem">Resorts</a>
-                    <a href="restaurants.html" class="block text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors duration-200" role="menuitem">Restaurants</a>
-                    <a href="map.html" class="block text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors duration-200" role="menuitem">Map</a>
-                    <a href="blog.html" class="block text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors duration-200" role="menuitem">Blog</a>
-                    <a href="favorites.html" class="block text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors duration-200" role="menuitem">Favorites</a>
-                    <a href="trips.html" class="block text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors duration-200" role="menuitem">Trips</a>
+                    <a href="resorts.html" class="block text-sm font-medium text-white hover:text-blue-100 transition-colors duration-200" role="menuitem">Resorts</a>
+                    <a href="restaurants.html" class="block text-sm font-medium text-white hover:text-blue-100 transition-colors duration-200" role="menuitem">Restaurants</a>
+                    <a href="map.html" class="block text-sm font-medium text-white hover:text-blue-100 transition-colors duration-200" role="menuitem">Map</a>
+                    <a href="blog.html" class="block text-sm font-medium text-white hover:text-blue-100 transition-colors duration-200" role="menuitem">Blog</a>
+                    <a href="favorites.html" class="block text-sm font-medium text-white hover:text-blue-100 transition-colors duration-200" role="menuitem">Favorites</a>
+                    <a href="trips.html" class="block text-sm font-medium text-white hover:text-blue-100 transition-colors duration-200" role="menuitem">Trips</a>
                 </div>
             </div>
         </div>
@@ -947,7 +949,7 @@
         <!-- Hero Background Image with Parallax -->
         <!-- Using Unsplash for high-quality ski resort dining images (free, no API key needed) -->
         <div class="hero-background hero-fallback-gradient" 
-             style="background-image: url('https://images.unsplash.com/photo-1515542622106-78bda8ba0e5b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80');"
+             style="background-image: url('https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80');"
              id="heroBackground">
         </div>
         
